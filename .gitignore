@@ -12,6 +12,14 @@
 
 # testing
 /coverage
+/test-results/
+/playwright-report/
+/playwright/.cache/
+/.playwright-mcp/
+qa-*.png
+
+# agent run state
+/.omo/
 
 # next.js
 /.next/

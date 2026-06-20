@@ -1,26 +1,402 @@
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --background: #fff8e7;
+  --foreground: #15112b;
+
+  /* caffeinatedweb tokens */
+  --cw-cream: #fff8e7;
+  --cw-ink: #15112b;
+  --cw-teal: #16d8c2;
+  --cw-purple: #7c3cff;
+  --cw-violet: #b86cff;
+  --cw-orange: #ff8a2a;
+  --cw-sun: #ffd84d;
+  --cw-blue: #29a7ff;
+  --cw-electric: #62f3ff;
+  --cw-pink: #ff5ebc;
+  --cw-card: rgba(255, 255, 255, 0.8);
+  --cw-line: #24194a;
+
+  /* Phase 2 — deep-tech charcoal */
+  --cw-charcoal: #15112b;
+  --cw-charcoal-2: #1d1740;
+  --cw-glass: rgba(255, 255, 255, 0.06);
+  --cw-glass-border: rgba(255, 255, 255, 0.14);
+  --cw-tech-text: #e9ecff;
+
+  /* Phase 3 — elite luxury */
+  --cw-ivory: #f7f4ee;
+  --cw-ivory-2: #efe9dd;
+  --cw-gold: #b08a3e;
+  --cw-gold-soft: #c9a86a;
+  --cw-stone: #6b6657;
+}
+
+/* Scroll-phase fixed background layer. Driven by Motion in
+   scroll-phase-orchestrator.tsx; kept transparent by default and filled
+   in JS. Under reduced motion the orchestrator paints a static cream. */
+.scroll-phase-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: -10;
+  background: var(--cw-cream);
+}
+
+/* Deep-tech atmosphere: radial brand glows + a soft vignette + fine grain.
+   Opacity is driven by Motion in the orchestrator so it only appears across
+   the charcoal plateau (phase 2). Sits just above the color backdrop. */
+.scroll-phase-glow {
+  position: fixed;
+  inset: 0;
+  z-index: -9;
+  pointer-events: none;
+  background-image:
+    radial-gradient(
+      40rem 40rem at 12% 18%,
+      rgba(124, 60, 255, 0.28),
+      transparent 60%
+    ),
+    radial-gradient(
+      38rem 38rem at 88% 82%,
+      rgba(22, 216, 194, 0.22),
+      transparent 60%
+    ),
+    radial-gradient(
+      30rem 30rem at 78% 12%,
+      rgba(98, 243, 255, 0.14),
+      transparent 60%
+    ),
+    radial-gradient(
+      120% 120% at 50% 50%,
+      transparent 55%,
+      rgba(8, 6, 20, 0.55) 100%
+    );
+}
+
+/* Fine film grain — keeps the matte charcoal from looking flat. */
+.scroll-phase-glow::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  opacity: 0.5;
+  mix-blend-mode: overlay;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.35'/%3E%3C/svg%3E");
+}
+
+/* Glassmorphism (Phase 2) — layered glass with a gradient edge + specular
+   sheen so panels read as polished, premium materials rather than flat tint. */
+.cw-glass {
+  position: relative;
+  background:
+    linear-gradient(
+      135deg,
+      rgba(255, 255, 255, 0.1) 0%,
+      rgba(255, 255, 255, 0.03) 40%,
+      rgba(255, 255, 255, 0.05) 100%
+    ),
+    var(--cw-glass);
+  border: 1px solid var(--cw-glass-border);
+  backdrop-filter: blur(16px) saturate(150%);
+  -webkit-backdrop-filter: blur(16px) saturate(150%);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.12),
+    inset 0 0 0 1px rgba(255, 255, 255, 0.02);
+}
+
+/* Specular highlight sweeping the top edge. */
+.cw-glass::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  padding: 1px;
+  background: linear-gradient(
+    140deg,
+    rgba(255, 255, 255, 0.35),
+    rgba(255, 255, 255, 0) 35%,
+    rgba(255, 255, 255, 0) 70%,
+    rgba(98, 243, 255, 0.18)
+  );
+  -webkit-mask:
+    linear-gradient(#000 0 0) content-box,
+    linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  pointer-events: none;
+}
+
+/* Slow-drifting ambient gradient blobs behind the work grid. Clipped to its
+   own box (inset 0) so the blurred edges never spill into horizontal overflow. */
+.cw-tech-blobs {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  overflow: hidden;
+  pointer-events: none;
+}
+.cw-tech-blobs span {
+  position: absolute;
+  border-radius: 9999px;
+  filter: blur(60px);
+  opacity: 0.5;
+}
+.cw-tech-blobs span:nth-child(1) {
+  width: 28rem;
+  height: 28rem;
+  left: -6rem;
+  top: 4rem;
+  background: rgba(124, 60, 255, 0.5);
+  animation: cw-drift-a 18s ease-in-out infinite;
+}
+.cw-tech-blobs span:nth-child(2) {
+  width: 24rem;
+  height: 24rem;
+  right: -4rem;
+  top: 30%;
+  background: rgba(22, 216, 194, 0.42);
+  animation: cw-drift-b 22s ease-in-out infinite;
+}
+.cw-tech-blobs span:nth-child(3) {
+  width: 20rem;
+  height: 20rem;
+  left: 40%;
+  bottom: 0;
+  background: rgba(41, 167, 255, 0.36);
+  animation: cw-drift-a 26s ease-in-out infinite reverse;
+}
+
+@keyframes cw-drift-a {
+  0%,
+  100% {
+    transform: translate3d(0, 0, 0) scale(1);
+  }
+  50% {
+    transform: translate3d(3rem, -2rem, 0) scale(1.08);
+  }
+}
+@keyframes cw-drift-b {
+  0%,
+  100% {
+    transform: translate3d(0, 0, 0) scale(1);
+  }
+  50% {
+    transform: translate3d(-2.5rem, 2.5rem, 0) scale(1.1);
+  }
+}
+
+/* Elite typography helpers (Phase 3) */
+.font-serif {
+  font-family: var(--font-serif), Georgia, "Times New Roman", serif;
+}
+.tracking-luxe {
+  letter-spacing: 0.02em;
+}
+.tracking-eyebrow {
+  letter-spacing: 0.22em;
+}
+
+/* Slow gallery-light shimmer sweeping the elite portrait. Frozen under
+   reduced motion by the global media query below. */
+.cw-sheen {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+}
+.cw-sheen::before {
+  content: "";
+  position: absolute;
+  top: -50%;
+  left: -60%;
+  width: 36%;
+  height: 200%;
+  transform: rotate(8deg);
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 255, 255, 0.5),
+    transparent
+  );
+  animation: cw-sheen-sweep 7s ease-in-out infinite;
+}
+@keyframes cw-sheen-sweep {
+  0% {
+    left: -60%;
+  }
+  55%,
+  100% {
+    left: 130%;
+  }
+}
+
+/* ───────── Emphasis phrase: pixely, rainbow, gently moving ─────────
+   Scoped styling for the single highlighted phrase ("every single day").
+   Pixel typeface + animated rainbow gradient + a soft cartoony wiggle. */
+.font-pixel {
+  font-family: var(--font-pixel), "Press Start 2P", monospace;
+  -webkit-font-smoothing: none;
+  -moz-osx-font-smoothing: unset;
+  font-smooth: never;
+  text-rendering: optimizeSpeed;
+  letter-spacing: 0;
+}
+@keyframes cw-rainbow-pan {
+  to {
+    background-position: 200% center;
+  }
+}
+@keyframes cw-wiggle {
+  0%,
+  100% {
+    transform: rotate(-3deg);
+  }
+  50% {
+    transform: rotate(3deg);
+  }
+}
+.cw-rainbow-text {
+  background-image: linear-gradient(
+    100deg,
+    #ff5ebc,
+    #ff8a2a,
+    #ffd84d,
+    #16d8c2,
+    #29a7ff,
+    #7c3cff,
+    #ff5ebc
+  );
+  background-size: 200% auto;
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  -webkit-text-fill-color: transparent;
+  animation: cw-rainbow-pan 6s linear infinite;
+}
+.cw-wiggle {
+  display: inline-block;
+  transform-origin: center;
+  animation: cw-wiggle 1s ease-in-out infinite;
 }
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
+  --font-sans: var(--font-geist);
+  --font-display: var(--font-geist);
   --font-mono: var(--font-geist-mono);
-}
+  --font-serif: var(--font-serif);
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+  --color-cw-cream: var(--cw-cream);
+  --color-cw-ink: var(--cw-ink);
+  --color-cw-teal: var(--cw-teal);
+  --color-cw-purple: var(--cw-purple);
+  --color-cw-violet: var(--cw-violet);
+  --color-cw-orange: var(--cw-orange);
+  --color-cw-sun: var(--cw-sun);
+  --color-cw-blue: var(--cw-blue);
+  --color-cw-electric: var(--cw-electric);
+  --color-cw-pink: var(--cw-pink);
+  --color-cw-card: var(--cw-card);
+  --color-cw-line: var(--cw-line);
+
+  --color-cw-charcoal: var(--cw-charcoal);
+  --color-cw-charcoal-2: var(--cw-charcoal-2);
+  --color-cw-tech-text: var(--cw-tech-text);
+  --color-cw-ivory: var(--cw-ivory);
+  --color-cw-ivory-2: var(--cw-ivory-2);
+  --color-cw-gold: var(--cw-gold);
+  --color-cw-gold-soft: var(--cw-gold-soft);
+  --color-cw-stone: var(--cw-stone);
 }
 
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: var(--font-geist), system-ui, sans-serif;
+}
+
+/* Focus ring */
+:focus-visible {
+  outline: 3px solid var(--cw-electric);
+  outline-offset: 3px;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+dialog::backdrop {
+  background: rgba(21, 17, 43, 0.42);
+  backdrop-filter: blur(4px);
+}
+
+.animate-stream {
+  stroke-dasharray: 24 36;
+  animation: cw-stream 2.2s linear infinite;
+}
+
+.animate-stream-slow {
+  animation: cw-stream 3.5s linear infinite;
+}
+
+.animate-stream-pulse {
+  animation: cw-stream 2.8s linear infinite, cw-pulse 2s ease-in-out infinite;
+}
+
+@keyframes cw-stream {
+  from {
+    stroke-dashoffset: 0;
+  }
+  to {
+    stroke-dashoffset: -72;
+  }
+}
+
+@keyframes cw-pulse {
+  0%,
+  100% {
+    opacity: 0.35;
+  }
+  50% {
+    opacity: 0.8;
+  }
+}
+
+/* Reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+
+  html {
+    scroll-behavior: auto;
+  }
+
+  .animate-stream,
+  .animate-stream-slow,
+  .animate-stream-pulse,
+  .cw-tech-blobs span,
+  .cw-sheen::before,
+  .cw-rainbow-text,
+  .cw-wiggle {
+    animation: none !important;
+  }
+
+  /* Hide the moving gallery sheen entirely when motion is reduced. */
+  .cw-sheen::before {
+    display: none;
+  }
+
+  /* Freeze the scroll-phase backdrop on the playful cream state. The
+     orchestrator sets inline styles via Motion; this override ensures a
+     single static color regardless of scroll position. */
+  .scroll-phase-backdrop {
+    background: var(--cw-cream) !important;
+  }
 }
