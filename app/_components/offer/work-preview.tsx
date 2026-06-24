@@ -12,7 +12,7 @@ export function WorkPreview({
       data-testid={`example-browser-window-${windowContent.id}`}
       data-cursor="hover"
       data-cursor-label={isCommerce ? "shop" : "train"}
-      className="group overflow-hidden rounded-[26px] border border-cw-ink/18 bg-cw-ink shadow-[0_34px_90px_rgba(21,17,43,0.18)] transition-transform duration-500 ease-out hover:-translate-y-1"
+      className="mockup-browser card group max-w-full overflow-hidden rounded-[26px] border border-cw-ink/18 bg-neutral text-neutral-content shadow-[0_34px_90px_rgba(21,17,43,0.18)] transition-transform duration-500 ease-out hover:-translate-y-1"
     >
       <BrowserBar url={windowContent.urlBar} />
       {isCommerce ? (
@@ -26,13 +26,13 @@ export function WorkPreview({
 
 function BrowserBar({ url }: { url: string }) {
   return (
-    <div className="flex items-center gap-3 border-b border-white/15 cw-liquid--dark px-4 py-3">
+    <div className="mockup-browser-toolbar flex items-center gap-3 border-b border-white/15 cw-liquid--dark px-4 py-3 before:hidden">
       <span className="flex gap-1.5" aria-hidden="true">
-        <span className="size-2.5 rounded-full bg-[#ff5f56]" />
-        <span className="size-2.5 rounded-full bg-[#ffbd2e]" />
-        <span className="size-2.5 rounded-full bg-[#27c93f]" />
+        <span className="badge badge-error size-2.5 min-h-0 min-w-0 rounded-full border-0 p-0" />
+        <span className="badge badge-warning size-2.5 min-h-0 min-w-0 rounded-full border-0 p-0" />
+        <span className="badge badge-accent size-2.5 min-h-0 min-w-0 rounded-full border-0 p-0" />
       </span>
-      <div className="flex-1 rounded-full border border-cw-cream/15 bg-cw-cream/6 px-3 py-1 text-center font-mono text-xs text-cw-cream/52">
+      <div className="input input-xs h-auto min-h-0 flex-1 rounded-full border-cw-cream/15 bg-cw-cream/6 px-3 py-1 text-center font-mono text-xs text-cw-cream/52">
         {url}
       </div>
     </div>
@@ -56,17 +56,17 @@ function ShopifyStorePreview({
         <h3 className="text-2xl font-semibold tracking-[-0.04em]">
           {windowContent.brandName}
         </h3>
-        <span className="rounded-full border border-white/14 px-3 py-1 font-mono text-[10px] uppercase tracking-[0.18em] text-white/60">
+        <span className="badge badge-outline rounded-full border-white/14 px-3 py-1 font-mono text-[10px] uppercase tracking-[0.18em] text-white/60">
           Cart 03
         </span>
       </header>
 
       <div className="relative mt-8 grid gap-6">
-        <div className="rounded-[28px] border border-[--cw-shopify-border] bg-[--cw-shopify-surface] p-5 shadow-[0_20px_70px_rgba(0,0,0,0.35)]">
+        <div className="card rounded-[28px] border border-[--cw-shopify-border] bg-[--cw-shopify-surface] p-5 shadow-[0_20px_70px_rgba(0,0,0,0.35)]">
           <p className="font-mono text-[10px] uppercase tracking-[0.2em] text-[--cw-shopify-mint]">
             {windowContent.label}
           </p>
-          <h4 className="mt-5 max-w-xl text-[clamp(3.1rem,8vw,7rem)] font-light leading-[0.9] tracking-[-0.08em] text-white">
+          <h4 className="mt-5 max-w-xl text-[clamp(2.25rem,7vw,5.5rem)] font-light leading-[0.92] tracking-[-0.06em] text-white break-words">
             {windowContent.heroHeadline}
           </h4>
           <p className="mt-5 max-w-md text-sm leading-relaxed text-white/66">
@@ -76,14 +76,14 @@ function ShopifyStorePreview({
             type="button"
             data-cursor="hover"
             data-cursor-label="checkout"
-            className="mt-6 inline-flex h-11 items-center rounded-full bg-white px-5 text-sm font-semibold text-[--cw-shopify-void] transition-opacity duration-300 hover:opacity-85"
+            className="btn mt-6 h-11 min-h-11 rounded-full border-0 bg-white px-5 text-sm font-semibold text-[--cw-shopify-void] transition-opacity duration-300 hover:bg-white hover:opacity-85"
           >
             {windowContent.heroCta}
           </button>
         </div>
 
         <div className="grid gap-3 sm:grid-cols-[0.92fr_1.08fr]">
-          <div className="rounded-2xl border border-[--cw-shopify-border] bg-[--cw-shopify-panel] p-4">
+          <div className="card rounded-2xl border border-[--cw-shopify-border] bg-[--cw-shopify-panel] p-4">
             <p className="font-mono text-[10px] uppercase tracking-[0.18em] text-[--cw-shopify-mint]">
               Featured bundle
             </p>
@@ -104,15 +104,15 @@ function ShopifyStorePreview({
                 data-testid="product-card"
                 data-cursor="hover"
                 data-cursor-label="view"
-                className="flex items-center justify-between gap-3 rounded-2xl border border-[--cw-shopify-border] bg-white/[0.045] p-4 transition-colors duration-300 hover:bg-white/[0.075]"
+                className="card card-side flex min-w-0 items-center justify-between gap-3 rounded-2xl border border-[--cw-shopify-border] bg-white/[0.045] p-4 transition-colors duration-300 hover:bg-white/[0.075]"
               >
-                <div>
+                <div className="min-w-0">
                   <p className="text-sm font-semibold">{product.name}</p>
                   <p className="mt-1 font-mono text-[10px] uppercase tracking-[0.14em] text-white/48">
                     {product.origin}
                   </p>
                 </div>
-                <p className="font-mono text-lg font-semibold text-[--cw-shopify-mint]">
+                <p className="shrink-0 font-mono text-lg font-semibold text-[--cw-shopify-mint]">
                   {product.price}
                 </p>
               </div>
@@ -166,19 +166,19 @@ function GymLandingPreview({
             {windowContent.brandName}
           </h3>
         </div>
-        <span className="rounded-full border border-cw-orange/45 px-3 py-1 font-mono text-[10px] uppercase tracking-[0.18em] text-cw-orange">
+        <span className="badge badge-outline rounded-full border-cw-orange/45 px-3 py-1 font-mono text-[10px] uppercase tracking-[0.18em] text-cw-orange">
           01 / Live
         </span>
       </header>
 
       <div
         data-testid="gym-v3-service-panel"
-        className="relative mt-6 border border-cw-cream/12 bg-cw-cream/[0.045] p-5 sm:p-6"
+        className="card relative mt-6 rounded-none border border-cw-cream/12 bg-cw-cream/[0.045] p-5 sm:p-6"
       >
         <p className="font-mono text-[10px] font-semibold uppercase tracking-[0.22em] text-cw-orange">
           [ Performance floor ]
         </p>
-        <h4 className="mt-4 max-w-xl text-[clamp(2.8rem,7vw,6.6rem)] font-semibold uppercase leading-[0.82] tracking-[-0.07em] text-cw-cream">
+        <h4 className="mt-4 max-w-xl text-[clamp(2rem,6vw,5rem)] font-semibold uppercase leading-[0.84] tracking-[-0.06em] text-cw-cream break-words">
           {windowContent.heroHeadline.replace(".", "")}
           <span className="block text-transparent [-webkit-text-stroke:1px_var(--cw-orange)]">
             online.
@@ -191,20 +191,20 @@ function GymLandingPreview({
           type="button"
           data-cursor="hover"
           data-cursor-label="join"
-          className="mt-6 inline-flex h-11 items-center overflow-hidden rounded-full bg-cw-orange px-5 font-mono text-[11px] font-semibold uppercase tracking-[0.16em] text-cw-ink shadow-[0_14px_30px_rgba(255,138,42,0.22)] transition-colors duration-300 hover:bg-cw-sun"
+          className="btn btn-primary mt-6 h-11 min-h-11 overflow-hidden rounded-full border-0 bg-cw-orange px-5 font-mono text-[11px] font-semibold uppercase tracking-[0.16em] text-cw-ink shadow-[0_14px_30px_rgba(255,138,42,0.22)] transition-colors duration-300 hover:bg-cw-sun"
         >
           {windowContent.heroCta}
         </button>
       </div>
 
-      <div className="mt-4 grid gap-px overflow-hidden border border-cw-cream/12 bg-cw-cream/12 sm:grid-cols-3">
+      <div className="card mt-4 grid gap-px overflow-hidden rounded-none border border-cw-cream/12 bg-cw-cream/12 sm:grid-cols-3">
         {windowContent.highlights.map((item) => (
           <div
             key={item.title}
             data-testid="landing-highlight"
             data-cursor="hover"
             data-cursor-label="program"
-            className="group bg-cw-ink p-4 transition-colors duration-300 hover:bg-cw-cream/[0.07]"
+            className="card group rounded-none bg-cw-ink p-4 transition-colors duration-300 hover:bg-cw-cream/[0.07]"
           >
             <span className="mb-5 block size-2 rotate-45 bg-cw-cream/45 transition-colors duration-300 group-hover:bg-cw-orange" />
             <h5 className="text-sm font-semibold text-cw-cream">{item.title}</h5>

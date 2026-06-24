@@ -1,4 +1,46 @@
 @import "tailwindcss";
+@plugin "daisyui" {
+  themes: caffienatedweb --default;
+  logs: false;
+}
+@plugin "daisyui/theme" {
+  name: "caffienatedweb";
+  default: true;
+  prefersdark: false;
+  color-scheme: light;
+
+  --color-base-100: #fff8e7;
+  --color-base-200: #f7efd9;
+  --color-base-300: #efe2c5;
+  --color-base-content: #15112b;
+
+  --color-primary: #ff8a2a;
+  --color-primary-content: #15112b;
+  --color-secondary: #7c3cff;
+  --color-secondary-content: #fff8e7;
+  --color-accent: #16d8c2;
+  --color-accent-content: #15112b;
+  --color-neutral: #15112b;
+  --color-neutral-content: #fff8e7;
+
+  --color-info: #29a7ff;
+  --color-info-content: #15112b;
+  --color-success: #16d8c2;
+  --color-success-content: #15112b;
+  --color-warning: #ffd84d;
+  --color-warning-content: #15112b;
+  --color-error: #ff5ebc;
+  --color-error-content: #15112b;
+
+  --radius-selector: 0.75rem;
+  --radius-field: 1rem;
+  --radius-box: 1.5rem;
+  --size-selector: 0.25rem;
+  --size-field: 0.25rem;
+  --border: 1px;
+  --depth: 1;
+  --noise: 0;
+}
 
 :root {
   --background: #fff8e7;
@@ -311,6 +353,28 @@
   50% {
     transform: translate3d(2.5rem, 3rem, 0) scale(1.15);
   }
+}
+
+/* ───────── Crisp editorial paper ─────────
+   Replaces the blurred aurora mesh on the pricing/offer section so the
+   surface reads as sharp, high-contrast paper rather than a smudged wash. */
+.cw-paper {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  overflow: hidden;
+  pointer-events: none;
+  background: var(--cw-cream);
+}
+.cw-paper::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  opacity: 0.6;
+  background-image: radial-gradient(rgba(21, 17, 43, 0.06) 1px, transparent 1.6px);
+  background-size: 22px 22px;
+  -webkit-mask: radial-gradient(125% 90% at 50% 36%, #000, transparent 80%);
+  mask: radial-gradient(125% 90% at 50% 36%, #000, transparent 80%);
 }
 
 .cw-faq summary::-webkit-details-marker { display: none; }

@@ -24,37 +24,43 @@ export function EliteFinale() {
           <div className="mt-5 grid gap-8 lg:grid-cols-[1fr_0.72fr] lg:items-end">
             <h2
               id="elite-headline"
-              className="max-w-4xl text-[clamp(3rem,8vw,7.5rem)] font-semibold leading-[0.88] tracking-[-0.06em] text-balance"
+              className="max-w-4xl text-[clamp(2.25rem,8vw,6rem)] font-semibold leading-[0.92] tracking-[-0.055em] text-balance break-words"
             >
               {elite.closingHeadline}
             </h2>
-            <div className="cw-liquid--dark rounded-2xl border border-white/15 p-6">
+            <div className="card cw-liquid--dark border border-white/15 bg-neutral/70 text-neutral-content shadow-2xl">
+              <div className="card-body gap-0 p-6">
               <p className="text-lg leading-relaxed text-cw-cream/70">
                 {elite.closingBody}
               </p>
-              <div className="mt-7 flex flex-col gap-3 sm:flex-row">
-                <BookingDiscoveryDialog variant="elite" label={pricing.ctaLabel} />
+              <div className="card-actions mt-7 flex-col gap-3 sm:flex-row">
+                <div className="[&>button]:btn [&>button]:btn-primary [&>button]:h-11 [&>button]:rounded-full [&>button]:border-0">
+                  <BookingDiscoveryDialog variant="elite" label={pricing.ctaLabel} />
+                </div>
                 <a
                   href={`mailto:${landingContent.booking.fallbackEmail}?subject=Project%20inquiry`}
-                  className="inline-flex h-11 items-center justify-center rounded-xl border border-white/20 cw-liquid--dark px-5 font-mono text-sm font-medium text-cw-cream transition-all duration-200 hover:-translate-y-0.5 hover:brightness-110"
+                  className="btn btn-outline h-11 rounded-full border-white/25 font-mono text-sm font-medium text-cw-cream hover:border-cw-cream hover:bg-cw-cream hover:text-cw-ink"
                 >
                   Email the studio
                 </a>
+              </div>
               </div>
             </div>
           </div>
         </SectionReveal>
 
-        <dl className="mt-12 grid border-y border-white/12 lg:grid-cols-3">
+        <dl className="stats stats-vertical mt-12 w-full overflow-hidden border border-white/12 bg-neutral/85 text-neutral-content shadow-2xl lg:stats-horizontal">
           {elite.ribbon.map((item) => (
             <div
               key={item.label}
-              className="border-b border-white/12 py-6 lg:border-b-0 lg:border-r lg:px-6 lg:first:pl-0 lg:last:border-r-0"
+              className="stat border-b border-white/12 lg:border-b-0 lg:border-r lg:last:border-r-0"
             >
-              <dt className="font-mono text-xs uppercase tracking-[0.16em] text-cw-cream/42">
+              <dt className="stat-title">
+                <span className="badge badge-outline border-cw-cream/25 font-mono text-[0.68rem] uppercase tracking-[0.16em] text-cw-cream/55">
                 {item.label}
+                </span>
               </dt>
-              <dd className="mt-2 text-2xl font-semibold text-cw-orange">
+              <dd className="stat-value mt-2 text-2xl font-semibold text-cw-orange">
                 {item.value}
               </dd>
             </div>

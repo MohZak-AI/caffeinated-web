@@ -15,27 +15,25 @@ export function Faq() {
           </p>
           <h2
             id="faq-headline"
-            className="mt-4 text-[clamp(2.25rem,5vw,4rem)] font-semibold leading-[0.95] tracking-[-0.04em] text-balance"
+            className="mt-4 text-[clamp(2rem,5vw,4rem)] font-semibold leading-[0.98] tracking-[-0.035em] text-balance break-words"
           >
             Straight answers, no jargon.
           </h2>
         </SectionReveal>
 
         <SectionReveal y={20} delay={0.05}>
-          <div className="mt-10 border-t border-cw-ink/12">
+          <div className="mt-10 grid gap-3">
             {landingContent.faq.map((item) => (
-              <details key={item.q} className="cw-faq group border-b border-cw-ink/12">
-                <summary className="flex cursor-pointer list-none items-center justify-between gap-4 py-5 text-lg font-semibold tracking-[-0.01em] text-cw-ink sm:text-xl">
+              <details
+                key={item.q}
+                className="collapse collapse-plus border border-base-300 bg-base-100/70 text-base-content shadow-sm transition-colors duration-200 open:border-primary/45 open:bg-base-100"
+              >
+                <summary className="collapse-title cursor-pointer text-lg font-semibold tracking-[-0.01em] text-cw-ink focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent sm:text-xl">
                   {item.q}
-                  <span className="cw-faq-icon grid size-8 shrink-0 place-items-center rounded-full border border-cw-ink/15 text-cw-ink/70 transition-transform duration-200 group-open:rotate-45" aria-hidden="true">
-                    <svg viewBox="0 0 24 24" className="size-4" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round">
-                      <path d="M12 5v14M5 12h14" />
-                    </svg>
-                  </span>
                 </summary>
-                <p className="max-w-2xl pb-6 pr-12 text-base leading-relaxed text-cw-ink/68">
-                  {item.a}
-                </p>
+                <div className="collapse-content text-base leading-relaxed text-cw-ink/68">
+                  <p className="max-w-2xl pb-2">{item.a}</p>
+                </div>
               </details>
             ))}
           </div>

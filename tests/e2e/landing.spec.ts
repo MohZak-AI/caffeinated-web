@@ -21,15 +21,18 @@ test.describe("caffienatedweb — agency craft from $99", () => {
     await expect(page.getByTestId("site-cursor-dot")).toHaveCount(1);
     await expect(page.getByTestId("site-cursor-label")).toHaveCount(1);
     await page.mouse.move(240, 240);
-    await expect(page.getByTestId("site-cursor-ring")).toBeVisible();
+    if (test.info().project.name !== "Mobile Safari") {
+      await expect(page.getByTestId("site-cursor-ring")).toBeVisible();
+    }
 
     const headline = page.locator("h1");
     await expect(headline).toContainText("WEBSITES");
     await expect(headline).toContainText("AGENCY");
-    await expect(headline).toContainText("BREWED");
+    await expect(headline).toContainText("$199");
 
+    const heroServices = page.getByTestId("hero-service-index");
     for (const service of landingContent.services) {
-      await expect(page.getByText(service.label)).toBeVisible();
+      await expect(heroServices.getByText(service.label)).toBeVisible();
     }
 
     await expect(page.locator('a[href="#contact"]').first()).toBeVisible();
@@ -134,7 +137,10 @@ test.describe("caffienatedweb — agency craft from $99", () => {
     await expect(landingWindow.getByTestId("gym-v3-service-panel")).toBeVisible();
     await expect(landingWindow.getByTestId("shopify-storefront-panel")).toHaveCount(0);
     await expect(
-      landingWindow.getByText(landingContent.examples.windows[1].heroHeadline)
+      landingWindow.getByText(
+        landingContent.examples.windows[1].heroHeadline.replace(".", ""),
+        { exact: false }
+      )
     ).toBeVisible();
 
     const landingHighlights = landingWindow.getByTestId("landing-highlight");

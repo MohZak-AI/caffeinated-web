@@ -12,7 +12,7 @@ export function CodexWorkbench() {
           <p className="font-mono text-xs font-semibold uppercase tracking-[0.2em] text-cw-orange">
             {examples.eyebrow}
           </p>
-          <h2 className="mt-4 text-[clamp(2.75rem,7vw,6.5rem)] font-semibold leading-[0.9] tracking-[-0.06em] text-cw-ink text-balance">
+          <h2 className="mt-4 text-[clamp(2rem,6vw,5rem)] font-semibold leading-[0.92] tracking-[-0.055em] text-cw-ink text-balance break-words">
             {examples.headline}
           </h2>
         </div>
@@ -36,18 +36,23 @@ export function CodexWorkbench() {
 
 function CapabilityIndex() {
   return (
-    <div className="mt-10 grid border-y border-cw-ink/12 lg:grid-cols-3">
+    <div className="mt-10 grid gap-4 lg:grid-cols-3">
       {landingContent.valueProps.map((item) => (
         <article
           key={item.title}
-          className="border-b border-cw-ink/12 py-6 transition-colors duration-200 hover:bg-cw-ink/[0.03] lg:border-b-0 lg:border-r lg:px-6 lg:first:pl-0 lg:last:border-r-0"
+          className="card border border-base-content/10 bg-base-100 text-base-content shadow-sm transition-all duration-200 hover:-translate-y-1 hover:border-primary/40 hover:shadow-lg"
         >
-          <h3 className="text-xl font-semibold tracking-[-0.02em] text-cw-ink">
-            {item.title}
-          </h3>
-          <p className="mt-3 text-sm leading-relaxed text-cw-ink/62">
-            {item.text}
-          </p>
+          <div className="card-body gap-3 p-6">
+            <div className="badge badge-primary font-mono text-[10px] font-semibold uppercase tracking-[0.16em]">
+              Process
+            </div>
+            <h3 className="card-title text-xl font-semibold tracking-[-0.02em]">
+              {item.title}
+            </h3>
+            <p className="text-sm leading-relaxed text-base-content/65">
+              {item.text}
+            </p>
+          </div>
         </article>
       ))}
     </div>
@@ -60,75 +65,90 @@ function PricingCard() {
   return (
     <section
       data-testid="pricing-card"
-      className="mt-10 overflow-hidden rounded-[34px] border border-white/15 cw-liquid--dark p-6 text-cw-cream shadow-[0_28px_80px_rgba(21,17,43,0.28)] sm:p-8"
+      className="card relative mt-10 overflow-hidden bg-neutral text-neutral-content shadow-2xl"
     >
-      <p className="font-mono text-xs font-semibold uppercase tracking-[0.2em] text-cw-orange">
-        {pricing.eyebrow}
-      </p>
-      <h3 className="mt-3 max-w-2xl text-4xl font-semibold tracking-[-0.04em] sm:text-5xl">
-        {pricing.headline}
-      </h3>
-      <p className="mt-4 max-w-2xl text-sm leading-relaxed text-cw-cream/70">
-        {pricing.body}
-      </p>
+      <div
+        aria-hidden="true"
+        className="absolute inset-x-0 top-0 h-1 bg-gradient-to-r from-cw-orange via-cw-sun to-cw-teal"
+      />
+      <div
+        aria-hidden="true"
+        className="pointer-events-none absolute -right-24 -top-28 size-72 rounded-full bg-cw-orange/15 blur-3xl"
+      />
 
-      <div className="mt-7 grid gap-4 lg:grid-cols-2">
-        {/* One time setup */}
-        <div className="rounded-2xl border border-white/12 bg-white/[0.04] p-5">
-          <div className="flex items-end justify-between gap-3">
-            <p className="font-mono text-[11px] uppercase tracking-[0.16em] text-cw-cream/55">
+      <div className="card-body relative p-6 sm:p-8">
+        <div className="badge badge-primary font-mono text-xs font-semibold uppercase tracking-[0.18em]">
+          {pricing.eyebrow}
+        </div>
+        <h3 className="card-title mt-1 max-w-2xl text-[clamp(1.75rem,4.2vw,3rem)] font-semibold leading-[0.98] tracking-[-0.035em] text-balance">
+          {pricing.headline}
+        </h3>
+        <p className="max-w-2xl text-sm leading-relaxed text-neutral-content/75 sm:text-base">
+          {pricing.body}
+        </p>
+
+        <div className="divider my-2 before:bg-neutral-content/15 after:bg-neutral-content/15" />
+
+        <div className="stats stats-vertical bg-neutral text-neutral-content shadow-none lg:stats-horizontal">
+          <div className="stat px-0 py-0 lg:pr-8">
+            <div className="stat-title font-mono text-[11px] uppercase tracking-[0.16em] text-neutral-content/55">
               One time setup
-            </p>
-            <p className="font-mono text-4xl font-semibold cw-gradient-text sm:text-5xl">
+            </div>
+            <div className="stat-value mt-2 font-mono text-5xl cw-gradient-text sm:text-6xl">
               {pricing.price}
-            </p>
+            </div>
+            <div className="stat-desc mt-1 text-xs uppercase tracking-[0.14em] text-neutral-content/45">
+              {pricing.priceNote}
+            </div>
+            <ul className="mt-5 grid gap-3">
+              {pricing.includes.map((item) => (
+                <li key={item} className="flex items-start gap-2 text-sm text-neutral-content/85">
+                  <span className="badge badge-accent mt-0.5 size-4 shrink-0 rounded-full p-0 text-[10px] leading-none" aria-hidden="true">
+                    <svg viewBox="0 0 24 24" className="size-3" fill="none" stroke="currentColor" strokeWidth="4" strokeLinecap="round" strokeLinejoin="round">
+                      <path d="M20 6 9 17l-5-5" />
+                    </svg>
+                  </span>
+                  {item}
+                </li>
+              ))}
+            </ul>
           </div>
-          <p className="mt-1 text-xs uppercase tracking-[0.14em] text-cw-cream/45">
-            {pricing.priceNote}
-          </p>
-          <ul className="mt-5 grid gap-3">
-            {pricing.includes.map((item) => (
-              <li key={item} className="flex items-start gap-2 text-sm text-cw-cream/82">
-                <svg viewBox="0 0 24 24" className="mt-0.5 size-4 shrink-0 text-cw-teal" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-                  <path d="M20 6L9 17l-5-5" />
-                </svg>
-                {item}
-              </li>
-            ))}
-          </ul>
-        </div>
 
-        {/* Monthly care */}
-        <div className="rounded-2xl border border-white/12 bg-white/[0.04] p-5">
-          <div className="flex items-end justify-between gap-3">
-            <p className="font-mono text-[11px] uppercase tracking-[0.16em] text-cw-cream/55">
+          <div className="stat border-t border-neutral-content/15 px-0 pb-0 pt-8 lg:border-l lg:border-t-0 lg:py-0 lg:pl-8">
+            <div className="stat-title font-mono text-[11px] uppercase tracking-[0.16em] text-neutral-content/55">
               Monthly care
-            </p>
-            <p className="font-mono text-4xl font-semibold text-cw-teal sm:text-5xl">
+            </div>
+            <div className="stat-value mt-2 font-mono text-4xl text-accent sm:text-5xl">
               {pricing.monthly.price}
-            </p>
+            </div>
+            <div className="stat-desc mt-1 text-xs uppercase tracking-[0.14em] text-neutral-content/45">
+              {pricing.monthly.note}
+            </div>
+            <ul className="mt-5 grid gap-3">
+              {pricing.monthly.includes.map((item) => (
+                <li key={item} className="flex items-start gap-2 text-sm text-neutral-content/85">
+                  <span className="badge badge-primary mt-0.5 size-4 shrink-0 rounded-full p-0 text-[10px] leading-none" aria-hidden="true">
+                    <svg viewBox="0 0 24 24" className="size-3" fill="none" stroke="currentColor" strokeWidth="4" strokeLinecap="round" strokeLinejoin="round">
+                      <path d="M20 6 9 17l-5-5" />
+                    </svg>
+                  </span>
+                  {item}
+                </li>
+              ))}
+            </ul>
           </div>
-          <p className="mt-1 text-xs uppercase tracking-[0.14em] text-cw-cream/45">
-            {pricing.monthly.note}
-          </p>
-          <ul className="mt-5 grid gap-3">
-            {pricing.monthly.includes.map((item) => (
-              <li key={item} className="flex items-start gap-2 text-sm text-cw-cream/82">
-                <svg viewBox="0 0 24 24" className="mt-0.5 size-4 shrink-0 text-cw-orange" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-                  <path d="M20 6L9 17l-5-5" />
-                </svg>
-                {item}
-              </li>
-            ))}
-          </ul>
         </div>
-      </div>
 
-      <div className="mt-6 flex flex-col items-center gap-2 border-t border-white/10 pt-6 sm:flex-row sm:justify-between">
-        <span className="font-mono text-[11px] uppercase tracking-[0.14em] text-cw-cream/45">
-          Free call · no obligation
-        </span>
-        <BookingDiscoveryDialog variant="pricing" label={pricing.ctaLabel} />
+        <div className="divider my-1 before:bg-neutral-content/15 after:bg-neutral-content/15" />
+
+        <div className="flex flex-col items-center gap-3 sm:flex-row sm:justify-between">
+          <span className="badge badge-outline border-neutral-content/25 font-mono text-[11px] uppercase tracking-[0.14em] text-neutral-content/60">
+            Free call · no obligation
+          </span>
+          <div className="[&_[data-testid=booking-trigger]]:btn [&_[data-testid=booking-trigger]]:btn-accent [&_[data-testid=booking-trigger]]:btn-outline [&_[data-testid=booking-trigger]]:min-h-12 [&_[data-testid=booking-trigger]]:rounded-full [&_[data-testid=booking-trigger]]:px-8 hover:[&_[data-testid=booking-trigger]]:btn-primary">
+            <BookingDiscoveryDialog variant="pricing" label={pricing.ctaLabel} />
+          </div>
+        </div>
       </div>
     </section>
   );

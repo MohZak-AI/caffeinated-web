@@ -146,7 +146,7 @@ export function AgencyHero() {
 
 function AgencyServiceIndex() {
   return (
-    <div className="mt-12 grid border-y border-cw-ink/12 lg:grid-cols-3">
+    <div data-testid="hero-service-index" className="mt-12 grid border-y border-cw-ink/12 lg:grid-cols-3">
       {landingContent.services.map((service, index) => (
         <article
           key={service.id}
