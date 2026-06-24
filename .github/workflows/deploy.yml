@@ -17,7 +17,7 @@ jobs:
 
       - uses: actions/setup-node@v4
         with:
-          node-version: 20
+          node-version: 22
           cache: npm
 
       - run: npm ci
@@ -28,6 +28,14 @@ jobs:
           NEXT_PUBLIC_SITE_URL: ${{ secrets.NEXT_PUBLIC_SITE_URL || 'https://caffeinatedweb.com' }}
           NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION: ${{ secrets.NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION }}
 
+      - name: Prepare FTP remote dir (guarantee trailing slash)
+        id: rdir
+        run: |
+          raw="${{ secrets.FTP_REMOTE_DIR || '/' }}"
+          # strip any trailing slash, then add exactly one
+          dir="${raw%/}/"
+          echo "dir=$dir" >> "$GITHUB_OUTPUT"
+
       - name: Upload to Hostinger (FTP)
         uses: SamKirkland/FTP-Deploy-Action@v4.3.4
         with:
@@ -35,5 +43,5 @@ jobs:
           username: ${{ secrets.FTP_USER }}
           password: ${{ secrets.FTP_PASS }}
           local-dir: ./out/
-          server-dir: ${{ secrets.FTP_REMOTE_DIR }}
+          server-dir: ${{ steps.rdir.outputs.dir }}
           dangerous-clean-slate: true
