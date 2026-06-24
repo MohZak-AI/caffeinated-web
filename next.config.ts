@@ -1,45 +1,16 @@
 import type { NextConfig } from "next";
 
-const SITE_URL =
-  process.env.NEXT_PUBLIC_SITE_URL ?? "https://caffeinatedweb.com";
-const apex = SITE_URL.replace(/^https?:\/\//, "").replace(/\/$/, "");
-
 const nextConfig: NextConfig = {
-  // Self-contained build for Node hosts like Hostinger (produces .next/standalone
-  // with its own server.js and a pruned node_modules).
-  output: "standalone",
+  // Static export: produces a portable `out/` folder that Hostinger shared
+  // hosting serves directly from public_html. No Node server needed. The
+  // www -> apex redirect, HTTPS forcing, and HSTS are handled by .htaccess
+  // (see public/.htaccess, shipped with the build).
+  output: "export",
   poweredByHeader: false,
-
-  // Canonicalize www -> apex so all link equity lands on one host.
-  // The host itself must still serve the apex domain (configure DNS + host).
-  async redirects() {
-    return [
-      {
-        source: "/:path*",
-        has: [{ type: "host", value: `www.${apex}` }],
-        destination: `${SITE_URL}/:path*`,
-        permanent: true,
-      },
-    ];
-  },
-
-  // Security + HSTS headers. HSTS only takes effect once the site is on HTTPS,
-  // which the host (e.g. Vercel) provides automatically with http -> https.
-  async headers() {
-    return [
-      {
-        source: "/:path*",
-        headers: [
-          {
-            key: "Strict-Transport-Security",
-            value: "max-age=63072000; includeSubDomains; preload",
-          },
-          { key: "X-Content-Type-Options", value: "nosniff" },
-          { key: "X-Frame-Options", value: "SAMEORIGIN" },
-          { key: "Referrer-Policy", value: "strict-origin-when-cross-origin" },
-        ],
-      },
-    ];
+  images: {
+    // Static export cannot use the on-demand image optimizer; all <Image>
+    // usages already set `unoptimized`, this makes it the default.
+    unoptimized: true,
   },
 };
 

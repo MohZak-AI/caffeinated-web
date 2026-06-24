@@ -1,104 +1,75 @@
 # Deploy and SEO launch checklist for caffeinatedweb (Hostinger)
 
-The code side is done: metadata, sitemap, robots, schema, www -> apex redirect,
-and security headers are all wired up. This file covers the Hostinger-specific
-steps that have to happen in hPanel and at your registrar.
+The code is configured for a **static export** (`output: "export"` in
+`next.config.ts`). The build produces a plain `out/` folder that Hostinger
+shared hosting serves directly from `public_html`. No Node server, no
+Passenger, no 403. The www -> apex redirect, HTTPS forcing, HSTS, and caching
+are handled by `public/.htaccess`, which ships inside the build.
 
-## 1. Build for production (with the env vars set)
+This fixes the 403 you got: Hostinger's Git deploy pulled the raw repo source
+into `public_html`, but there was no built `index.html`, so the server returned
+403 Forbidden. The fix is to serve the built `out/` folder instead.
 
-`NEXT_PUBLIC_*` values are read at build time and again at runtime, so set them
-both when you build and in Hostinger (step 3).
+## 1. Build the static site (on your own machine, which has internet)
 
-```bash
-NEXT_PUBLIC_SITE_URL=https://caffeinatedweb.com \
-NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION= \
-npm run build
-```
-
-`next.config.ts` uses `output: "standalone"`, so the build produces a
-self-contained app in `.next/standalone/` with its own `server.js` and a pruned
-`node_modules`. You deploy that folder, not the whole repo.
-
-If your real domain is not `caffeinatedweb.com`, change it here, in
-`.env.local`, in `.env.example`, and in Hostinger before building.
-
-## 2. Upload to Hostinger
-
-The standalone output needs three things on the server:
-
-1. The whole `.next/standalone/` folder (contains `server.js` and node_modules).
-2. `.next/static/` copied into the standalone folder, at
-   `.next/standalone/.next/static/`.
-3. The `public/` folder copied into the standalone folder, at
-   `.next/standalone/public/`.
-
-Quick way locally after the build:
+Run this from the repo. The Google Fonts fetch that fails in my sandbox works
+fine on your machine.
 
 ```bash
-cp -r .next/static .next/standalone/.next/static
-cp -r public .next/standalone/public
+NEXT_PUBLIC_SITE_URL=https://caffeinatedweb.com npm run build
 ```
 
-Then upload the contents of `.next/standalone/` to Hostinger (hPanel > File
-Manager, or via SSH/FTP) into the folder you will use as the Node app root,
-for example `domains/caffeinatedweb.com/app` or `home/<user>/app`.
+This creates an `out/` folder containing `index.html`, `404.html`, `robots.txt`,
+`sitemap.xml`, the `caffeinated-web-logo.webp` and other public assets, the
+hashed `_next/static/` assets, and the `.htaccess`.
 
-### Option A: Hostinger shared hosting with the Node.js tool
+If your real domain is not `caffeinatedweb.com`, change it here and in
+`.env.local` and `.env.example`.
 
-1. hPanel > Advanced > Node.js.
-2. Create a Node.js application:
-   - Node.js version: 20 (Next 16 needs Node 18.18 or newer, use 20).
-   - Application root: the folder you uploaded into.
-   - Application URL: your domain.
-   - Application startup file: `server.js`.
-3. Under the app, set Environment variables (see step 3 below).
-4. Start the application.
+## 2. Upload `out/` to Hostinger `public_html`
 
-Passenger (what Hostinger shared uses for Node) provides the `PORT` for you, and
-`server.js` already listens on `process.env.PORT ?? 3000`, so no port config is
-needed.
+Do NOT upload the repo source. Upload the **contents** of the `out/` folder
+(not the folder itself) into your domain's `public_html`.
 
-### Option B: Hostinger VPS / KVM (more control)
+In hPanel > Files > File Manager:
+1. Open `domains/caffeinatedweb.com/public_html`.
+2. Delete everything currently in `public_html` (the raw repo source causing
+   the 403).
+3. Upload everything inside `out/` so that `public_html/index.html`,
+   `public_html/.htaccess`, `public_html/robots.txt`, `public_html/sitemap.xml`,
+   and `public_html/_next/...` all exist.
 
-1. SSH in, install Node 20.
-2. Upload the standalone folder.
-3. Set the env vars, then run `PORT=3000 node server.js` under a process
-   manager (PM2: `pm2 start server.js --name caffeinatedweb`).
-4. Put a reverse proxy (Nginx) in front, forwarding :80 and :443 to :3000.
+Tip: zip the contents of `out/` locally, upload the zip via File Manager, then
+use "Extract" inside `public_html`. Make sure `.htaccess` is included (it is a
+hidden file; enable "Show hidden files" in File Manager to confirm it landed).
 
-## 3. Environment variables in Hostinger
+If you prefer FTP/SFTP, the host is your domain, the user is your hosting
+account user, and the target is `domains/caffeinatedweb.com/public_html`.
 
-Set these in the Node.js app (hPanel > Node.js > your app > Environment
-variables, or in your shell/pm2 env on a VPS). They must match what you used at
-build time:
+## 3. Permissions, SSL, and the redirect
 
-- `NEXT_PUBLIC_SITE_URL` = `https://caffeinatedweb.com`
-- `NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION` = your Search Console token (step 5)
+- File permissions: folders 755, files 644. File Manager has a "Fix
+  Permissions" action on `public_html` that sets these.
+- hPanel > SSL > install the free Let's Encrypt certificate for
+  `caffeinatedweb.com`.
+- Turn on "Force HTTPS" in hPanel (the .htaccess also forces it as a backup).
+- For `www -> apex`: the .htaccess already redirects it. Optionally also add a
+  redirect in hPanel > Domains > Redirects, but it is not required.
 
-After changing them, restart the Node app. Because metadata is server-rendered
-and reads these at request time, the runtime values are what actually appear in
-the HTML.
+## 4. About the Hostinger Git deployment
 
-## 4. Domain, DNS, and HTTPS
+Hostinger shared hosting Git deploy only syncs files; it does not run
+`npm run build`, so it cannot serve a Next.js site by itself. Two options:
 
-If the domain is registered at Hostinger, DNS is already managed there. If it
-is elsewhere, point it to Hostinger:
+- Easiest: ignore the Git auto-deploy for hosting, and use the manual upload in
+  step 2. Re-run step 1 + step 2 each time you change the site.
+- If you want auto-deploy: set up a CI (GitHub Actions) that runs
+  `NEXT_PUBLIC_SITE_URL=... npm run build` and uploads `out/` to Hostinger via
+  FTP/SFTP on every push. Ask me and I will add the workflow file.
 
-- Apex `caffeinatedweb.com` -> A record to Hostinger (the IP hPanel shows you).
-- `www.caffeinatedweb.com` -> CNAME to `caffeinatedweb.com` or to the Hostinger
-  target shown in hPanel.
-
-Then:
-
-1. hPanel > Domains > add / assign `caffeinatedweb.com` to the Node app.
-2. hPanel > SSL > Install a free Let's Encrypt SSL for the domain.
-3. Turn on "Force HTTPS" in hPanel so every `http://` request is upgraded to
-   `https://`. This is the real `http -> https` redirect; do it at the panel,
-   not in the app.
-4. For `www -> apex`: add a 301 redirect in hPanel > Domains > Redirects,
-   `www.caffeinatedweb.com -> https://caffeinatedweb.com`. The `next.config.ts`
-   redirect also handles this inside the app, but doing it in hPanel catches it
-   at the edge. Keep apex as the canonical host.
+The Cloudflare Pages integration on GitHub is unrelated and failing; remove it
+from the Cloudflare dashboard (delete the Pages project) so it stops reporting
+errors on your commits.
 
 ## 5. Google Search Console verification
 

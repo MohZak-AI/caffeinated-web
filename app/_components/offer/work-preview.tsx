@@ -134,6 +134,22 @@ function GymLandingPreview({
       data-testid="gym-v3-preview-shell"
       className="relative min-h-[38rem] overflow-hidden bg-cw-ink p-5 text-cw-cream sm:p-6"
     >
+      <video
+        data-testid="gym-v3-bg-video"
+        className="cw-bg-video pointer-events-none absolute inset-0 size-full object-cover opacity-25"
+        autoPlay
+        muted
+        loop
+        playsInline
+        preload="metadata"
+        aria-hidden="true"
+      >
+        <source src="/gym-landing.mp4" type="video/mp4" />
+      </video>
+      <div
+        aria-hidden="true"
+        className="pointer-events-none absolute inset-0 bg-gradient-to-b from-cw-ink/72 via-cw-ink/58 to-cw-ink/82"
+      />
       <div className="pointer-events-none absolute inset-0 opacity-[0.16]" aria-hidden="true">
         <div className="absolute inset-y-0 left-1/3 w-px bg-cw-cream" />
         <div className="absolute inset-y-0 left-2/3 w-px bg-cw-cream" />

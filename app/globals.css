@@ -697,6 +697,10 @@
   .codex-deploy-line {
     animation: none !important;
   }
+  /* Background hero videos stay static for users who opt out of motion. */
+  .cw-bg-video {
+    display: none !important;
+  }
   .codex-cursor {
     transform: translate3d(clamp(11rem, 34vw, 28rem), 30rem, 0);
   }
