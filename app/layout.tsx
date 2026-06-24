@@ -1,10 +1,14 @@
 import type { Metadata } from "next";
 import {
+  Cinzel,
+  Cinzel_Decorative,
+  EB_Garamond,
   Geist,
   Geist_Mono,
   Playfair_Display,
   Press_Start_2P,
 } from "next/font/google";
+import { SiteCursor } from "./_components/cursor/site-cursor";
 import "./globals.css";
 
 const geist = Geist({
@@ -35,11 +39,99 @@ const pressStart = Press_Start_2P({
   weight: ["400"],
 });
 
+// Medieval / illuminated-manuscript voice for the "Did you know?" section.
+const cinzel = Cinzel({
+  variable: "--font-cinzel",
+  subsets: ["latin"],
+  display: "swap",
+  weight: ["500", "600", "700", "800"],
+});
+
+const cinzelDecorative = Cinzel_Decorative({
+  variable: "--font-cinzel-deco",
+  subsets: ["latin"],
+  display: "swap",
+  weight: ["700", "900"],
+});
+
+const ebGaramond = EB_Garamond({
+  variable: "--font-garamond",
+  subsets: ["latin"],
+  display: "swap",
+  weight: ["400", "500", "600"],
+  style: ["normal", "italic"],
+});
+
+
+const siteUrl =
+  process.env.NEXT_PUBLIC_SITE_URL ?? "https://caffeinatedweb.com";
 
 export const metadata: Metadata = {
-  title: "caffeinatedweb — Fast, flexible websites from $99",
+  metadataBase: new URL(siteUrl),
+  title: {
+    default: "Affordable Website Design & Redesign from $199 | caffeinatedweb",
+    template: "%s | caffeinatedweb",
+  },
   description:
-    "Fast, flexible websites built with React and Node.js — live in days, starting at $99 with domain and hosting included.",
+    "Affordable custom website design and redesign for small businesses. Build or redesign from $199 one time, plus low monthly hosting, domain and maintenance.",
+  applicationName: "caffeinatedweb",
+  keywords: [
+    "affordable website design",
+    "cheap website developer",
+    "custom website for small business",
+    "website redesign services",
+    "website from scratch",
+    "low cost website builder",
+    "website for $199",
+    "website hosting and domain",
+    "website maintenance",
+    "freelance web designer",
+  ],
+  authors: [{ name: "caffeinatedweb" }],
+  creator: "caffeinatedweb",
+  publisher: "caffeinatedweb",
+  alternates: {
+    canonical: "/",
+  },
+  openGraph: {
+    type: "website",
+    locale: "en_US",
+    url: siteUrl,
+    siteName: "caffeinatedweb",
+    title: "Affordable Website Design & Redesign from $199 | caffeinatedweb",
+    description:
+      "Affordable custom website design and redesign for small businesses. Build or redesign from $199 one time, plus low monthly hosting, domain and maintenance.",
+    images: [
+      {
+        url: "/caffeinated-web-logo.webp",
+        width: 506,
+        height: 638,
+        alt: "caffeinatedweb logo",
+      },
+    ],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Affordable Website Design & Redesign from $199 | caffeinatedweb",
+    description:
+      "Affordable custom website design and redesign for small businesses. Build or redesign from $199 one time, plus low monthly hosting, domain and maintenance.",
+    images: ["/caffeinated-web-logo.webp"],
+  },
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      "max-image-preview": "large",
+      "max-snippet": -1,
+      "max-video-preview": -1,
+    },
+  },
+  category: "technology",
+  verification: process.env.NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION
+    ? { google: process.env.NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION }
+    : undefined,
 };
 
 export default function RootLayout({
@@ -50,9 +142,10 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${geist.variable} ${geistMono.variable} ${playfair.variable} ${pressStart.variable} h-full antialiased`}
+      className={`${geist.variable} ${geistMono.variable} ${playfair.variable} ${pressStart.variable} ${cinzel.variable} ${cinzelDecorative.variable} ${ebGaramond.variable} h-full antialiased`}
     >
       <body className="min-h-full flex flex-col bg-[--cw-cream] text-[--cw-ink]">
+        <SiteCursor />
         {children}
       </body>
     </html>

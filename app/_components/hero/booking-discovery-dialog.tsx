@@ -5,15 +5,7 @@ import { motion } from "motion/react";
 import { landingContent } from "@/app/_content/landing";
 
 interface BookingDiscoveryDialogProps {
-  /**
-   * "playful" (default) — primary hero CTA (now a clean, professional pill).
-   * "nav" — compact pill for the sticky header menu.
-   * "pricing" — high-contrast pill for the dark "$99" offer card.
-   * "elite" — ChatGPT-style "send" control for the code finale section.
-   * The dialog itself is a premium neutral so it reads well over any phase.
-   */
-  variant?: "playful" | "nav" | "pricing" | "elite";
-  /** Overrides the trigger label (defaults to the hero primary CTA). */
+  variant?: "playful" | "nav" | "pricing" | "elite" | "medieval";
   label?: string;
 }
 
@@ -69,12 +61,14 @@ export function BookingDiscoveryDialog({
   };
 
   const triggerClassName =
-    variant === "elite"
-      ? "inline-flex h-11 items-center justify-center gap-2 rounded-xl bg-[#10a37f] px-5 font-mono text-sm font-medium text-white transition-colors duration-200 hover:bg-[#0e8f6f]"
+    variant === "medieval"
+      ? "inline-flex h-12 items-center justify-center rounded-sm border-2 border-[#9a7b34] bg-[#2c2014] px-8 font-medieval text-[13px] font-semibold uppercase tracking-[0.16em] text-[#f0e6cf] shadow-[0_8px_22px_-10px_rgba(44,32,20,0.8)] transition-all duration-200 hover:-translate-y-0.5 hover:bg-[#3a2c1c]"
+      : variant === "elite"
+      ? "inline-flex h-11 items-center justify-center gap-2 rounded-full bg-cw-orange px-5 text-sm font-semibold text-cw-ink shadow-[0_10px_28px_rgba(255,138,42,0.2)] transition-all duration-200 hover:-translate-y-0.5 hover:bg-cw-sun"
       : variant === "nav"
         ? "inline-flex h-9 items-center justify-center rounded-full bg-cw-ink px-4 text-sm font-medium text-cw-cream transition-colors duration-200 hover:bg-cw-ink/85"
         : variant === "pricing"
-          ? "inline-flex h-12 items-center justify-center rounded-full bg-cw-electric px-8 text-[15px] font-semibold text-cw-ink shadow-[0_8px_24px_rgba(98,243,255,0.25)] transition-all duration-200 hover:-translate-y-0.5 hover:brightness-110"
+          ? "inline-flex h-12 items-center justify-center rounded-full bg-cw-orange px-8 text-[15px] font-semibold text-cw-ink shadow-[0_8px_24px_rgba(255,138,42,0.25)] transition-all duration-200 hover:-translate-y-0.5 hover:bg-cw-sun"
           : "inline-flex h-12 items-center justify-center rounded-full bg-cw-ink px-7 text-[15px] font-semibold text-cw-cream shadow-[0_1px_2px_rgba(21,17,43,0.18),0_8px_24px_rgba(21,17,43,0.12)] transition-all duration-200 hover:-translate-y-0.5 hover:bg-cw-ink/90";
 
   return (
@@ -108,7 +102,7 @@ export function BookingDiscoveryDialog({
         aria-labelledby="booking-title"
         aria-describedby="booking-desc"
         onClick={handleBackdropClick}
-        className="m-auto max-w-lg overflow-visible rounded-sm border border-cw-gold/40 bg-cw-ivory p-0 text-cw-ink shadow-[0_40px_80px_-20px_rgba(21,17,43,0.6)] backdrop:bg-cw-ink/50 backdrop:backdrop-blur-sm open:backdrop:opacity-100"
+        className="m-auto w-[92vw] max-w-lg overflow-visible border-0 bg-transparent p-0 text-[#2c2014] backdrop:bg-[#0d0f12]/60 backdrop:backdrop-blur-sm open:backdrop:opacity-100"
       >
         <motion.div
           initial={{ opacity: 0, scale: 0.97, y: 12 }}
@@ -118,55 +112,70 @@ export function BookingDiscoveryDialog({
             stiffness: 300,
             damping: 25,
           }}
-          className="relative p-8 sm:p-10"
+          className="relative drop-shadow-[0_40px_80px_rgba(0,0,0,0.6)]"
         >
-          <button
-            ref={closeButtonRef}
-            type="button"
-            onClick={closeDialog}
-            className="absolute right-4 top-4 inline-flex size-10 items-center justify-center rounded-full border border-cw-gold/40 bg-transparent font-serif text-base text-cw-ink transition-colors duration-200 hover:bg-cw-ink hover:text-cw-ivory"
-            aria-label={landingContent.booking.closeLabel}
-          >
-            ×
-          </button>
-
-          <p className="font-mono text-[11px] font-bold uppercase tracking-eyebrow text-cw-gold">
-            Discovery
-          </p>
-          <h2
-            id="booking-title"
-            className="mt-2 font-serif text-3xl font-medium tracking-luxe text-cw-ink"
-          >
-            {landingContent.booking.title}
-          </h2>
-          <p
-            id="booking-desc"
-            className="mt-4 max-w-md font-serif text-base leading-relaxed text-cw-stone"
-          >
-            {landingContent.booking.description}
-          </p>
-
-          <iframe
-            src={schedulingUrl}
-            title={landingContent.booking.title}
-            data-testid="booking-scheduler"
-            className="mt-6 h-96 w-full rounded-sm border border-cw-ink/10 bg-white"
-            loading="lazy"
+          {/* Top dowel */}
+          <div
+            className="scroll-roller relative z-10 mx-2 mb-[-7px]"
+            aria-hidden="true"
           />
-          <div className="mt-4 rounded-sm border border-cw-ink/10 bg-cw-ivory-2 p-5">
-            <h3 className="font-serif text-xl font-medium tracking-luxe text-cw-ink">
-              {landingContent.booking.placeholderHeadline}
-            </h3>
-            <p className="mt-2 font-serif text-sm leading-relaxed text-cw-stone">
-              {landingContent.booking.placeholderBody}
-            </p>
-            <a
-              href={`mailto:${landingContent.booking.fallbackEmail}?subject=Project%20inquiry`}
-              className="mt-4 inline-flex h-12 items-center justify-center rounded-full border border-cw-gold bg-transparent px-6 font-serif text-sm tracking-luxe text-cw-ink transition-colors duration-200 hover:bg-cw-ink hover:text-cw-ivory"
+
+          {/* Parchment sheet */}
+          <div className="parchment scroll-sheet relative overflow-hidden rounded-[3px] border-2 border-[#a6332a]/55 p-6 sm:p-8">
+            <button
+              ref={closeButtonRef}
+              type="button"
+              onClick={closeDialog}
+              className="absolute right-3 top-3 z-10 inline-flex size-9 items-center justify-center rounded-full border border-[#9a7b34]/60 bg-[rgba(247,240,219,0.7)] font-medieval text-base text-[#6d2020] transition-colors duration-200 hover:bg-[#a6332a] hover:text-[#f3e7c8]"
+              aria-label={landingContent.booking.closeLabel}
             >
-              {landingContent.booking.fallbackEmail}
-            </a>
+              ×
+            </button>
+
+            <p className="font-medieval text-[11px] font-semibold uppercase tracking-[0.3em] text-[#9a7b34]">
+              Discovery
+            </p>
+            <h2
+              id="booking-title"
+              className="mt-2 font-medieval text-3xl font-bold text-[#a6332a]"
+            >
+              {landingContent.booking.title}
+            </h2>
+            <p
+              id="booking-desc"
+              className="mt-3 max-w-md font-manuscript text-lg leading-relaxed text-[#3a2c1c]"
+            >
+              {landingContent.booking.description}
+            </p>
+
+            <iframe
+              src={schedulingUrl}
+              title={landingContent.booking.title}
+              data-testid="booking-scheduler"
+              className="mt-5 h-96 w-full rounded-[3px] border border-[#9a7b34]/60 bg-[#f3e7c8]"
+              loading="lazy"
+            />
+            <div className="mt-4 rounded-[3px] border border-[#9a7b34]/50 bg-[rgba(247,240,219,0.6)] p-5">
+              <h3 className="font-medieval text-lg font-bold text-[#2c2014]">
+                {landingContent.booking.placeholderHeadline}
+              </h3>
+              <p className="mt-2 font-manuscript text-base leading-relaxed text-[#3a2c1c]">
+                {landingContent.booking.placeholderBody}
+              </p>
+              <a
+                href={`mailto:${landingContent.booking.fallbackEmail}?subject=Project%20inquiry`}
+                className="mt-4 inline-flex h-11 items-center justify-center rounded-sm border-2 border-[#9a7b34] bg-transparent px-6 font-medieval text-xs font-semibold uppercase tracking-[0.14em] text-[#2c2014] transition-colors duration-200 hover:bg-[#2c2014] hover:text-[#f3e7c8]"
+              >
+                {landingContent.booking.fallbackEmail}
+              </a>
+            </div>
           </div>
+
+          {/* Bottom dowel */}
+          <div
+            className="scroll-roller relative z-10 mx-2 mt-[-7px]"
+            aria-hidden="true"
+          />
         </motion.div>
       </dialog>
     </>

@@ -1,8 +1,8 @@
 import { test, expect } from "@playwright/test";
 import { landingContent } from "@/app/_content/landing";
 
-test.describe("caffeinatedweb — fast, flexible, from $99", () => {
-  test("Phase 1 hero renders brand, highlights, services, CTAs, and illustration", async ({
+test.describe("caffeinatedweb — agency craft from $99", () => {
+  test("Phase 1 hero renders agency positioning, highlights, services, and CTAs", async ({
     page,
   }) => {
     await page.goto("/");
@@ -11,40 +11,27 @@ test.describe("caffeinatedweb — fast, flexible, from $99", () => {
       page.getByText(landingContent.brand.name, { exact: true }).first()
     ).toBeVisible();
 
-    // Value-prop highlights (fast / flexible) replace the old global claims.
     const highlights = page.getByTestId("hero-highlights");
     await expect(highlights).toBeVisible();
     for (const highlight of landingContent.hero.highlights) {
       await expect(highlights.getByText(highlight)).toBeVisible();
     }
 
-    // Headline preserved (playful origin identity)
-    const headline = page.locator("h1");
-    await expect(headline).toContainText("CREATING");
-    await expect(headline).toContainText("FANCY");
-    await expect(headline).toContainText("FAST");
-    await expect(headline).toContainText("WEBSITES");
+    await expect(page.getByTestId("site-cursor-ring")).toHaveCount(1);
+    await expect(page.getByTestId("site-cursor-dot")).toHaveCount(1);
+    await expect(page.getByTestId("site-cursor-label")).toHaveCount(1);
+    await page.mouse.move(240, 240);
+    await expect(page.getByTestId("site-cursor-ring")).toBeVisible();
 
-    // Services
+    const headline = page.locator("h1");
+    await expect(headline).toContainText("WEBSITES");
+    await expect(headline).toContainText("AGENCY");
+    await expect(headline).toContainText("BREWED");
+
     for (const service of landingContent.services) {
       await expect(page.getByText(service.label)).toBeVisible();
     }
 
-    // Illustration with accessible name + aria
-    const illustration = page.getByRole("img", {
-      name: landingContent.illustration.title,
-    });
-    await expect(illustration).toBeVisible();
-
-    for (const testId of [
-      "illustration-service-startup",
-      "illustration-service-coding",
-      "illustration-service-scalable",
-    ]) {
-      await expect(page.getByTestId(testId)).toBeVisible();
-    }
-
-    // Navigation CTAs + section anchors
     await expect(page.locator('a[href="#contact"]').first()).toBeVisible();
     await expect(page.locator('a[href="#pricing"]').first()).toBeVisible();
     await expect(page.locator("section#contact")).toBeVisible();
@@ -62,7 +49,6 @@ test.describe("caffeinatedweb — fast, flexible, from $99", () => {
       name: landingContent.booking.title,
     });
     await expect(dialog).toBeVisible();
-    // The live scheduler is the Calendly embed.
     const scheduler = dialog.getByTestId("booking-scheduler");
     await expect(scheduler).toBeVisible();
     await expect(scheduler).toHaveAttribute(
@@ -104,7 +90,7 @@ test.describe("caffeinatedweb — fast, flexible, from $99", () => {
     await expect(cta).toBeFocused();
   });
 
-  test("Phase 2 shows the 'did you know' facts and the $99 offer", async ({
+  test("Phase 2 shows agency process, work previews, and the $99 offer", async ({
     page,
   }) => {
     await page.goto("/");
@@ -112,19 +98,50 @@ test.describe("caffeinatedweb — fast, flexible, from $99", () => {
     const section = page.locator("section#pricing");
     await section.scrollIntoViewIfNeeded();
 
+    await expect(section).toBeVisible();
     await expect(
-      section.getByText(landingContent.didYouKnow.headline)
+      section.getByText(landingContent.examples.headline)
     ).toBeVisible();
 
-    for (const fact of landingContent.didYouKnow.facts) {
-      await expect(section.getByText(fact.stat).first()).toBeVisible();
-    }
-
     for (const prop of landingContent.valueProps) {
-      await expect(section.getByText(prop.title).first()).toBeVisible();
+      await expect(section.getByText(prop.title)).toBeVisible();
     }
 
-    // The $99 offer card with the inclusive line items.
+    for (const example of landingContent.examples.windows) {
+      const browserWindow = section.getByTestId(`example-browser-window-${example.id}`);
+      await expect(browserWindow).toBeVisible();
+      await expect(browserWindow.getByText(example.urlBar)).toBeVisible();
+      await expect(browserWindow.getByText(example.brandName, { exact: true })).toBeVisible();
+    }
+
+    const ecommerceWindow = section.getByTestId("example-browser-window-coffee-shop");
+    await expect(ecommerceWindow.getByTestId("shopify-storefront-panel")).toBeVisible();
+    await expect(ecommerceWindow.getByTestId("gym-v3-preview-shell")).toHaveCount(0);
+    await expect(
+      ecommerceWindow.getByText(landingContent.examples.windows[0].heroProduct.name)
+    ).toBeVisible();
+
+    const productCards = ecommerceWindow.getByTestId("product-card");
+    await expect(productCards).toHaveCount(landingContent.examples.windows[0].products.length);
+
+    for (const product of landingContent.examples.windows[0].products) {
+      const card = productCards.filter({ hasText: product.name });
+      await expect(card.getByText(product.price)).toBeVisible();
+    }
+
+    const landingWindow = section.getByTestId("example-browser-window-service-landing");
+    await expect(landingWindow.getByTestId("gym-v3-preview-shell")).toBeVisible();
+    await expect(landingWindow.getByTestId("gym-v3-service-panel")).toBeVisible();
+    await expect(landingWindow.getByTestId("shopify-storefront-panel")).toHaveCount(0);
+    await expect(
+      landingWindow.getByText(landingContent.examples.windows[1].heroHeadline)
+    ).toBeVisible();
+
+    const landingHighlights = landingWindow.getByTestId("landing-highlight");
+    await expect(landingHighlights).toHaveCount(
+      landingContent.examples.windows[1].highlights.length
+    );
+
     const pricingCard = page.getByTestId("pricing-card");
     await expect(pricingCard).toBeVisible();
     await expect(
@@ -154,20 +171,17 @@ test.describe("caffeinatedweb — fast, flexible, from $99", () => {
       });
     };
 
-    // Top of page — playful (cream).
     const topColor = await colorAt();
 
-    // Scroll the offer section into view (deep-tech / charcoal).
     await page.locator("section#pricing").scrollIntoViewIfNeeded();
     await page.waitForTimeout(500);
     const midColor = await colorAt();
 
-    // Scroll to the finale (elite / ivory).
     await page.locator("section#contact").scrollIntoViewIfNeeded();
     await page.waitForTimeout(500);
     const bottomColor = await colorAt();
 
-    expect(topColor, "top vs pricing").not.toEqual(midColor);
+    expect(topColor, "top vs pricing").toEqual(midColor);
     expect(midColor, "pricing vs finale").not.toEqual(bottomColor);
   });
 
@@ -177,21 +191,9 @@ test.describe("caffeinatedweb — fast, flexible, from $99", () => {
     await page.emulateMedia({ reducedMotion: "reduce" });
     await page.goto("/");
 
-    const illustration = page.getByRole("img", {
-      name: landingContent.illustration.title,
-    });
-    await expect(illustration).toBeVisible();
-    await expect(illustration).toHaveAttribute("aria-labelledby");
+    await expect(page.locator("h1")).toContainText("AGENCY");
+    await expect(page.getByTestId("hero-highlights")).toBeVisible();
 
-    const reactPanel = page.getByTestId("react-code-panel");
-    await expect(reactPanel).toContainText("ConversionHero");
-    await expect(reactPanel).toContainText("motion.section");
-
-    const nodePanel = page.getByTestId("node-code-panel");
-    await expect(nodePanel).toContainText("app.listen(3000)");
-
-    // No motion-driven backdrop under reduced motion; the static cream
-    // backdrop should hold across scroll positions.
     await expect(page.getByTestId("scroll-phase-backdrop")).toHaveCount(0);
 
     const staticBackdrop = page.locator(".scroll-phase-backdrop");

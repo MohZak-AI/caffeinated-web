@@ -17,6 +17,11 @@
   --cw-pink: #ff5ebc;
   --cw-card: rgba(255, 255, 255, 0.8);
   --cw-line: #24194a;
+  --cw-shopify-void: #02090a;
+  --cw-shopify-surface: #061a1c;
+  --cw-shopify-panel: #102620;
+  --cw-shopify-border: #1e2c31;
+  --cw-shopify-mint: #36f4a4;
 
   /* Phase 2 — deep-tech charcoal */
   --cw-charcoal: #15112b;
@@ -124,6 +129,218 @@
   -webkit-mask-composite: xor;
   mask-composite: exclude;
   pointer-events: none;
+}
+
+/* ───────── Liquid glass ─────────
+   A modern, Apple-inspired translucent material: layered refraction,
+   a specular "glass rim" hairline, inner light, and a slow GPU-friendly
+   sheen sweeping the surface. Light + dark variants. Used on key surfaces
+   to signal a modern web build. Under reduced motion the sheen freezes. */
+.cw-liquid {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  background: linear-gradient(
+    135deg,
+    rgba(255, 255, 255, 0.55) 0%,
+    rgba(255, 255, 255, 0.22) 42%,
+    rgba(255, 255, 255, 0.4) 100%
+  );
+  backdrop-filter: blur(10px) saturate(160%);
+  -webkit-backdrop-filter: blur(10px) saturate(160%);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.7),
+    inset 0 -1px 0 rgba(255, 255, 255, 0.12),
+    0 8px 30px rgba(21, 17, 43, 0.1),
+    0 1px 0 rgba(255, 255, 255, 0.5);
+}
+
+/* Specular hairline edge — the glass rim that catches light. */
+.cw-liquid::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  padding: 1px;
+  background: linear-gradient(
+    140deg,
+    rgba(255, 255, 255, 0.9),
+    rgba(255, 255, 255, 0.1) 30%,
+    transparent 60%,
+    rgba(98, 243, 255, 0.35)
+  );
+  -webkit-mask:
+    linear-gradient(#000 0 0) content-box,
+    linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  pointer-events: none;
+  z-index: 1;
+}
+
+/* Dark variant for ink / charcoal surfaces. */
+.cw-liquid--dark {
+  background: linear-gradient(
+      135deg,
+      rgba(255, 255, 255, 0.1) 0%,
+      rgba(255, 255, 255, 0.03) 45%,
+      rgba(255, 255, 255, 0.06) 100%
+    ),
+    rgba(21, 17, 43, 0.55);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.18),
+    inset 0 -1px 0 rgba(0, 0, 0, 0.25),
+    0 12px 40px rgba(0, 0, 0, 0.35);
+}
+.cw-liquid--dark::before {
+  background: linear-gradient(
+    140deg,
+    rgba(255, 255, 255, 0.5),
+    rgba(255, 255, 255, 0.05) 32%,
+    transparent 58%,
+    rgba(22, 216, 194, 0.3)
+  );
+}
+
+/* ───────── Aurora mesh (middle section) ─────────
+   A vibrant, modern mesh-gradient backdrop for the pricing/middle section:
+   slow-drifting saturated color blobs over a warm tinted base, a faint
+   editorial dot grid, and fine film grain. getdesign.md-inspired. Frozen
+   under reduced motion. Sits behind section content (z-10). */
+.cw-aurora {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  overflow: hidden;
+  pointer-events: none;
+  isolation: isolate;
+  background:
+    radial-gradient(120% 90% at 50% 0%, rgba(255, 244, 214, 0.9), transparent 55%),
+    linear-gradient(180deg, #fff6e2 0%, #f7efff 48%, #eafaf6 100%);
+}
+/* Faint editorial dot grid, masked so it fades at the edges. */
+.cw-aurora::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  opacity: 0.55;
+  background-image: radial-gradient(rgba(21, 17, 43, 0.07) 1px, transparent 1.5px);
+  background-size: 26px 26px;
+  -webkit-mask: radial-gradient(120% 90% at 50% 42%, #000, transparent 78%);
+  mask: radial-gradient(120% 90% at 50% 42%, #000, transparent 78%);
+}
+/* Fine film grain so the mesh never reads as flat plastic. */
+.cw-aurora::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  opacity: 0.22;
+  mix-blend-mode: overlay;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.4'/%3E%3C/svg%3E");
+}
+.cw-aurora span {
+  position: absolute;
+  border-radius: 9999px;
+  filter: blur(48px);
+  opacity: 0.42;
+  will-change: transform;
+}
+.cw-aurora span:nth-child(1) {
+  width: 34rem;
+  height: 34rem;
+  left: -8rem;
+  top: 2rem;
+  background: radial-gradient(circle, rgba(255, 138, 42, 0.85), transparent 68%);
+  animation: cw-aurora-a 20s ease-in-out infinite;
+}
+.cw-aurora span:nth-child(2) {
+  width: 30rem;
+  height: 30rem;
+  right: -6rem;
+  top: 6rem;
+  background: radial-gradient(circle, rgba(22, 216, 194, 0.8), transparent 68%);
+  animation: cw-aurora-b 24s ease-in-out infinite;
+}
+.cw-aurora span:nth-child(3) {
+  width: 32rem;
+  height: 32rem;
+  left: 30%;
+  top: 16rem;
+  background: radial-gradient(circle, rgba(124, 60, 255, 0.7), transparent 68%);
+  animation: cw-aurora-c 26s ease-in-out infinite;
+}
+.cw-aurora span:nth-child(4) {
+  width: 24rem;
+  height: 24rem;
+  right: 16%;
+  bottom: 0rem;
+  background: radial-gradient(circle, rgba(255, 94, 188, 0.6), transparent 68%);
+  animation: cw-aurora-a 22s ease-in-out infinite reverse;
+}
+.cw-aurora span:nth-child(5) {
+  width: 22rem;
+  height: 22rem;
+  left: 6%;
+  bottom: 4rem;
+  background: radial-gradient(circle, rgba(41, 167, 255, 0.55), transparent 68%);
+  animation: cw-aurora-b 28s ease-in-out infinite reverse;
+}
+@keyframes cw-aurora-a {
+  0%,
+  100% {
+    transform: translate3d(0, 0, 0) scale(1);
+  }
+  50% {
+    transform: translate3d(3rem, -2rem, 0) scale(1.12);
+  }
+}
+@keyframes cw-aurora-b {
+  0%,
+  100% {
+    transform: translate3d(0, 0, 0) scale(1);
+  }
+  50% {
+    transform: translate3d(-3rem, 2.5rem, 0) scale(1.1);
+  }
+}
+@keyframes cw-aurora-c {
+  0%,
+  100% {
+    transform: translate3d(0, 0, 0) scale(1);
+  }
+  50% {
+    transform: translate3d(2.5rem, 3rem, 0) scale(1.15);
+  }
+}
+
+.cw-faq summary::-webkit-details-marker { display: none; }
+
+/* ───────── Marquee ticker + static gradient text ───────── */
+.cw-marquee {
+  position: relative;
+  overflow: hidden;
+  -webkit-mask: linear-gradient(90deg, transparent, #000 7%, #000 93%, transparent);
+  mask: linear-gradient(90deg, transparent, #000 7%, #000 93%, transparent);
+}
+.cw-marquee__track {
+  display: inline-flex;
+  flex-wrap: nowrap;
+  white-space: nowrap;
+  gap: 2.5rem;
+  padding-right: 2.5rem;
+  animation: cw-marquee 30s linear infinite;
+  will-change: transform;
+}
+@keyframes cw-marquee {
+  from { transform: translateX(0); }
+  to { transform: translateX(-50%); }
+}
+.cw-gradient-text {
+  background-image: linear-gradient(100deg, #ff8a2a, #ff5ebc, #7c3cff, #16d8c2);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  -webkit-text-fill-color: transparent;
 }
 
 /* Slow-drifting ambient gradient blobs behind the work grid. Clipped to its
@@ -279,6 +496,444 @@
   animation: cw-wiggle 1s ease-in-out infinite;
 }
 
+/* ───────── Medieval / illuminated-manuscript (Phase 2 redesign) ─────────
+   Parchment surface, gilded type, drop-cap initial, ornamental rules. */
+.font-medieval {
+  font-family: var(--font-cinzel), "Cinzel", Georgia, serif;
+}
+.font-medieval-display {
+  font-family: var(--font-cinzel-deco), "Cinzel Decorative", Georgia, serif;
+}
+.font-manuscript {
+  font-family: var(--font-garamond), "EB Garamond", Georgia, "Times New Roman",
+    serif;
+}
+
+:root {
+  --cw-parchment: #e8dcbe;
+  --cw-ink-brown: #2c2014;
+  --cw-gilt: #9a7b34;
+  --cw-oxblood: #6d2020;
+}
+
+/* Aged parchment: warm base, top light wash, darkened edges, faint stains. */
+.parchment {
+  position: relative;
+  isolation: isolate;
+  background-color: var(--cw-parchment);
+  background-image:
+    radial-gradient(
+      120% 90% at 50% -10%,
+      rgba(255, 250, 234, 0.65),
+      transparent 55%
+    ),
+    radial-gradient(
+      130% 120% at 50% 115%,
+      rgba(58, 38, 16, 0.22),
+      transparent 55%
+    ),
+    radial-gradient(
+      50% 45% at 12% 28%,
+      rgba(150, 120, 66, 0.14),
+      transparent 60%
+    ),
+    radial-gradient(
+      45% 40% at 88% 72%,
+      rgba(109, 77, 36, 0.14),
+      transparent 60%
+    );
+  color: var(--cw-ink-brown);
+}
+/* Fine parchment grain. */
+.parchment::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  opacity: 0.5;
+  mix-blend-mode: multiply;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.4'/%3E%3C/svg%3E");
+}
+
+/* Illuminated initial — gilded oversized first letter of the manuscript body. */
+.dropcap::first-letter {
+  float: left;
+  margin: 0.06em 0.1em 0 0;
+  font-family: var(--font-cinzel-deco), "Cinzel Decorative", serif;
+  font-weight: 900;
+  font-size: 3.4em;
+  line-height: 0.74;
+  color: var(--cw-gilt);
+  text-shadow: 0 1px 0 rgba(255, 255, 255, 0.5);
+}
+
+/* Hand-set gold rule with a centered diamond, for section dividers. */
+.gilt-rule {
+  border: 0;
+  height: 1px;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(154, 123, 52, 0.55) 18%,
+    rgba(154, 123, 52, 0.55) 82%,
+    transparent
+  );
+}
+
+/* ───────── Codex workbench (Phase 2) ─────────
+   Dark code-to-preview workbench: editor, browser mockup, decorative cursor,
+   and deploy-result output. Cursor motion is transform-only and pauses under
+   prefers-reduced-motion. */
+
+/* Cursor follows a transform path across the preview. */
+.codex-cursor {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 24px;
+  height: 24px;
+  z-index: 30;
+  pointer-events: none;
+  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.45));
+  transform-origin: top left;
+  animation: codex-cursor-move 8s ease-in-out infinite;
+}
+
+/* Subtle click pulse that appears under the cursor at key frames. */
+.codex-click-pulse {
+  position: absolute;
+  border-radius: 50%;
+  width: 36px;
+  height: 36px;
+  margin-left: -6px;
+  margin-top: -6px;
+  background: rgba(255, 138, 42, 0.35);
+  opacity: 0;
+  transform: scale(0.5);
+  animation: codex-click-pulse 8s ease-in-out infinite;
+  pointer-events: none;
+}
+
+@keyframes codex-cursor-move {
+  0%,
+  100% {
+    transform: translate3d(2rem, 3.75rem, 0);
+  }
+  25% {
+    transform: translate3d(clamp(10rem, 32vw, 27rem), 4.5rem, 0);
+  }
+  45% {
+    transform: translate3d(12rem, 18rem, 0);
+  }
+  70% {
+    transform: translate3d(clamp(11rem, 34vw, 28rem), 30rem, 0);
+  }
+  90% {
+    transform: translate3d(clamp(8rem, 24vw, 20rem), 22rem, 0);
+  }
+}
+
+@keyframes codex-click-pulse {
+  0%,
+  20%,
+  40%,
+  60%,
+  80%,
+  100% {
+    opacity: 0;
+    transform: scale(0.5);
+  }
+  26%,
+  46%,
+  71% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  28%,
+  48%,
+  73% {
+    opacity: 0;
+    transform: scale(0.5);
+  }
+}
+
+/* Terminal-style output where deploy lines reveal one by one. */
+.codex-deploy-line {
+  opacity: 0;
+  animation: codex-deploy-reveal 6s ease-out forwards;
+}
+.codex-deploy-line:nth-child(1) {
+  animation-delay: 0s;
+}
+.codex-deploy-line:nth-child(2) {
+  animation-delay: 1.2s;
+}
+.codex-deploy-line:nth-child(3) {
+  animation-delay: 2.4s;
+}
+.codex-deploy-line:nth-child(4) {
+  animation-delay: 3.6s;
+}
+
+@keyframes codex-deploy-reveal {
+  0% {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+  10% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .codex-cursor,
+  .codex-click-pulse,
+  .codex-deploy-line {
+    animation: none !important;
+  }
+  .codex-cursor {
+    transform: translate3d(clamp(11rem, 34vw, 28rem), 30rem, 0);
+  }
+  .codex-deploy-line {
+    opacity: 1;
+  }
+}
+
+/* ───────── Confrérie members board (Phase 2 — screenshot redesign, retained
+   for booking dialog parchment styling; no longer used by the section) ─────────
+   A parchment "sheet" laid on a navy diaper-pattern backing, bordered by a
+   layered red/blue/red frame, with a red masthead ribbon, hand-set ornamental
+   strips, alternating red/blue arched feature frames, and gilt caption tags. */
+:root {
+  --cw-conf-red: #a6332a;
+  --cw-conf-red-deep: #862821;
+  --cw-conf-blue: #3a6f97;
+  --cw-conf-cream: #f3e7c8;
+}
+
+/* Deep-navy textile backing dotted with a fine diaper pattern. */
+.confrerie-board {
+  background-color: #1c4a66;
+  background-image:
+    radial-gradient(rgba(255, 255, 255, 0.18) 1.3px, transparent 1.6px),
+    radial-gradient(rgba(8, 30, 45, 0.45) 1.3px, transparent 1.6px),
+    linear-gradient(160deg, #235b7d 0%, #163a52 100%);
+  background-size: 24px 24px, 24px 24px, 100% 100%;
+  background-position: 0 0, 12px 12px, 0 0;
+}
+
+/* Layered red / blue / red frame around the parchment sheet. */
+.confrerie-frame {
+  border: 3px solid var(--cw-conf-red);
+  box-shadow:
+    0 0 0 3px var(--cw-conf-blue),
+    0 0 0 6px var(--cw-conf-red),
+    0 36px 70px -28px rgba(0, 0, 0, 0.7);
+}
+
+/* Hand-set ornamental band: a red rule studded with diamonds + dots. */
+.conf-strip {
+  height: 16px;
+  background-repeat: repeat-x;
+  background-position: center;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='44' height='16'%3E%3Cg stroke='%23a6332a' stroke-width='2' fill='none'%3E%3Cpath d='M0 8H44'/%3E%3C/g%3E%3Cpath fill='%23a6332a' d='M22 1 L29 8 L22 15 L15 8 Z'/%3E%3Ccircle cx='4' cy='8' r='1.8' fill='%23a6332a'/%3E%3Ccircle cx='40' cy='8' r='1.8' fill='%23a6332a'/%3E%3C/svg%3E");
+}
+
+/* Arched feature frame. Border color set per-card via the --arch custom prop. */
+.conf-arch {
+  border-radius: 50% 50% 8px 8px / 34% 34% 6px 6px;
+  border: 3px solid var(--arch, var(--cw-conf-red));
+  background-image: radial-gradient(
+    120% 90% at 50% 0%,
+    rgba(255, 250, 234, 0.85),
+    rgba(232, 220, 190, 0.55) 70%
+  );
+  box-shadow:
+    inset 0 0 0 3px rgba(255, 252, 242, 0.6),
+    inset 0 0 0 5px color-mix(in srgb, var(--arch, var(--cw-conf-red)) 45%, transparent),
+    0 16px 30px -18px rgba(44, 32, 20, 0.65);
+}
+
+/* Boxed caption tag with a gilt double rule. */
+.conf-tag {
+  border: 1px solid var(--cw-gilt);
+  background: rgba(247, 240, 219, 0.72);
+  box-shadow:
+    inset 0 0 0 3px rgba(243, 231, 200, 0.7),
+    inset 0 0 0 4px rgba(154, 123, 52, 0.32);
+}
+
+/* ───────── Parchment scroll: rolled dowels top & bottom ─────────
+   Turns the manuscript sheet into an open scroll — a polished wooden roller
+   with bulbous end-knobs above and below, plus curl shadows where the sheet
+   wraps back into each roller. */
+.scroll-roller {
+  position: relative;
+  height: 32px;
+  border-radius: 16px;
+  background:
+    repeating-linear-gradient(
+      90deg,
+      rgba(40, 22, 8, 0.1) 0 1px,
+      transparent 1px 9px
+    ),
+    linear-gradient(
+      180deg,
+      #c79760 0%,
+      #9c6733 16%,
+      #7c4f26 48%,
+      #57331a 82%,
+      #714525 100%
+    );
+  box-shadow:
+    inset 0 2px 2px rgba(255, 238, 210, 0.45),
+    inset 0 -5px 9px rgba(40, 22, 8, 0.5),
+    0 10px 20px -8px rgba(0, 0, 0, 0.55);
+}
+
+/* Bulbous end-knobs protruding past the sheet edges. */
+.scroll-roller::before,
+.scroll-roller::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  height: 46px;
+  width: 26px;
+  transform: translateY(-50%);
+  border-radius: 9px;
+  background: linear-gradient(180deg, #cda567 0%, #8a5a2b 46%, #4a2c13 100%);
+  box-shadow:
+    inset 0 2px 2px rgba(255, 238, 210, 0.5),
+    inset 0 -3px 6px rgba(40, 22, 8, 0.5),
+    0 7px 13px -5px rgba(0, 0, 0, 0.6);
+}
+.scroll-roller::before {
+  left: -15px;
+}
+.scroll-roller::after {
+  right: -15px;
+}
+
+/* Subtle tube-curvature shading down the long edges of the sheet. */
+.scroll-sheet {
+  box-shadow:
+    inset 16px 0 26px -16px rgba(58, 38, 16, 0.4),
+    inset -16px 0 26px -16px rgba(58, 38, 16, 0.4);
+}
+
+/* Curl shadows where the parchment meets the rollers. */
+.scroll-curl-top,
+.scroll-curl-bottom {
+  position: absolute;
+  left: 0;
+  right: 0;
+  height: 26px;
+  z-index: 6;
+  pointer-events: none;
+}
+.scroll-curl-top {
+  top: 0;
+  background: linear-gradient(
+    180deg,
+    rgba(48, 30, 12, 0.5),
+    rgba(48, 30, 12, 0)
+  );
+}
+.scroll-curl-bottom {
+  bottom: 0;
+  background: linear-gradient(0deg, rgba(48, 30, 12, 0.5), rgba(48, 30, 12, 0));
+}
+
+/* Gentle 3D float for the hero centerpiece render. */
+@keyframes cw-float {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-14px);
+  }
+}
+.cw-float {
+  animation: cw-float 6s ease-in-out infinite;
+}
+
+.cw-site-cursor {
+  display: none;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .cw-site-cursor {
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 80;
+    pointer-events: none;
+    display: block;
+  }
+
+  .cw-site-cursor__dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 999px;
+    background: var(--cw-orange);
+    box-shadow: 0 0 20px rgba(255, 138, 42, 0.55);
+    transform: translate(-50%, -50%);
+  }
+
+  .cw-site-cursor__ring {
+    width: 42px;
+    height: 42px;
+    border: 1.5px solid color-mix(in srgb, var(--cw-orange) 82%, white);
+    border-radius: 999px;
+    transform: translate(-50%, -50%);
+    scale: 1;
+    transition:
+      scale 260ms cubic-bezier(0.16, 1, 0.3, 1),
+      border-color 260ms cubic-bezier(0.16, 1, 0.3, 1),
+      background-color 260ms cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  .cw-site-cursor__ring.is-hover {
+    scale: 1.8;
+    border-color: var(--cw-sun);
+    background: rgba(255, 138, 42, 0.08);
+  }
+
+  .cw-site-cursor__label {
+    opacity: 0;
+    border: 1px solid rgba(255, 138, 42, 0.45);
+    border-radius: 999px;
+    background: var(--cw-ink);
+    padding: 0.35rem 0.55rem;
+    color: var(--cw-cream);
+    font-family: var(--font-geist-mono), ui-monospace, monospace;
+    font-size: 0.58rem;
+    font-weight: 700;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    transform: translate(18px, 14px);
+    transition: opacity 180ms ease-out;
+  }
+
+  .cw-site-cursor__label.is-hover {
+    opacity: 1;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .cw-site-cursor__ring,
+  .cw-site-cursor__label {
+    transition: none;
+  }
+}
+
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
@@ -363,6 +1018,80 @@ dialog::backdrop {
   }
 }
 
+/* ------------------------------------------------------------------ */
+/* Phase curtains — themed seams between scroll phases.                */
+/* Both variants share a positioning/overflow base; the parent element */
+/* supplies the absolute + sizing classes from the call site.          */
+/* ------------------------------------------------------------------ */
+.phase-curtain {
+  position: absolute;
+  inset-inline: 0;
+  overflow: hidden;
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* unfurl — navy board that rises to cover the cream hero. The crest SVG
+   rides its top edge with a gilded hairline (the unrolling cue). */
+.phase-curtain--unfurl {
+  /* Empty on purpose — the inner .phase-curtain__board paints the fill. */
+}
+
+.phase-curtain__board {
+  position: absolute;
+  inset-inline: 0;
+  inset-block-end: 0;
+  height: 100%;
+  /* Transparent at top (hero cream shows through) fading into the
+     confrerie-board's exact navy so the section seam is invisible — the
+     decorative crest rides on top of this smooth gradient. */
+  background: linear-gradient(180deg, transparent 0%, #1c4a66 100%);
+}
+
+.phase-curtain__crest {
+  position: absolute;
+  inset-block-start: -1px;
+  inset-inline: 0;
+  width: 100%;
+  height: 56px;
+  display: block;
+}
+
+/* coderain — a dark band hosting the cascading monospace columns. */
+.phase-curtain--coderain {
+  background: linear-gradient(180deg, transparent 0%, #0d0f12 78%);
+}
+
+.phase-curtain__rain {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  padding-inline: clamp(8px, 4vw, 48px);
+  font-family: var(--font-geist-mono), ui-monospace, SFMono-Regular, monospace;
+  font-size: 12px;
+  line-height: 1.35;
+  letter-spacing: 0.04em;
+  color: #16d8c2;
+}
+
+.phase-curtain__rain-col {
+  display: block;
+  white-space: pre;
+  text-shadow: 0 0 8px rgba(22, 216, 194, 0.45);
+  opacity: 0.8;
+}
+
+/* Static fallbacks under reduced motion — solid seam colors that match the
+   page's pre-motion hand-offs so nothing reads as a hole. */
+.phase-curtain--unfurl.phase-curtain--static {
+  background: linear-gradient(180deg, transparent 0%, #1c4a66 100%);
+}
+.phase-curtain--coderain.phase-curtain--static {
+  background: linear-gradient(180deg, transparent 0%, #0d0f12 100%);
+}
+
 /* Reduced motion */
 @media (prefers-reduced-motion: reduce) {
   *,
@@ -384,7 +1113,10 @@ dialog::backdrop {
   .cw-tech-blobs span,
   .cw-sheen::before,
   .cw-rainbow-text,
-  .cw-wiggle {
+  .cw-wiggle,
+  .cw-float,
+  .cw-aurora span,
+  .cw-marquee__track {
     animation: none !important;
   }
 

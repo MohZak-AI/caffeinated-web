@@ -36,6 +36,11 @@
 | `--cw-pink` | `#ff5ebc` | Decorative flourishes, playful highlights |
 | `--cw-card` | `#ffffffcc` | Glassy cards (80% opacity white) |
 | `--cw-line` | `#24194a` | Cartoon outlines, dividers |
+| `--cw-shopify-void` | `#02090a` | Shopify-style store preview base |
+| `--cw-shopify-surface` | `#061a1c` | Shopify-style hero/product surface |
+| `--cw-shopify-panel` | `#102620` | Shopify-style raised product panel |
+| `--cw-shopify-border` | `#1e2c31` | Shopify-style dark card borders |
+| `--cw-shopify-mint` | `#36f4a4` | Shopify-style commerce accent |
 
 ## Typography — a sans→mono journey
 
@@ -45,8 +50,9 @@ the top that gradually gives way to monospace by the code-console finale.
 - **Display + Body:** `Geist` via `next/font/google` (`--font-geist`, mapped to
   both `--font-sans` and `--font-display`). Modern, professional, neutral —
   the Fredoka/Nunito "cartoon" pairing was retired.
-- **Mono / code:** `Geist_Mono` (`--font-mono`) — used for the deep-tech code
-  panels and, fully, for the Phase 3 ChatGPT-style console + footer.
+- **Mono / code:** `Geist_Mono` (`--font-mono`) — used for the coffee
+  workbench code panels and, fully, for the Phase 3 ChatGPT-style console +
+  footer.
 - **Serif:** `Playfair_Display` (`--font-serif`) — retained for the booking
   dialog interior only.
 
@@ -77,7 +83,8 @@ the top that gradually gives way to monospace by the code-console finale.
   - Soft glow: `0 0 40px rgba(124, 60, 255, 0.25)`
   - Card shadow: `0 12px 32px rgba(21, 17, 43, 0.12)`
 - **Phase 1 (playful):** no generic glassmorphism — use opaque cream or semi-transparent white cards with defined cartoon edges.
-- **Phase 2 (deep-tech):** glassmorphism is the house style here — see the `.cw-glass` layered material below.
+- **Phase 2 (coffee workbench):** warm cream/white panels match the hero, with
+  ink terminal surfaces reserved for code and deploy output.
 
 ## Animation Language
 
@@ -134,9 +141,8 @@ The page moves through three phases on a single global scroll progress value
 - **Background morph:** RGB channels interpolate across plateaus
   (`STOPS = [0, 0.2, 0.34, 0.64, 0.8, 1]`) so each phase holds a solid color
   while the user reads it; morphs are confined to the hand-off zones.
-- **Deep-tech atmosphere:** a `.scroll-phase-glow` layer (radial brand glows +
-  vignette + fine SVG grain) fades in only across the charcoal plateau via a
-  Motion-driven `opacity`.
+- **Coffee atmosphere:** warm radial glows + fine SVG grain stay subtle across
+  the cream workbench plateau via Motion-driven `opacity`.
 - **Hydration:** motion-driven fixed layers render only after mount
   (`mounted` gate) so SSR markup matches the client.
 - **Reveals:** `SectionReveal` (one-shot fade + lift on first in-view) and
@@ -144,30 +150,70 @@ The page moves through three phases on a single global scroll progress value
   short-circuit to the final static state under reduced motion.
 - **Parallax:** `parallax.tsx` maps a block's own in-view progress to `y` only
   (never `x`, to avoid horizontal overflow). Static under reduced motion.
-- **Sticky scene:** glass cards reveal in a stagger over the charcoal plateau;
-  the offer card sits beside the value props.
+- **Sticky scene:** coffee workbench cards reveal in a stagger over the warm
+  cream plateau; the offer card sits beside the value props.
 
-## Glass material (`.cw-glass`)
+## Legacy Glass material (`.cw-glass`)
 
-Layered glass for phase 2: a soft white gradient over the glass tint, a
-gradient hairline edge + specular sheen via `::before`, an inner top highlight,
-and `backdrop-filter: blur(16px) saturate(150%)`. Ambient `.cw-tech-blobs`
-(blurred, slow-drifting gradient orbs) sit behind the offer grid, clipped to
-their own box so blur never causes overflow.
+Layered glass from the retired deep-tech phase: a soft white gradient over the
+glass tint, a gradient hairline edge + specular sheen via `::before`, an inner
+top highlight, and `backdrop-filter: blur(16px) saturate(150%)`. Keep it
+available only for legacy surfaces; the current coffee workbench uses opaque
+cream/white materials instead.
 
-## Phase 2 — "Did you know?" + the $99 offer
+## Phase 2 — Coffee workbench: agency previews
 
-`offer/did-you-know.tsx` (`section#pricing`) replaces the old case-study gallery.
-It's an honest pitch on the charcoal scroll state, no invented clients or stats:
+`offer/did-you-know.tsx` (`section#pricing`) is a coffee-themed build workbench.
+It keeps the hero's warm cream canvas and shows the studio's process through
+mini client-site previews and the honest `$99` launch offer.
 
-- **Did you know?** — eyebrow + headline + body on the cost of having no website,
-  then three `.cw-glass` "fact" cards (big electric stat + supporting line).
-- **Value props** — Fast delivery / Very flexible / All-inclusive, as a checked
-  list, revealed with `Stagger`.
-- **Offer card** (`pricing-card`): the `$99` starting price, the
-  domain-+-hosting note, an inclusive line-item list, and the booking CTA
-  (`pricing` variant — a high-contrast white pill that reads on the dark glass).
-- Content lives in `landing.ts` under `didYouKnow`, `valueProps`, `pricing`.
+No invented clients or stats — the section leads with the craft and the offer.
+
+### Layout
+
+The work preview cards borrow from Gym Landing v3's editorial/brutalist rhythm:
+dark panels, thin rules, oversized display type, numbered meta rows, and a
+single loud accent. Caffeinatedweb keeps the coffee palette, so the gym acid
+green becomes `--cw-orange` / `--cw-sun` and the black floor becomes
+`--cw-ink`.
+
+- **Preview shell:** browser chrome remains, but the interior is a dark
+  editorial website mockup rather than a light SaaS card.
+- **Service preview:** big condensed-feeling headline, orange outline accent,
+  mono labels, bordered stat cells, and hoverable feature rows.
+- **Commerce preview:** uses the same dark grid with coffee product cards so
+  both examples feel like one system.
+- **Offer card** (`pricing-card`): remains a dark conversion block with the
+  original inclusive line-item list and booking trigger.
+
+### Tokens
+
+Uses caffeinatedweb tokens with Gym v3-style restraint:
+
+- Background: `--cw-cream` (`#fff8e7`).
+- Preview floor: `--cw-ink` (`#15112b`).
+- Preview panels: `rgba(255,248,231,0.06–0.1)` with `--cw-cream/12` rules.
+- Text: `--cw-cream` on dark, `--cw-ink` on cream.
+- Accent: `--cw-orange`; secondary warmth: `--cw-sun`.
+- Depth: hard thin borders + restrained shadows, not glass blur.
+
+### Motion
+
+- One-shot `SectionReveal` fades the workbench up when it enters the viewport.
+- Preview cards lift only on `transform` and border/color transitions.
+- The global site cursor is a small client island: a coffee-orange dot and
+  trailing ring, expanded over links, buttons, inputs, and `[data-cursor="hover"]`.
+- Under coarse pointers the custom cursor is hidden; under reduced motion the
+  trailing ring snaps directly to the pointer.
+
+### Accessibility
+
+- Decorative cursor uses `aria-hidden="true"` and never captures pointer events.
+- Preview elements are rendered as static markup, not images, so text is
+  readable and selectable.
+- Focus-visible ring preserved on the booking CTA.
+- Body text contrast ≥ 4.5:1 against the dark panels.
+- Content lives in `landing.ts` under `codexBuild` and `pricing`.
 
 ## Site header (professional menu)
 

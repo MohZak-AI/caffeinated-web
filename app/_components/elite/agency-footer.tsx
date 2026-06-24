@@ -8,17 +8,16 @@ import { landingContent } from "@/app/_content/landing";
 export function AgencyFooter() {
   return (
     <footer className="w-full bg-[#0d0f12] px-4 py-14 font-mono text-[#8b949e] sm:px-6 lg:px-8 xl:px-12">
-      <div className="mx-auto max-w-3xl border-t border-white/10 pt-10">
+      <div className="mx-auto max-w-3xl cw-liquid--dark rounded-2xl border border-white/12 px-6 py-10 sm:px-10">
         <div className="flex flex-col gap-8 sm:flex-row sm:items-start sm:justify-between">
           <div>
             <div className="flex items-center gap-3">
               <Image
-                src="/caffeinated-web.gif"
+                src="/caffeinated-web-logo.webp"
                 alt={`${landingContent.brand.name} logo`}
-                width={80}
-                height={45}
+                width={40}
+                height={50}
                 unoptimized
-                className="rounded-md"
               />
               <p className="flex items-center gap-2 text-[15px] font-semibold text-white">
                 <span className="text-[#16d8c2]">$</span>
