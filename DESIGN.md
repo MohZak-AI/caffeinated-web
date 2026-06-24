@@ -1,10 +1,10 @@
-# caffeinatedweb — Design System
+# caffienatedweb — Design System
 
 > Forward-thinking website studio. Fast, flexible, affordable — playful craft, serious speed.
 
 ## Brand Positioning
 
-- **Name:** caffeinatedweb
+- **Name:** caffienatedweb
 - **Domain:** Website development studio
 - **Personality:** Energetic, whimsical, technically excellent, human
 - **Promise:** Fast, flexible websites — live in days, starting at $99 with domain + hosting included
@@ -18,7 +18,7 @@
 **Family:** Playful kids + Bouncy 3D hybrid.
 
 - **Why Playful kids?** The brief asks for cartoon characters, bright saturated colors, decorative flourishes, and a fun/fancy atmosphere. Those are the core Playful kids signals.
-- **Why Bouncy 3D refinement?** caffeinatedweb is an agency, not a toy store. We keep the rounded, bouncy, gradient-rich language but add polished spacing, soft layered shadows, and a clean modern tech backdrop so it feels professional.
+- **Why Bouncy 3D refinement?** caffienatedweb is an agency, not a toy store. We keep the rounded, bouncy, gradient-rich language but add polished spacing, soft layered shadows, and a clean modern tech backdrop so it feels professional.
 
 ## Color Tokens
 
@@ -188,7 +188,7 @@ green becomes `--cw-orange` / `--cw-sun` and the black floor becomes
 
 ### Tokens
 
-Uses caffeinatedweb tokens with Gym v3-style restraint:
+Uses caffienatedweb tokens with Gym v3-style restraint:
 
 - Background: `--cw-cream` (`#fff8e7`).
 - Preview floor: `--cw-ink` (`#15112b`).
@@ -245,7 +245,7 @@ the sans→mono type journey.
 - **Console:** window chrome (traffic-light dots + session label), a user turn
   + an assistant turn with the closing copy, a syntax-highlighted `<pre>` code
   block, and the `$99 · days · domain + hosting` ribbon as terminal-style output.
-- **Composer:** a faux "Message caffeinatedweb…" input bar whose green
+- **Composer:** a faux "Message caffienatedweb…" input bar whose green
   ChatGPT-style send control is the booking trigger (`elite` variant). The
   caption reads the honest `elite.assurance` line.
 - **Footer:** continues the console — dark, monospace, a `$` prompt wordmark,

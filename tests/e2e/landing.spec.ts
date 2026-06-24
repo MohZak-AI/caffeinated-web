@@ -1,7 +1,7 @@
 import { test, expect } from "@playwright/test";
 import { landingContent } from "@/app/_content/landing";
 
-test.describe("caffeinatedweb — agency craft from $99", () => {
+test.describe("caffienatedweb — agency craft from $99", () => {
   test("Phase 1 hero renders agency positioning, highlights, services, and CTAs", async ({
     page,
   }) => {

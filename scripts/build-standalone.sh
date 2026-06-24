@@ -1,11 +1,11 @@
 #!/usr/bin/env bash
-# Build caffeinatedweb for Hostinger (or any Node host) using Next standalone.
+# Build caffienatedweb for Hostinger (or any Node host) using Next standalone.
 # Produces a self-contained folder you upload: .next/standalone
 set -euo pipefail
 
 # Defaults — override by setting these env vars before running, e.g.
 #   NEXT_PUBLIC_SITE_URL=https://yourdomain.com NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION=abc ./scripts/build-standalone.sh
-export NEXT_PUBLIC_SITE_URL="${NEXT_PUBLIC_SITE_URL:-https://caffeinatedweb.com}"
+export NEXT_PUBLIC_SITE_URL="${NEXT_PUBLIC_SITE_URL:-https://caffienatedweb.com}"
 export NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION="${NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION:-}"
 
 echo "Building for ${NEXT_PUBLIC_SITE_URL} ..."

@@ -1,6 +1,6 @@
 export const landingContent = {
   brand: {
-    name: "caffeinatedweb",
+    name: "caffienatedweb",
     tagline: "Websites built or redesigned from $199, plus a low monthly care plan",
   },
   hero: {
@@ -23,7 +23,7 @@ export const landingContent = {
     ctaLabel: "Book a call",
     defaultSchedulingUrl:
       "https://calendly.com/zakizakariawwzz/30min?hide_gdpr_banner=1&background_color=f3e7c8&text_color=2c2014&primary_color=a6332a",
-    fallbackEmail: "hello@caffeinatedweb.com",
+    fallbackEmail: "hello@caffienatedweb.com",
     placeholderHeadline: "Prefer email?",
     placeholderBody:
       "Use the live calendar above, or send us a note and we book a time within one business day.",

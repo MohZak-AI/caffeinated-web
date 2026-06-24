@@ -64,17 +64,17 @@ const ebGaramond = EB_Garamond({
 
 
 const siteUrl =
-  process.env.NEXT_PUBLIC_SITE_URL ?? "https://caffeinatedweb.com";
+  process.env.NEXT_PUBLIC_SITE_URL ?? "https://caffienatedweb.com";
 
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),
   title: {
-    default: "Affordable Website Design & Redesign from $199 | caffeinatedweb",
-    template: "%s | caffeinatedweb",
+    default: "Affordable Website Design & Redesign from $199 | caffienatedweb",
+    template: "%s | caffienatedweb",
   },
   description:
     "Affordable custom website design and redesign for small businesses. Build or redesign from $199 one time, plus low monthly hosting, domain and maintenance.",
-  applicationName: "caffeinatedweb",
+  applicationName: "caffienatedweb",
   keywords: [
     "affordable website design",
     "cheap website developer",
@@ -87,9 +87,9 @@ export const metadata: Metadata = {
     "website maintenance",
     "freelance web designer",
   ],
-  authors: [{ name: "caffeinatedweb" }],
-  creator: "caffeinatedweb",
-  publisher: "caffeinatedweb",
+  authors: [{ name: "caffienatedweb" }],
+  creator: "caffienatedweb",
+  publisher: "caffienatedweb",
   alternates: {
     canonical: "/",
   },
@@ -97,8 +97,8 @@ export const metadata: Metadata = {
     type: "website",
     locale: "en_US",
     url: siteUrl,
-    siteName: "caffeinatedweb",
-    title: "Affordable Website Design & Redesign from $199 | caffeinatedweb",
+    siteName: "caffienatedweb",
+    title: "Affordable Website Design & Redesign from $199 | caffienatedweb",
     description:
       "Affordable custom website design and redesign for small businesses. Build or redesign from $199 one time, plus low monthly hosting, domain and maintenance.",
     images: [
@@ -106,13 +106,13 @@ export const metadata: Metadata = {
         url: "/caffeinated-web-logo.webp",
         width: 506,
         height: 638,
-        alt: "caffeinatedweb logo",
+        alt: "caffienatedweb logo",
       },
     ],
   },
   twitter: {
     card: "summary_large_image",
-    title: "Affordable Website Design & Redesign from $199 | caffeinatedweb",
+    title: "Affordable Website Design & Redesign from $199 | caffienatedweb",
     description:
       "Affordable custom website design and redesign for small businesses. Build or redesign from $199 one time, plus low monthly hosting, domain and maintenance.",
     images: ["/caffeinated-web-logo.webp"],

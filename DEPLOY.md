@@ -1,4 +1,4 @@
-# Deploy and SEO launch checklist for caffeinatedweb (Hostinger)
+# Deploy and SEO launch checklist for caffienatedweb (Hostinger)
 
 The code is configured for a **static export** (`output: "export"` in
 `next.config.ts`). The build produces a plain `out/` folder that Hostinger
@@ -16,14 +16,14 @@ Run this from the repo. The Google Fonts fetch that fails in my sandbox works
 fine on your machine.
 
 ```bash
-NEXT_PUBLIC_SITE_URL=https://caffeinatedweb.com npm run build
+NEXT_PUBLIC_SITE_URL=https://caffienatedweb.com npm run build
 ```
 
 This creates an `out/` folder containing `index.html`, `404.html`, `robots.txt`,
 `sitemap.xml`, the `caffeinated-web-logo.webp` and other public assets, the
 hashed `_next/static/` assets, and the `.htaccess`.
 
-If your real domain is not `caffeinatedweb.com`, change it here and in
+If your real domain is not `caffienatedweb.com`, change it here and in
 `.env.local` and `.env.example`.
 
 ## 2. Upload `out/` to Hostinger `public_html`
@@ -32,7 +32,7 @@ Do NOT upload the repo source. Upload the **contents** of the `out/` folder
 (not the folder itself) into your domain's `public_html`.
 
 In hPanel > Files > File Manager:
-1. Open `domains/caffeinatedweb.com/public_html`.
+1. Open `domains/caffienatedweb.com/public_html`.
 2. Delete everything currently in `public_html` (the raw repo source causing
    the 403).
 3. Upload everything inside `out/` so that `public_html/index.html`,
@@ -44,14 +44,14 @@ use "Extract" inside `public_html`. Make sure `.htaccess` is included (it is a
 hidden file; enable "Show hidden files" in File Manager to confirm it landed).
 
 If you prefer FTP/SFTP, the host is your domain, the user is your hosting
-account user, and the target is `domains/caffeinatedweb.com/public_html`.
+account user, and the target is `domains/caffienatedweb.com/public_html`.
 
 ## 3. Permissions, SSL, and the redirect
 
 - File permissions: folders 755, files 644. File Manager has a "Fix
   Permissions" action on `public_html` that sets these.
 - hPanel > SSL > install the free Let's Encrypt certificate for
-  `caffeinatedweb.com`.
+  `caffienatedweb.com`.
 - Turn on "Force HTTPS" in hPanel (the .htaccess also forces it as a backup).
 - For `www -> apex`: the .htaccess already redirects it. Optionally also add a
   redirect in hPanel > Domains > Redirects, but it is not required.
@@ -74,7 +74,7 @@ errors on your commits.
 ## 5. Google Search Console verification
 
 1. Open https://search.google.com/search-console and add a property for
-   `https://caffeinatedweb.com` (URL prefix, https, apex).
+   `https://caffienatedweb.com` (URL prefix, https, apex).
 2. Settings > Ownership verification > HTML tag.
 3. Copy only the `content` value, e.g. from
    `<meta name="google-site-verification" content="ABC123..." />` copy
@@ -83,19 +83,19 @@ errors on your commits.
    `.env.local`), rebuild, redeploy, then in Search Console click Verify. The
    meta tag is rendered in `<head>` automatically once the env var is set.
 5. Submit the sitemap: Search Console > Sitemaps > enter `sitemap.xml`. The
-   full URL `https://caffeinatedweb.com/sitemap.xml` resolves automatically.
+   full URL `https://caffienatedweb.com/sitemap.xml` resolves automatically.
    Status becomes "Success" within a day or two.
 6. Repeat in Bing Webmaster Tools (free, extra indexation).
 
 ## 6. After first deploy, sanity check
 
-- `https://caffeinatedweb.com/robots.txt` -> lists the sitemap.
-- `https://caffeinatedweb.com/sitemap.xml` -> one URL entry.
-- `http://caffeinatedweb.com` -> redirects to `https://`.
-- `https://www.caffeinatedweb.com` -> redirects to the apex.
+- `https://caffienatedweb.com/robots.txt` -> lists the sitemap.
+- `https://caffienatedweb.com/sitemap.xml` -> one URL entry.
+- `http://caffienatedweb.com` -> redirects to `https://`.
+- `https://www.caffienatedweb.com` -> redirects to the apex.
 - View the homepage source and confirm:
   - `<title>` starts with "Affordable Website Design & Redesign from $199".
-  - `<link rel="canonical" href="https://caffeinatedweb.com/">`.
+  - `<link rel="canonical" href="https://caffienatedweb.com/">`.
   - `<meta name="google-site-verification" ...>` once the env var is set.
   - Two `<script type="application/ld+json">` blocks (ProfessionalService,
     FAQPage).
@@ -108,7 +108,7 @@ A brand new one-page site has no backlinks, so Google has little reason to rank
 it. Code cannot build these for you. Work through the list below in order.
 
 Quick wins (free, do today):
-- Google Business Profile (https://business.google.com) -> add caffeinatedweb
+- Google Business Profile (https://business.google.com) -> add caffienatedweb
   as a service business, category "Website Designer". This gets you into local
   and Maps results, which is huge for "affordable website" + city searches.
   Use the same NAP (name, address, phone) everywhere.
@@ -130,7 +130,7 @@ Higher effort (this month, real payoff):
   turns the one-page site into a small content site.
 - One or two guest posts on blogs read by small business owners. One good link
   beats twenty directory links.
-- Ask every client to add "Built by caffeinatedweb" with a link in their
+- Ask every client to add "Built by caffienatedweb" with a link in their
   footer. Client links are relevant and free.
 
 ### Outreach email template (guest post / client footer link)
@@ -140,7 +140,7 @@ businesses
 
 Hi [name],
 
-I run caffeinatedweb, a small studio that builds and redesigns websites for
+I run caffienatedweb, a small studio that builds and redesigns websites for
 small businesses from $199. I put together a short, practical post on [topic,
 e.g. "what a $199 small business website actually includes in 2025"] that I
 think would fit well for [their blog name] readers.
@@ -150,7 +150,7 @@ draft be useful? Happy to send it over with no obligation.
 
 Thanks,
 [your name]
-https://caffeinatedweb.com
+https://caffienatedweb.com
 
 ## 8. Keep it honest
 

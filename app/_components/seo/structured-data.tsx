@@ -1,7 +1,7 @@
 import { landingContent } from "@/app/_content/landing";
 
 const siteUrl =
-  process.env.NEXT_PUBLIC_SITE_URL ?? "https://caffeinatedweb.com";
+  process.env.NEXT_PUBLIC_SITE_URL ?? "https://caffienatedweb.com";
 
 /**
  * JSON-LD structured data for the homepage: a ProfessionalService with a
