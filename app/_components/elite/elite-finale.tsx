@@ -1,9 +1,35 @@
+"use client";
+
+import { motion } from "motion/react";
+import { capture } from "@/app/_lib/posthog";
 import { landingContent } from "@/app/_content/landing";
 import { BookingDiscoveryDialog } from "../hero/booking-discovery-dialog";
-import { SectionReveal } from "../scroll/section-reveal";
+import { SectionReveal, Stagger, StaggerItem } from "../scroll/section-reveal";
+import { useMotionAllowed } from "../motion/use-motion-allowed";
 
 export function EliteFinale() {
   const { elite, pricing } = landingContent;
+  const motionAllowed = useMotionAllowed();
+
+  const ctaCardBody = (
+    <div className="card-body gap-0 p-6">
+      <p className="text-lg leading-relaxed text-cw-cream/70">
+        {elite.closingBody}
+      </p>
+      <div className="card-actions mt-7 flex-col gap-3 sm:flex-row">
+        <div className="[&>button]:btn [&>button]:btn-primary [&>button]:h-11 [&>button]:rounded-full [&>button]:border-0">
+          <BookingDiscoveryDialog variant="elite" label={pricing.ctaLabel} />
+        </div>
+        <a
+          href={`mailto:${landingContent.booking.fallbackEmail}?subject=Project%20inquiry`}
+          className="btn btn-outline h-11 rounded-full border-white/25 font-mono text-sm font-medium text-cw-cream hover:border-cw-cream hover:bg-cw-cream hover:text-cw-ink"
+          onClick={() => capture("email_contact_clicked", { source: "finale_section", email: landingContent.booking.fallbackEmail })}
+        >
+          Email the studio
+        </a>
+      </div>
+    </div>
+  );
 
   return (
     <section
@@ -28,44 +54,43 @@ export function EliteFinale() {
             >
               {elite.closingHeadline}
             </h2>
-            <div className="card cw-liquid--dark border border-white/15 bg-neutral/70 text-neutral-content shadow-2xl">
-              <div className="card-body gap-0 p-6">
-              <p className="text-lg leading-relaxed text-cw-cream/70">
-                {elite.closingBody}
-              </p>
-              <div className="card-actions mt-7 flex-col gap-3 sm:flex-row">
-                <div className="[&>button]:btn [&>button]:btn-primary [&>button]:h-11 [&>button]:rounded-full [&>button]:border-0">
-                  <BookingDiscoveryDialog variant="elite" label={pricing.ctaLabel} />
-                </div>
-                <a
-                  href={`mailto:${landingContent.booking.fallbackEmail}?subject=Project%20inquiry`}
-                  className="btn btn-outline h-11 rounded-full border-white/25 font-mono text-sm font-medium text-cw-cream hover:border-cw-cream hover:bg-cw-cream hover:text-cw-ink"
-                >
-                  Email the studio
-                </a>
+            {motionAllowed ? (
+              <motion.div
+                className="card cw-liquid--dark border border-white/15 bg-neutral/70 text-neutral-content shadow-2xl"
+                whileHover={{ y: -4 }}
+                transition={{ duration: 0.2 }}
+              >
+                {ctaCardBody}
+              </motion.div>
+            ) : (
+              <div className="card cw-liquid--dark border border-white/15 bg-neutral/70 text-neutral-content shadow-2xl">
+                {ctaCardBody}
               </div>
-              </div>
-            </div>
+            )}
           </div>
         </SectionReveal>
 
-        <dl className="stats stats-vertical mt-12 w-full overflow-hidden border border-white/12 bg-neutral/85 text-neutral-content shadow-2xl lg:stats-horizontal">
+        <Stagger
+          as="dl"
+          className="stats stats-vertical mt-12 w-full overflow-hidden border border-white/12 bg-neutral/85 text-neutral-content shadow-2xl lg:stats-horizontal"
+        >
           {elite.ribbon.map((item) => (
-            <div
+            <StaggerItem
+              as="div"
               key={item.label}
               className="stat border-b border-white/12 lg:border-b-0 lg:border-r lg:last:border-r-0"
             >
               <dt className="stat-title">
                 <span className="badge badge-outline border-cw-cream/25 font-mono text-[0.68rem] uppercase tracking-[0.16em] text-cw-cream/55">
-                {item.label}
+                  {item.label}
                 </span>
               </dt>
               <dd className="stat-value mt-2 text-2xl font-semibold text-cw-orange">
                 {item.value}
               </dd>
-            </div>
+            </StaggerItem>
           ))}
-        </dl>
+        </Stagger>
       </div>
     </section>
   );

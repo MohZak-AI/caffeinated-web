@@ -115,38 +115,13 @@ test.describe("caffienatedweb — agency craft from $99", () => {
       await expect(browserWindow).toBeVisible();
       await expect(browserWindow.getByText(example.urlBar)).toBeVisible();
       await expect(browserWindow.getByText(example.brandName, { exact: true })).toBeVisible();
+      await expect(
+        browserWindow.locator(`img[alt="${example.brandName} preview"]`)
+      ).toBeVisible();
+      await expect(browserWindow).toHaveAttribute("href", example.href);
+      await expect(browserWindow).toHaveAttribute("target", "_blank");
+      await expect(browserWindow).toHaveAttribute("rel", "noopener noreferrer");
     }
-
-    const ecommerceWindow = section.getByTestId("example-browser-window-coffee-shop");
-    await expect(ecommerceWindow.getByTestId("shopify-storefront-panel")).toBeVisible();
-    await expect(ecommerceWindow.getByTestId("gym-v3-preview-shell")).toHaveCount(0);
-    await expect(
-      ecommerceWindow.getByText(landingContent.examples.windows[0].heroProduct.name)
-    ).toBeVisible();
-
-    const productCards = ecommerceWindow.getByTestId("product-card");
-    await expect(productCards).toHaveCount(landingContent.examples.windows[0].products.length);
-
-    for (const product of landingContent.examples.windows[0].products) {
-      const card = productCards.filter({ hasText: product.name });
-      await expect(card.getByText(product.price)).toBeVisible();
-    }
-
-    const landingWindow = section.getByTestId("example-browser-window-service-landing");
-    await expect(landingWindow.getByTestId("gym-v3-preview-shell")).toBeVisible();
-    await expect(landingWindow.getByTestId("gym-v3-service-panel")).toBeVisible();
-    await expect(landingWindow.getByTestId("shopify-storefront-panel")).toHaveCount(0);
-    await expect(
-      landingWindow.getByText(
-        landingContent.examples.windows[1].heroHeadline.replace(".", ""),
-        { exact: false }
-      )
-    ).toBeVisible();
-
-    const landingHighlights = landingWindow.getByTestId("landing-highlight");
-    await expect(landingHighlights).toHaveCount(
-      landingContent.examples.windows[1].highlights.length
-    );
 
     const pricingCard = page.getByTestId("pricing-card");
     await expect(pricingCard).toBeVisible();
@@ -218,6 +193,91 @@ test.describe("caffienatedweb — agency craft from $99", () => {
 
     expect(top).toEqual(mid);
     expect(mid).toEqual(bottom);
+  });
+
+  test("primary font is the new fancy display face", async ({ page }) => {
+    await page.goto("/");
+    await page.waitForLoadState("networkidle");
+
+    const firstFamily = await page.locator("body").evaluate((el) =>
+      window.getComputedStyle(el).fontFamily.split(",")[0].trim().toLowerCase()
+    );
+
+    expect(firstFamily).toContain("fraunces");
+  });
+
+  test("FAQ items are visible, interactive, and preserve native summary behavior", async ({
+    page,
+  }) => {
+    await page.goto("/");
+    const section = page.locator("section#faq");
+    await section.scrollIntoViewIfNeeded();
+
+    const firstQuestion = landingContent.faq[0];
+    const details = section.locator("details").first();
+    const summary = details.locator("summary").first();
+
+    await expect(summary).toContainText(firstQuestion.q);
+    await expect(details.locator(".collapse-content")).not.toBeVisible();
+
+    await summary.click();
+    await expect(details.locator(".collapse-content")).toBeVisible();
+    await expect(details.locator(".collapse-content")).toContainText(
+      firstQuestion.a
+    );
+
+    await summary.press("Enter");
+    await expect(details.locator(".collapse-content")).not.toBeVisible();
+    await summary.press("Enter");
+    await expect(details.locator(".collapse-content")).toBeVisible();
+  });
+
+  test("finale section reveals stats and CTAs when scrolled into view", async ({
+    page,
+  }) => {
+    await page.goto("/");
+    const section = page.locator("section#contact");
+    await section.scrollIntoViewIfNeeded();
+
+    await expect(section).toBeVisible();
+    await expect(section.locator("#elite-headline")).toContainText(
+      landingContent.elite.closingHeadline.split(" ")[0]
+    );
+
+    for (const item of landingContent.elite.ribbon) {
+      await expect(section.getByText(item.label)).toBeVisible();
+      await expect(section.getByText(item.value)).toBeVisible();
+    }
+
+    await expect(
+      section.getByRole("button", { name: landingContent.pricing.ctaLabel })
+    ).toBeVisible();
+    await expect(
+      section.getByRole("link", { name: "Email the studio" })
+    ).toBeVisible();
+  });
+
+  test("reduced motion keeps new animated surfaces static and accessible", async ({
+    page,
+  }) => {
+    await page.emulateMedia({ reducedMotion: "reduce" });
+    await page.goto("/");
+    await page.waitForLoadState("networkidle");
+
+    await expect(page.locator("h1")).toContainText("AGENCY");
+
+    const section = page.locator("section#faq");
+    await section.scrollIntoViewIfNeeded();
+    const firstSummary = section.locator("details summary").first();
+    await expect(firstSummary).toBeVisible();
+    await firstSummary.click();
+    await expect(section.locator("details .collapse-content").first()).toBeVisible();
+
+    const finale = page.locator("section#contact");
+    await finale.scrollIntoViewIfNeeded();
+    await expect(
+      finale.getByRole("button", { name: landingContent.pricing.ctaLabel })
+    ).toBeVisible();
   });
 
   test("responsive layout has no horizontal overflow", async ({ page }) => {

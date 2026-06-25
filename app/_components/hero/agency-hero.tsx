@@ -2,6 +2,7 @@
 
 import Image from "next/image";
 import { motion, useReducedMotion } from "motion/react";
+import { capture } from "@/app/_lib/posthog";
 import { landingContent } from "@/app/_content/landing";
 import { BookingDiscoveryDialog } from "./booking-discovery-dialog";
 import { AnimatedHeadline } from "./animated-headline";
@@ -74,6 +75,7 @@ export function AgencyHero() {
               <a
                 href="#pricing"
                 className="inline-flex h-12 items-center justify-center rounded-full border border-white/40 cw-liquid px-6 text-[15px] font-semibold text-cw-ink transition-all duration-200 hover:-translate-y-0.5 hover:brightness-110"
+                onClick={() => capture("hero_pricing_clicked")}
               >
                 {landingContent.hero.ctaSecondary}
               </a>

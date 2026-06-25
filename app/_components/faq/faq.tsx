@@ -1,7 +1,14 @@
+"use client";
+
+import { capture } from "@/app/_lib/posthog";
 import { landingContent } from "@/app/_content/landing";
-import { SectionReveal } from "../scroll/section-reveal";
+import { motion } from "motion/react";
+import { SectionReveal, Stagger, StaggerItem } from "../scroll/section-reveal";
+import { useMotionAllowed } from "../motion/use-motion-allowed";
 
 export function Faq() {
+  const motionAllowed = useMotionAllowed();
+
   return (
     <section
       id="faq"
@@ -21,23 +28,47 @@ export function Faq() {
           </h2>
         </SectionReveal>
 
-        <SectionReveal y={20} delay={0.05}>
-          <div className="mt-10 grid gap-3">
-            {landingContent.faq.map((item) => (
-              <details
-                key={item.q}
-                className="collapse collapse-plus border border-base-300 bg-base-100/70 text-base-content shadow-sm transition-colors duration-200 open:border-primary/45 open:bg-base-100"
-              >
-                <summary className="collapse-title cursor-pointer text-lg font-semibold tracking-[-0.01em] text-cw-ink focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent sm:text-xl">
-                  {item.q}
-                </summary>
-                <div className="collapse-content text-base leading-relaxed text-cw-ink/68">
-                  <p className="max-w-2xl pb-2">{item.a}</p>
-                </div>
-              </details>
-            ))}
-          </div>
-        </SectionReveal>
+        <Stagger className="mt-10 grid gap-3">
+          {landingContent.faq.map((item) => (
+            <StaggerItem key={item.q}>
+              {motionAllowed ? (
+                <motion.details
+                  className="collapse collapse-plus border border-base-300 bg-base-100/70 text-base-content shadow-sm transition-colors duration-200 open:border-primary/45 open:bg-base-100"
+                  whileHover={{ y: -2, transition: { duration: 0.2 } }}
+                  whileTap={{ scale: 0.995 }}
+                  onToggle={(e) => {
+                    if ((e.currentTarget as HTMLDetailsElement).open) {
+                      capture("faq_item_expanded", { question: item.q });
+                    }
+                  }}
+                >
+                  <summary className="collapse-title cursor-pointer text-lg font-semibold tracking-[-0.01em] text-cw-ink focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent sm:text-xl">
+                    {item.q}
+                  </summary>
+                  <div className="collapse-content text-base leading-relaxed text-cw-ink/68">
+                    <p className="max-w-2xl pb-2">{item.a}</p>
+                  </div>
+                </motion.details>
+              ) : (
+                <details
+                  className="collapse collapse-plus border border-base-300 bg-base-100/70 text-base-content shadow-sm transition-colors duration-200 open:border-primary/45 open:bg-base-100"
+                  onToggle={(e) => {
+                    if (e.currentTarget.open) {
+                      capture("faq_item_expanded", { question: item.q });
+                    }
+                  }}
+                >
+                  <summary className="collapse-title cursor-pointer text-lg font-semibold tracking-[-0.01em] text-cw-ink focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent sm:text-xl">
+                    {item.q}
+                  </summary>
+                  <div className="collapse-content text-base leading-relaxed text-cw-ink/68">
+                    <p className="max-w-2xl pb-2">{item.a}</p>
+                  </div>
+                </details>
+              )}
+            </StaggerItem>
+          ))}
+        </Stagger>
 
         <SectionReveal y={16} delay={0.1}>
           <p className="mt-10 text-center text-sm text-cw-ink/60">

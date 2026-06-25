@@ -3,19 +3,21 @@ import {
   Cinzel,
   Cinzel_Decorative,
   EB_Garamond,
-  Geist,
+  Fraunces,
   Geist_Mono,
   Playfair_Display,
   Press_Start_2P,
 } from "next/font/google";
 import { SiteCursor } from "./_components/cursor/site-cursor";
+import { CookieConsent } from "./_components/consent/cookie-consent";
 import "./globals.css";
 
-const geist = Geist({
-  variable: "--font-geist",
+const fraunces = Fraunces({
+  variable: "--font-primary",
   subsets: ["latin"],
   display: "swap",
   weight: ["400", "500", "600", "700"],
+  style: ["normal", "italic"],
 });
 
 const geistMono = Geist_Mono({
@@ -142,11 +144,12 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${geist.variable} ${geistMono.variable} ${playfair.variable} ${pressStart.variable} ${cinzel.variable} ${cinzelDecorative.variable} ${ebGaramond.variable} h-full antialiased`}
+      className={`${fraunces.variable} ${geistMono.variable} ${playfair.variable} ${pressStart.variable} ${cinzel.variable} ${cinzelDecorative.variable} ${ebGaramond.variable} h-full antialiased`}
     >
       <body className="min-h-full flex flex-col bg-[--cw-cream] text-[--cw-ink]">
         <SiteCursor />
         {children}
+        <CookieConsent />
       </body>
     </html>
   );

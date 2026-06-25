@@ -51,3 +51,7 @@ next-env.d.ts
 
 # design reference media (not used by the site, too large for git)
 Media/
+.env.local
+
+# local visual QA screenshots
+visual-qa/

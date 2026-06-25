@@ -44,12 +44,13 @@
 
 ## Typography — a sans→mono journey
 
-The page deliberately shifts type as you scroll: a clean professional sans at
-the top that gradually gives way to monospace by the code-console finale.
+The page deliberately shifts type as you scroll: a fancy editorial primary face
+at the top that gradually gives way to monospace by the code-console finale.
 
-- **Display + Body:** `Geist` via `next/font/google` (`--font-geist`, mapped to
-  both `--font-sans` and `--font-display`). Modern, professional, neutral —
-  the Fredoka/Nunito "cartoon" pairing was retired.
+- **Display + Body:** `Fraunces` via `next/font/google` (`--font-primary`, mapped
+  to both `--font-sans` and `--font-display`). Fancy, distinctive, and
+  editorial while retaining readability; the Fredoka/Nunito "cartoon" pairing
+  was retired.
 - **Mono / code:** `Geist_Mono` (`--font-mono`) — used for the coffee
   workbench code panels and, fully, for the Phase 3 ChatGPT-style console +
   footer.
@@ -60,9 +61,9 @@ the top that gradually gives way to monospace by the code-console finale.
 
 | Element | Size | Weight | Notes |
 |---------|------|--------|-------|
-| H1 hero | `clamp(2.5rem, 6vw, 4.5rem)` | 600 | Geist, tracking -0.03em, solid ink |
-| H2 | `clamp(2rem, 4vw, 3rem)` | 600 | Geist |
-| Body | `1.125rem` / 1.6 | 400 | Geist |
+| H1 hero | `clamp(2.5rem, 6vw, 4.5rem)` | 600 | Fraunces, tracking -0.03em, solid ink |
+| H2 | `clamp(2rem, 4vw, 3rem)` | 600 | Fraunces |
+| Body | `1.125rem` / 1.6 | 400 | Fraunces |
 | Label | `0.75rem` | 500 | uppercase, letter-spacing 0.14em |
 | Code / finale | `0.8–0.9rem` | 400–600 | Geist Mono |
 
@@ -103,6 +104,11 @@ the top that gradually gives way to monospace by the code-console finale.
   - Gears rotate continuously
   - Rocket bobs and occasionally emits tiny sparks
   - Service icons scale on hover with overshoot
+- **New micro-motion surfaces:** FAQ items stagger on scroll and lift/tap subtly;
+  the elite finale CTA card lifts while its stats ribbon staggers in; the site
+  header brand and contact CTA gain restrained hover/tap motion; the agency
+  footer fades and lifts on scroll with small link hover lifts. These surfaces
+  use `motion/react` and `useReducedMotion()`.
 - **Reduced motion:** All continuous loops pause when `prefers-reduced-motion: reduce` is active. Static, polished state remains.
 
 ## Accessibility
@@ -123,6 +129,10 @@ the top that gradually gives way to monospace by the code-console finale.
 - **Data streams:** SVG paths animate `strokeDashoffset` in a continuous loop. Reduced motion shows static glowing paths.
 - **Scroll-reactive characters:** Character groups subtly rotate/translate based on scroll progress via `useScroll`/`useTransform`. No scroll-jacking; effect is decorative.
 - **Page transitions:** `app/template.tsx` wraps route content with a reduced-motion-aware fade/slide entrance. Single-page site uses this as page-load polish.
+- **FAQ / finale / header / footer polish:** `faq.tsx`, `elite-finale.tsx`,
+  `site-header.tsx`, and `agency-footer.tsx` add small `motion/react`
+  interactions for staggered reveals, hover lifts, and tap scales. Every new
+  interaction branches through `useReducedMotion()`.
 
 ## Booking System
 
@@ -152,6 +162,9 @@ The page moves through three phases on a single global scroll progress value
   (never `x`, to avoid horizontal overflow). Static under reduced motion.
 - **Sticky scene:** coffee workbench cards reveal in a stagger over the warm
   cream plateau; the offer card sits beside the value props.
+- **Late-page motion:** FAQ, elite finale, site header, and agency footer now
+  share the same scroll reveal and micro-interaction grammar via `motion/react`,
+  with `useReducedMotion()` returning static or simplified states when needed.
 
 ## Legacy Glass material (`.cw-glass`)
 
@@ -226,7 +239,7 @@ themselves (`#pricing`, `#contact`) stay unique.
 ## Hero (professional)
 
 The "playful origin" is now restrained and professional: a quiet eyebrow
-("Fast, flexible web studio" — no location claim), a clean Geist headline (solid
+("Fast, flexible web studio" — no location claim), a clean Fraunces headline (solid
 ink, tight tracking — no rainbow strokes/hard shadows), value-prop highlight
 pills (`hero-highlights`: fast / flexible / from $99), a near-black primary CTA
 + ghost "See pricing" secondary, and a soft-shadowed illustration frame. The

@@ -2,6 +2,7 @@
 
 import { useEffect, useRef } from "react";
 import { motion } from "motion/react";
+import { capture } from "@/app/_lib/posthog";
 import { landingContent } from "@/app/_content/landing";
 
 interface BookingDiscoveryDialogProps {
@@ -29,12 +30,14 @@ export function BookingDiscoveryDialog({
       dialog.showModal();
     }
     closeButtonRef.current?.focus();
+    capture("booking_dialog_opened", { variant, label: label ?? landingContent.hero.ctaPrimary });
   };
 
   const closeDialog = () => {
     const dialog = dialogRef.current;
     if (dialog?.open) dialog.close();
     previousFocus.current?.focus();
+    capture("booking_dialog_closed", { variant });
   };
 
   useEffect(() => {
@@ -165,6 +168,7 @@ export function BookingDiscoveryDialog({
               <a
                 href={`mailto:${landingContent.booking.fallbackEmail}?subject=Project%20inquiry`}
                 className="mt-4 inline-flex h-11 items-center justify-center rounded-sm border-2 border-[#9a7b34] bg-transparent px-6 font-medieval text-xs font-semibold uppercase tracking-[0.14em] text-[#2c2014] transition-colors duration-200 hover:bg-[#2c2014] hover:text-[#f3e7c8]"
+                onClick={() => capture("booking_email_fallback_clicked", { email: landingContent.booking.fallbackEmail })}
               >
                 {landingContent.booking.fallbackEmail}
               </a>
