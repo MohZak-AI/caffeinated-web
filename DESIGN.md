@@ -1,275 +1,178 @@
-# caffienatedweb — Design System
+---
+name: caffienatedweb
+description: A one-to-one website pitch served in a dark espresso room.
+colors:
+  bg-primary: "#120D0A"
+  bg-surface: "#1E1611"
+  text-primary: "#F5EBE0"
+  text-secondary: "#C4B5A5"
+  accent: "#D49B54"
+typography:
+  display: "Satoshi, Avenir Next, Helvetica Neue, sans-serif"
+  body: "Satoshi, Avenir Next, Helvetica Neue, sans-serif"
+  utility: "Geist Mono, ui-monospace, monospace"
+pixelGrid: "4px"
+---
 
-> Forward-thinking website studio. Fast, flexible, affordable — playful craft, serious speed.
+# Caffienated Web Design System
 
-## Brand Positioning
+## 1. Creative direction
 
-- **Name:** caffienatedweb
-- **Domain:** Website development studio
-- **Personality:** Energetic, whimsical, technically excellent, human
-- **Promise:** Fast, flexible websites — live in days, starting at $99 with domain + hosting included
-- **Mood:** Celebratory collaboration between creative ideas and technical execution
-- **Honesty rule:** Only claim what's real. No invented studio locations, client
-  case studies, or vanity stats — the page leads with the offer (fast / flexible
-  / $99), not fabricated global metrics.
+**North star: an honest website conversation over coffee.**
 
-## Visual Style
+The page should feel like one capable builder has pulled up a chair: dark,
+warm, direct, and easy to trust. Deep espresso is the room, steamed cream is
+the voice, and amber crema marks the next action. Pixel art belongs to the
+brand’s mug, beans, steam, and story bubbles only; the interface itself stays
+clean and contemporary.
 
-**Family:** Playful kids + Bouncy 3D hybrid.
+The decision path is: immediate problem and trust in the hero, a four-beat
+scroll conversation, tangible work, direct pricing answers, then one simple
+invitation to talk.
 
-- **Why Playful kids?** The brief asks for cartoon characters, bright saturated colors, decorative flourishes, and a fun/fancy atmosphere. Those are the core Playful kids signals.
-- **Why Bouncy 3D refinement?** caffienatedweb is an agency, not a toy store. We keep the rounded, bouncy, gradient-rich language but add polished spacing, soft layered shadows, and a clean modern tech backdrop so it feels professional.
+## 2. Design tokens
 
-## Color Tokens
+### Color
 
-| Token | Hex | Usage |
-|-------|-----|-------|
-| `--cw-cream` | `#fff8e7` | Page background, warm canvas |
-| `--cw-ink` | `#15112b` | Primary text, strong outlines |
-| `--cw-teal` | `#16d8c2` | Primary accent, energy streams, highlights |
-| `--cw-purple` | `#7c3cff` | Secondary accent, holographic screens |
-| `--cw-violet` | `#b86cff` | Glows, gradients, flourishes |
-| `--cw-orange` | `#ff8a2a` | CTA emphasis, rocket flames, warmth |
-| `--cw-sun` | `#ffd84d` | Stars, badges, optimistic pops |
-| `--cw-blue` | `#29a7ff` | Code screens, UI mockups, React motif |
-| `--cw-electric` | `#62f3ff` | Data stream cores, electric edges |
-| `--cw-pink` | `#ff5ebc` | Decorative flourishes, playful highlights |
-| `--cw-card` | `#ffffffcc` | Glassy cards (80% opacity white) |
-| `--cw-line` | `#24194a` | Cartoon outlines, dividers |
-| `--cw-shopify-void` | `#02090a` | Shopify-style store preview base |
-| `--cw-shopify-surface` | `#061a1c` | Shopify-style hero/product surface |
-| `--cw-shopify-panel` | `#102620` | Shopify-style raised product panel |
-| `--cw-shopify-border` | `#1e2c31` | Shopify-style dark card borders |
-| `--cw-shopify-mint` | `#36f4a4` | Shopify-style commerce accent |
+- `--bg-primary: #120D0A` — Deep Espresso, the default page ground.
+- `--bg-surface: #1E1611` — Dark Mocha, used by Recent Work and FAQ.
+- `--text-primary: #F5EBE0` — Steamed Cream, primary text.
+- `--text-secondary: #C4B5A5` — Latte Gray, supporting text.
+- `--accent: #D49B54` — Warm Amber Crema, primary actions and pixel accents.
+- Focus ring: `#F2A65A`, visible against both espresso and mocha.
 
-## Typography — a sans→mono journey
+Every primary CTA is amber with Deep Espresso text. Light text is never used
+on amber. Borders use low-alpha Steamed Cream rather than new hard-coded hues.
 
-The page deliberately shifts type as you scroll: a fancy editorial primary face
-at the top that gradually gives way to monospace by the code-console finale.
+### Typography
 
-- **Display + Body:** `Fraunces` via `next/font/google` (`--font-primary`, mapped
-  to both `--font-sans` and `--font-display`). Fancy, distinctive, and
-  editorial while retaining readability; the Fredoka/Nunito "cartoon" pairing
-  was retired.
-- **Mono / code:** `Geist_Mono` (`--font-mono`) — used for the coffee
-  workbench code panels and, fully, for the Phase 3 ChatGPT-style console +
-  footer.
-- **Serif:** `Playfair_Display` (`--font-serif`) — retained for the booking
-  dialog interior only.
+- Display and body: Satoshi with a system geometric fallback stack.
+- Utility labels: Geist Mono.
+- Hero: `clamp(2.9rem, 5.2vw, 5.8rem)`, 0.94 line height, wide measure.
+- Section title: `clamp(2.5rem, 5vw, 5rem)`, 0.96 line height.
+- Story: `clamp(2.6rem, 6.6vw, 6.25rem)`, centered and text-balanced.
+- Body: 1–1.25rem, 1.65–1.75 line height, no overlong line measure.
 
-### Scale
+Typography is never pixelated. Sentence case and contractions keep the page
+spoken rather than corporate.
 
-| Element | Size | Weight | Notes |
-|---------|------|--------|-------|
-| H1 hero | `clamp(2.5rem, 6vw, 4.5rem)` | 600 | Fraunces, tracking -0.03em, solid ink |
-| H2 | `clamp(2rem, 4vw, 3rem)` | 600 | Fraunces |
-| Body | `1.125rem` / 1.6 | 400 | Fraunces |
-| Label | `0.75rem` | 500 | uppercase, letter-spacing 0.14em |
-| Code / finale | `0.8–0.9rem` | 400–600 | Geist Mono |
+### Spacing and geometry
 
-## Spacing & Layout
+- Mobile page gutter: 1rem; tablet: 1.5rem; desktop: 2–3rem.
+- Major section padding: 6rem mobile, 9–11rem desktop.
+- Desktop content width: 80rem; hero heading may extend to 86rem.
+- Pixel accents use a single 4px base grid. Bubble sizes are 8px, 12px, 16px.
+- Panels and controls are square or lightly cut; pills are reserved for the
+  conversational badge only.
 
-- **Scale:** 4 / 8 / 12 / 16 / 24 / 32 / 48 / 64 / 96 px
-- **Max content width:** `1280px`
-- **Section padding:** `96px` vertical desktop, `48px` mobile
-- **Gutters:** `24px` desktop, `16px` mobile
-- **Grid:** Mobile single column; desktop two-column hero (text left, illustration right)
+## 3. Component primitives
 
-## Shape & Depth
+### Primary action
 
-- **Radii:** `24px` cards, `40px` hero panels, `999px` pills/buttons
-- **Outlines:** `3px solid var(--cw-line)` for playful cartoon definition
-- **Shadows:**
-  - Hard offset shadow: `6px 6px 0 var(--cw-line)`
-  - Soft glow: `0 0 40px rgba(124, 60, 255, 0.25)`
-  - Card shadow: `0 12px 32px rgba(21, 17, 43, 0.12)`
-- **Phase 1 (playful):** no generic glassmorphism — use opaque cream or semi-transparent white cards with defined cartoon edges.
-- **Phase 2 (coffee workbench):** warm cream/white panels match the hero, with
-  ink terminal surfaces reserved for code and deploy output.
+Amber surface, espresso label, minimum 48px touch height, 2px focus outline.
+Hover may move up 2px on fine pointers; reduced motion removes translation.
 
-## Animation Language
+### Navigation
 
-- **GPU-only properties:** `transform`, `opacity`, `filter`
-- **Never animate:** `width`, `height`, `top`, `left`, `margin`, `padding`
-- **Easing:**
-  - Bouncy overshoot: `cubic-bezier(0.34, 1.56, 0.64, 1)`
-  - Smooth float: `ease-in-out`
-- **Durations:**
-  - Micro interactions: `200ms`
-  - Floating loops: `3s - 6s`
-  - Page entrance: `600ms`
-- **Motifs:**
-  - Floating holographic screens bob gently
-  - Data streams pulse and flow along SVG paths
-  - Gears rotate continuously
-  - Rocket bobs and occasionally emits tiny sparks
-  - Service icons scale on hover with overshoot
-- **New micro-motion surfaces:** FAQ items stagger on scroll and lift/tap subtly;
-  the elite finale CTA card lifts while its stats ribbon staggers in; the site
-  header brand and contact CTA gain restrained hover/tap motion; the agency
-  footer fades and lifts on scroll with small link hover lifts. These surfaces
-  use `motion/react` and `useReducedMotion()`.
-- **Reduced motion:** All continuous loops pause when `prefers-reduced-motion: reduce` is active. Static, polished state remains.
+A quiet espresso header with a pixel-rendered mug, small wordmark, Work and
+FAQ anchors, and one amber booking action. Mobile retains the brand and CTA.
 
-## Accessibility
+### Hero
 
-- Hero SVG must have `<title>` and `<desc>` linked via `aria-labelledby`.
-- Decorative particles and flourishes use `aria-hidden="true"`.
-- Body text must maintain at least `4.5:1` contrast against its background.
-- Focus-visible ring uses `--cw-electric` at `3px` offset.
-- No emoji icons — use SVG or Phosphor icons only.
-- Respect `prefers-reduced-motion` in both CSS and Motion `useReducedMotion`.
+Editorial split: the exact pitch occupies the left/wide column and the studio
+image sits in a restrained mocha frame on the right. The badge, one CTA, and
+one sentence of assurance are the only supporting elements. Price never leads.
 
-## Fancy-Tech Micro-Interactions
+### Pixel accent
 
-- **Booking CTA:** Primary "Start a project" button opens a discovery-call dialog immediately. Dialog uses bouncy entrance (scale 0.95 → 1, opacity 0 → 1) with overshoot easing.
-- **Buttons:** Bouncy hover — `scale(1.05)` with `cubic-bezier(0.34, 1.56, 0.64, 1)`, active press `scale(0.98)`. Hard shadow grows on hover.
-- **Cards:** Lift on hover `translateY(-6px)` with shadow expansion. Reveal panels use `opacity` + `translateY` only.
-- **Code typing:** Code panels type character-by-character with a blinking caret. Under reduced motion, full code is shown instantly with caret hidden.
-- **Data streams:** SVG paths animate `strokeDashoffset` in a continuous loop. Reduced motion shows static glowing paths.
-- **Scroll-reactive characters:** Character groups subtly rotate/translate based on scroll progress via `useScroll`/`useTransform`. No scroll-jacking; effect is decorative.
-- **Page transitions:** `app/template.tsx` wraps route content with a reduced-motion-aware fade/slide entrance. Single-page site uses this as page-load polish.
-- **FAQ / finale / header / footer polish:** `faq.tsx`, `elite-finale.tsx`,
-  `site-header.tsx`, and `agency-footer.tsx` add small `motion/react`
-  interactions for staggered reveals, hover lifts, and tap scales. Every new
-  interaction branches through `useReducedMotion()`.
+All decorative pixels snap to the 4px grid. The mug uses
+`image-rendering: pixelated`; bean dividers and story bubbles use 4px-aligned
+dimensions and positions. Pixel styling never leaks into text or controls.
 
-## Booking System
+### Recent-work card
 
-- Trigger: "Start a project" button opens a modal `<dialog>`.
-- Configurable Calendly URL via `NEXT_PUBLIC_CALENDLY_URL`.
-- Without URL: render branded placeholder with email fallback.
-- Lazy-load iframe only after dialog opens.
-- Close via close button, Escape, or backdrop click.
-- Focus moves to dialog heading on open; restore focus on close.
+Two complete external-link cards form a dense 2 × 1 desktop grid and one
+column on mobile. Each card contains a real screenshot, title, exact supplied
+note, and clear live-site affordance. Hover affects only the interactive card
+and image.
 
-## Cinematic Scroll System
+### FAQ disclosure
 
-The page moves through three phases on a single global scroll progress value
-(`useScroll` in `scroll-phase-orchestrator.tsx`). No scroll-jacking.
+Three native `details` rows sit on Dark Mocha. Questions are large and direct;
+the first answer opens by default so the exact `$199` and `$10/month` terms are
+immediately available.
 
-- **Background morph:** RGB channels interpolate across plateaus
-  (`STOPS = [0, 0.2, 0.34, 0.64, 0.8, 1]`) so each phase holds a solid color
-  while the user reads it; morphs are confined to the hand-off zones.
-- **Coffee atmosphere:** warm radial glows + fine SVG grain stay subtle across
-  the cream workbench plateau via Motion-driven `opacity`.
-- **Hydration:** motion-driven fixed layers render only after mount
-  (`mounted` gate) so SSR markup matches the client.
-- **Reveals:** `SectionReveal` (one-shot fade + lift on first in-view) and
-  `Stagger`/`StaggerItem` (cascading children) in `section-reveal.tsx`. Both
-  short-circuit to the final static state under reduced motion.
-- **Parallax:** `parallax.tsx` maps a block's own in-view progress to `y` only
-  (never `x`, to avoid horizontal overflow). Static under reduced motion.
-- **Sticky scene:** coffee workbench cards reveal in a stagger over the warm
-  cream plateau; the offer card sits beside the value props.
-- **Late-page motion:** FAQ, elite finale, site header, and agency footer now
-  share the same scroll reveal and micro-interaction grammar via `motion/react`,
-  with `useReducedMotion()` returning static or simplified states when needed.
+### Booking dialog
 
-## Legacy Glass material (`.cw-glass`)
+An opaque mocha dialog preserves a direct external calendar link and email
+fallback even if the embedded scheduler is unavailable. Opening, Escape close,
+and focus restoration remain keyboard-operable.
 
-Layered glass from the retired deep-tech phase: a soft white gradient over the
-glass tint, a gradient hairline edge + specular sheen via `::before`, an inner
-top highlight, and `backdrop-filter: blur(16px) saturate(150%)`. Keep it
-available only for legacy surfaces; the current coffee workbench uses opaque
-cream/white materials instead.
+## 4. Story motion contract
 
-## Phase 2 — Coffee workbench: agency previews
+The story owns the only continuous page animation.
 
-`offer/did-you-know.tsx` (`section#pricing`) is a coffee-themed build workbench.
-It keeps the hero's warm cream canvas and shows the studio's process through
-mini client-site previews and the honest `$99` launch offer.
+- Desktop/no-reduced-motion: a 300vh section contains a sticky, 100dvh stage.
+- One GSAP ScrollTrigger timeline is the single progress source for both text
+  and color. `scrub: true` preserves 1:1 manual control.
+- Frame colors are centered inside each quarter of the story. The stage
+  interpolates through:
+  - `#120D0A / #F5EBE0`
+  - `#241509 / #E8C99B`
+  - `#2E1A0F / #F2A65A`
+  - `#1E1611 / #D49B54`
+- Sentences crossfade and move only with opacity and transform. No masks,
+  layout animation, turbulence, blur, or continuous decorative loop.
+- At 25%, 50%, and 75%, the same eight DOM bubbles are reset and replayed.
+  They are 8/12/16px, rise 20–40px, fade within 0.4–0.6s, and never allocate
+  new nodes while scrolling.
+- Mobile: no sticky stage, scrub, or bubbles. The four sentences stack and
+  receive a short one-shot entry fade.
+- Reduced motion: no pin, scrub, fade, or bubbles. All sentences are readable
+  immediately in normal document flow.
 
-No invented clients or stats — the section leads with the craft and the offer.
+## 5. Responsive behavior
 
-### Layout
+- At 767px and below, hero, work, CTA, and footer collapse to one column.
+- Story switches to its stacked fallback before mobile scroll-jacking can
+  occur.
+- Header secondary anchors hide before they crowd the booking action.
+- Work previews retain their aspect ratio and load before capture.
+- At 200% zoom there is no horizontal page overflow or clipped action.
 
-The work preview cards borrow from Gym Landing v3's editorial/brutalist rhythm:
-dark panels, thin rules, oversized display type, numbered meta rows, and a
-single loud accent. Caffeinatedweb keeps the coffee palette, so the gym acid
-green becomes `--cw-orange` / `--cw-sun` and the black floor becomes
-`--cw-ink`.
+## 6. Accessibility constraints
 
-- **Preview shell:** browser chrome remains, but the interior is a dark
-  editorial website mockup rather than a light SaaS card.
-- **Service preview:** big condensed-feeling headline, orange outline accent,
-  mono labels, bordered stat cells, and hoverable feature rows.
-- **Commerce preview:** uses the same dark grid with coffee product cards so
-  both examples feel like one system.
-- **Offer card** (`pricing-card`): remains a dark conversion block with the
-  original inclusive line-item list and booking trigger.
+- WCAG AA contrast is mandatory. Amber CTA contrast is verified using espresso
+  text, not cream.
+- Logical DOM order matches the visual reading order.
+- Story meaning never depends on color or bubbles.
+- Work examples are real links; FAQ rows are native disclosures; booking
+  triggers are real buttons.
+- Focus indicators remain visible on both primary and surface backgrounds.
+- Motion media queries are functional requirements, not decorative options.
+- Touch targets are at least 44px.
 
-### Tokens
+## 7. Do / do not
 
-Uses caffienatedweb tokens with Gym v3-style restraint:
+### Do
 
-- Background: `--cw-cream` (`#fff8e7`).
-- Preview floor: `--cw-ink` (`#15112b`).
-- Preview panels: `rgba(255,248,231,0.06–0.1)` with `--cw-cream/12` rules.
-- Text: `--cw-cream` on dark, `--cw-ink` on cream.
-- Accent: `--cw-orange`; secondary warmth: `--cw-sun`.
-- Depth: hard thin borders + restrained shadows, not glass blur.
+- Keep the exact supplied public copy.
+- Use `--bg-surface` for Recent Work and FAQ.
+- Let generous type and whitespace carry the tone.
+- Keep `caffienatedweb.com` and `contact@caffienatedweb.com` spelled exactly.
 
-### Motion
+### Do not
 
-- One-shot `SectionReveal` fades the workbench up when it enters the viewport.
-- Preview cards lift only on `transform` and border/color transitions.
-- The global site cursor is a small client island: a coffee-orange dot and
-  trailing ring, expanded over links, buttons, inputs, and `[data-cursor="hover"]`.
-- Under coarse pointers the custom cursor is hidden; under reduced motion the
-  trailing ring snaps directly to the pointer.
+- Do not use vague monthly-pricing language.
+- Do not add process, testimonials, statistics, marquees, or extra sections.
+- Do not pixelate typography, buttons, or layout.
+- Do not animate outside the story except purposeful hover/focus feedback and
+  the mobile one-shot story fade.
+- Do not introduce hard-cut story colors or new bubble nodes during scroll.
 
-### Accessibility
+## 8. Accepted debt
 
-- Decorative cursor uses `aria-hidden="true"` and never captures pointer events.
-- Preview elements are rendered as static markup, not images, so text is
-  readable and selectable.
-- Focus-visible ring preserved on the booking CTA.
-- Body text contrast ≥ 4.5:1 against the dark panels.
-- Content lives in `landing.ts` under `codexBuild` and `pricing`.
-
-## Site header (professional menu)
-
-`site-header.tsx` is a sticky, translucent, blurred top bar (modern-SaaS
-treatment): brand mark on the left, a `Pricing` text link (`#pricing`), and a
-`Contact` CTA pill (`#contact`) on the right. The hero's secondary CTA also
-points at `#pricing`; E2E selects anchors with `.first()`, and the section ids
-themselves (`#pricing`, `#contact`) stay unique.
-
-## Hero (professional)
-
-The "playful origin" is now restrained and professional: a quiet eyebrow
-("Fast, flexible web studio" — no location claim), a clean Fraunces headline (solid
-ink, tight tracking — no rainbow strokes/hard shadows), value-prop highlight
-pills (`hero-highlights`: fast / flexible / from $99), a near-black primary CTA
-+ ghost "See pricing" secondary, and a soft-shadowed illustration frame. The
-colorful illustration + code panels are kept as the brand asset. Service cards
-are hairline-bordered, tinted-icon tiles.
-
-## Phase 3 — ChatGPT-style code console
-
-Phase 3 is the closing CTA, reimagined as a dark "cody" chat console (the prior
-luxury, retro-arcade, and Apple treatments were all retired). It is the tail of
-the sans→mono type journey.
-
-- **Surface:** self-contained dark background (`#0d0f12` / panel `#15181c`) so
-  it holds up regardless of scroll position or reduced motion. Fully `Geist
-  Mono`.
-- **Console:** window chrome (traffic-light dots + session label), a user turn
-  + an assistant turn with the closing copy, a syntax-highlighted `<pre>` code
-  block, and the `$99 · days · domain + hosting` ribbon as terminal-style output.
-- **Composer:** a faux "Message caffienatedweb…" input bar whose green
-  ChatGPT-style send control is the booking trigger (`elite` variant). The
-  caption reads the honest `elite.assurance` line.
-- **Footer:** continues the console — dark, monospace, a `$` prompt wordmark,
-  `Pricing` / `Book a call` links, teal email, and a `//`-commented copyright.
-- **Motion:** only the reduced-motion-safe `SectionReveal` fade-up.
-
-## Performance
-
-- Keep `page.tsx` and `layout.tsx` as Server Components.
-- Only interactive islands (booking, code panels, scroll/transition wrappers) are `"use client"`.
-- No external raster images; all visuals are SVG/CSS.
-- No 3D libraries or scroll-jacking.
-- Bundle only the Motion code needed for animations.
-- Build output should remain small and fast.
+- Satoshi is served through Fontshare’s CSS API rather than bundled locally;
+  the system stack preserves legibility if that request is unavailable.
+- The supplied Ironhaus outcome language is owner-provided marketing copy and
+  is presented exactly as requested; no additional metrics are invented.
