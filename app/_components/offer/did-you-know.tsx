@@ -1,3 +1,4 @@
+import Image from "next/image";
 import { CodexWorkbench } from "./codex-workbench";
 import { SectionReveal } from "../scroll/section-reveal";
 
@@ -7,6 +8,20 @@ export function DidYouKnow() {
       id="pricing"
       className="relative isolate w-full overflow-hidden px-4 pb-24 pt-8 text-cw-ink sm:px-6 sm:pb-28 sm:pt-10 lg:px-8 lg:pb-36 lg:pt-14"
     >
+      <div
+        className="pointer-events-none absolute inset-0 z-0 overflow-hidden"
+        aria-hidden="true"
+      >
+        <div className="absolute left-1/2 top-1/2 h-[46rem] w-[46rem] -translate-x-1/2 -translate-y-1/2 bg-white/45 blur-3xl" />
+        <Image
+          src="/caffeinated-web-logo.webp"
+          alt=""
+          unoptimized
+          priority
+          fill
+          className="object-contain object-center opacity-[0.08]"
+        />
+      </div>
       <div
         aria-hidden="true"
         className="cw-aurora"

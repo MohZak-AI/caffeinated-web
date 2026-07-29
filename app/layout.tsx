@@ -1,24 +1,10 @@
 import type { Metadata } from "next";
-import {
-  Cinzel,
-  Cinzel_Decorative,
-  EB_Garamond,
-  Fraunces,
-  Geist_Mono,
-  Playfair_Display,
-  Press_Start_2P,
-} from "next/font/google";
+import Script from "next/script";
+import { Geist_Mono } from "next/font/google";
 import { SiteCursor } from "./_components/cursor/site-cursor";
 import { CookieConsent } from "./_components/consent/cookie-consent";
 import "./globals.css";
-
-const fraunces = Fraunces({
-  variable: "--font-primary",
-  subsets: ["latin"],
-  display: "swap",
-  weight: ["400", "500", "600", "700"],
-  style: ["normal", "italic"],
-});
+import "./espresso.css";
 
 const geistMono = Geist_Mono({
   variable: "--font-geist-mono",
@@ -27,55 +13,23 @@ const geistMono = Geist_Mono({
   weight: ["400", "500", "600", "700"],
 });
 
-const playfair = Playfair_Display({
-  variable: "--font-serif",
-  subsets: ["latin"],
-  display: "swap",
-  weight: ["400", "500", "600", "700"],
-});
-
-const pressStart = Press_Start_2P({
-  variable: "--font-pixel",
-  subsets: ["latin"],
-  display: "swap",
-  weight: ["400"],
-});
-
-// Medieval / illuminated-manuscript voice for the "Did you know?" section.
-const cinzel = Cinzel({
-  variable: "--font-cinzel",
-  subsets: ["latin"],
-  display: "swap",
-  weight: ["500", "600", "700", "800"],
-});
-
-const cinzelDecorative = Cinzel_Decorative({
-  variable: "--font-cinzel-deco",
-  subsets: ["latin"],
-  display: "swap",
-  weight: ["700", "900"],
-});
-
-const ebGaramond = EB_Garamond({
-  variable: "--font-garamond",
-  subsets: ["latin"],
-  display: "swap",
-  weight: ["400", "500", "600"],
-  style: ["normal", "italic"],
-});
-
-
-const siteUrl =
-  process.env.NEXT_PUBLIC_SITE_URL ?? "https://caffienatedweb.com";
+const fallbackSiteUrl = "https://caffienatedweb.com";
+const configuredSiteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? fallbackSiteUrl;
+const siteUrl = URL.canParse(configuredSiteUrl)
+  ? configuredSiteUrl
+  : fallbackSiteUrl;
+const reactDiagnosticsEnabled =
+  process.env.NODE_ENV === "development" &&
+  process.env.NEXT_PUBLIC_ENABLE_REACT_DIAGNOSTICS === "true";
 
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),
   title: {
-    default: "Affordable Website Design & Redesign from $199 | caffienatedweb",
+    default: "Custom Websites for Small Businesses | caffienatedweb",
     template: "%s | caffienatedweb",
   },
   description:
-    "Affordable custom website design and redesign for small businesses. Build or redesign from $199 one time, plus low monthly hosting, domain and maintenance.",
+    "Fast, clear websites for founders, shops, cafés, and local teams, with the technical work handled.",
   applicationName: "caffienatedweb",
   keywords: [
     "affordable website design",
@@ -84,7 +38,7 @@ export const metadata: Metadata = {
     "website redesign services",
     "website from scratch",
     "low cost website builder",
-    "website for $199",
+    "website from $199",
     "website hosting and domain",
     "website maintenance",
     "freelance web designer",
@@ -100,9 +54,9 @@ export const metadata: Metadata = {
     locale: "en_US",
     url: siteUrl,
     siteName: "caffienatedweb",
-    title: "Affordable Website Design & Redesign from $199 | caffienatedweb",
+    title: "A website customers can find and trust | caffienatedweb",
     description:
-      "Affordable custom website design and redesign for small businesses. Build or redesign from $199 one time, plus low monthly hosting, domain and maintenance.",
+      "Clear websites for founders, shops, cafés, and local teams, without the technical stress.",
     images: [
       {
         url: "/caffeinated-web-logo.webp",
@@ -114,9 +68,9 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "Affordable Website Design & Redesign from $199 | caffienatedweb",
+    title: "A website customers can find and trust | caffienatedweb",
     description:
-      "Affordable custom website design and redesign for small businesses. Build or redesign from $199 one time, plus low monthly hosting, domain and maintenance.",
+      "Clear websites for founders, shops, cafés, and local teams, without the technical stress.",
     images: ["/caffeinated-web-logo.webp"],
   },
   robots: {
@@ -144,9 +98,31 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${fraunces.variable} ${geistMono.variable} ${playfair.variable} ${pressStart.variable} ${cinzel.variable} ${cinzelDecorative.variable} ${ebGaramond.variable} h-full antialiased`}
+      className={`${geistMono.variable} h-full antialiased`}
     >
-      <body className="min-h-full flex flex-col bg-[--cw-cream] text-[--cw-ink]">
+      <head>
+        <link rel="preconnect" href="https://api.fontshare.com" />
+        <link
+          rel="stylesheet"
+          href="https://api.fontshare.com/v2/css?f[]=satoshi@300,400,500,600,700&display=swap"
+        />
+        {reactDiagnosticsEnabled && (
+          <Script
+            src="https://unpkg.com/react-scan/dist/auto.global.js"
+            crossOrigin="anonymous"
+            strategy="lazyOnload"
+          />
+        )}
+
+        {reactDiagnosticsEnabled && (
+          <Script
+            src="//unpkg.com/react-grab/dist/index.global.js"
+            crossOrigin="anonymous"
+            strategy="lazyOnload"
+          />
+        )}
+      </head>
+      <body className="min-h-full flex flex-col bg-[var(--bg-primary)] text-[var(--text-primary)]">
         <SiteCursor />
         {children}
         <CookieConsent />

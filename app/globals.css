@@ -32,14 +32,20 @@
   --color-error: #ff5ebc;
   --color-error-content: #15112b;
 
-  --radius-selector: 0.75rem;
-  --radius-field: 1rem;
-  --radius-box: 1.5rem;
+  --radius-selector: 0;
+  --radius-field: 0;
+  --radius-box: 0;
   --size-selector: 0.25rem;
   --size-field: 0.25rem;
   --border: 1px;
   --depth: 1;
   --noise: 0;
+}
+
+/* Sharp redesign v2: the only round elements on the page are the tiny
+   red/yellow/green browser traffic-light dots. Everything else is radius 0. */
+.cw-dot {
+  border-radius: 9999px;
 }
 
 :root {
@@ -121,16 +127,6 @@
     );
 }
 
-/* Fine film grain — keeps the matte charcoal from looking flat. */
-.scroll-phase-glow::after {
-  content: "";
-  position: absolute;
-  inset: 0;
-  opacity: 0.5;
-  mix-blend-mode: overlay;
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.35'/%3E%3C/svg%3E");
-}
-
 /* Glassmorphism (Phase 2) — layered glass with a gradient edge + specular
    sheen so panels read as polished, premium materials rather than flat tint. */
 .cw-glass {
@@ -173,23 +169,20 @@
   pointer-events: none;
 }
 
-/* ───────── Liquid glass ─────────
-   A modern, Apple-inspired translucent material: layered refraction,
-   a specular "glass rim" hairline, inner light, and a slow GPU-friendly
-   sheen sweeping the surface. Light + dark variants. Used on key surfaces
-   to signal a modern web build. Under reduced motion the sheen freezes. */
+/* Opaque paper material. It keeps the dimensional rim and inner light without
+   forcing the browser to repaint a blurred backdrop during scroll. */
 .cw-liquid {
   position: relative;
   isolation: isolate;
   overflow: hidden;
-  background: linear-gradient(
-    135deg,
-    rgba(255, 255, 255, 0.55) 0%,
-    rgba(255, 255, 255, 0.22) 42%,
-    rgba(255, 255, 255, 0.4) 100%
-  );
-  backdrop-filter: blur(10px) saturate(160%);
-  -webkit-backdrop-filter: blur(10px) saturate(160%);
+  background:
+    linear-gradient(
+      135deg,
+      rgba(255, 255, 255, 0.7) 0%,
+      rgba(255, 255, 255, 0.2) 52%,
+      rgba(255, 255, 255, 0.45) 100%
+    ),
+    var(--cw-cream);
   box-shadow:
     inset 0 1px 0 rgba(255, 255, 255, 0.7),
     inset 0 -1px 0 rgba(255, 255, 255, 0.12),
@@ -244,6 +237,83 @@
   );
 }
 
+.cw-hero-visual {
+  isolation: isolate;
+  filter: drop-shadow(0 24px 32px rgba(21, 17, 43, 0.16));
+}
+
+.cw-hero-visual::before {
+  content: "";
+  position: absolute;
+  inset: 9% 6% 7%;
+  z-index: -1;
+  border: 1px solid rgba(21, 17, 43, 0.11);
+  background:
+    linear-gradient(90deg, rgba(21, 17, 43, 0.05) 1px, transparent 1px),
+    linear-gradient(rgba(21, 17, 43, 0.05) 1px, transparent 1px),
+    linear-gradient(135deg, rgba(255, 255, 255, 0.78), rgba(255, 248, 231, 0.28));
+  background-size: 28px 28px, 28px 28px, auto;
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.9),
+    14px 16px 0 rgba(21, 17, 43, 0.07);
+  transform: rotate(1.5deg);
+}
+
+.cw-hero-visual__frame {
+  position: relative;
+  padding: clamp(0.75rem, 2vw, 1.5rem);
+}
+
+.cw-hero-visual__stamp {
+  position: absolute;
+  z-index: 20;
+  border: 1px solid rgba(21, 17, 43, 0.18);
+  background: var(--cw-cream);
+  box-shadow: 6px 7px 0 rgba(21, 17, 43, 0.12);
+  color: var(--cw-ink);
+  font-family: var(--font-geist-mono), ui-monospace, monospace;
+  font-size: 0.62rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  padding: 0.55rem 0.7rem;
+  text-transform: uppercase;
+}
+
+.cw-hero-visual__stamp::before {
+  content: "";
+  display: inline-block;
+  width: 0.45rem;
+  height: 0.45rem;
+  margin-right: 0.45rem;
+  background: var(--cw-orange);
+  vertical-align: 0.05em;
+}
+
+.cw-hero-visual__stamp--brief {
+  left: 2%;
+  top: 16%;
+  transform: rotate(-4deg);
+}
+
+.cw-hero-visual__stamp--live {
+  bottom: 12%;
+  right: 3%;
+  transform: rotate(3deg);
+}
+
+@media (max-width: 1023px) {
+  .cw-hero-visual {
+    margin-top: -0.5rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .cw-hero-visual__stamp {
+    font-size: 0.5rem;
+    padding: 0.45rem 0.5rem;
+  }
+}
+
 /* ───────── Aurora mesh (middle section) ─────────
    A vibrant, modern mesh-gradient backdrop for the pricing/middle section:
    slow-drifting saturated color blobs over a warm tinted base, a faint
@@ -271,18 +341,9 @@
   -webkit-mask: radial-gradient(120% 90% at 50% 42%, #000, transparent 78%);
   mask: radial-gradient(120% 90% at 50% 42%, #000, transparent 78%);
 }
-/* Fine film grain so the mesh never reads as flat plastic. */
-.cw-aurora::after {
-  content: "";
-  position: absolute;
-  inset: 0;
-  opacity: 0.22;
-  mix-blend-mode: overlay;
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.4'/%3E%3C/svg%3E");
-}
 .cw-aurora span {
   position: absolute;
-  border-radius: 9999px;
+  border-radius: 0;
   filter: blur(48px);
   opacity: 0.42;
   will-change: transform;
@@ -466,17 +527,6 @@
   }
 }
 
-/* Elite typography helpers (Phase 3) */
-.font-serif {
-  font-family: var(--font-serif), Georgia, "Times New Roman", serif;
-}
-.tracking-luxe {
-  letter-spacing: 0.02em;
-}
-.tracking-eyebrow {
-  letter-spacing: 0.22em;
-}
-
 /* Slow gallery-light shimmer sweeping the elite portrait. Frozen under
    reduced motion by the global media query below. */
 .cw-sheen {
@@ -509,68 +559,6 @@
   100% {
     left: 130%;
   }
-}
-
-/* ───────── Emphasis phrase: pixely, rainbow, gently moving ─────────
-   Scoped styling for the single highlighted phrase ("every single day").
-   Pixel typeface + animated rainbow gradient + a soft cartoony wiggle. */
-.font-pixel {
-  font-family: var(--font-pixel), "Press Start 2P", monospace;
-  -webkit-font-smoothing: none;
-  -moz-osx-font-smoothing: unset;
-  font-smooth: never;
-  text-rendering: optimizeSpeed;
-  letter-spacing: 0;
-}
-@keyframes cw-rainbow-pan {
-  to {
-    background-position: 200% center;
-  }
-}
-@keyframes cw-wiggle {
-  0%,
-  100% {
-    transform: rotate(-3deg);
-  }
-  50% {
-    transform: rotate(3deg);
-  }
-}
-.cw-rainbow-text {
-  background-image: linear-gradient(
-    100deg,
-    #ff5ebc,
-    #ff8a2a,
-    #ffd84d,
-    #16d8c2,
-    #29a7ff,
-    #7c3cff,
-    #ff5ebc
-  );
-  background-size: 200% auto;
-  -webkit-background-clip: text;
-  background-clip: text;
-  color: transparent;
-  -webkit-text-fill-color: transparent;
-  animation: cw-rainbow-pan 6s linear infinite;
-}
-.cw-wiggle {
-  display: inline-block;
-  transform-origin: center;
-  animation: cw-wiggle 1s ease-in-out infinite;
-}
-
-/* ───────── Medieval / illuminated-manuscript (Phase 2 redesign) ─────────
-   Parchment surface, gilded type, drop-cap initial, ornamental rules. */
-.font-medieval {
-  font-family: var(--font-cinzel), "Cinzel", Georgia, serif;
-}
-.font-medieval-display {
-  font-family: var(--font-cinzel-deco), "Cinzel Decorative", Georgia, serif;
-}
-.font-manuscript {
-  font-family: var(--font-garamond), "EB Garamond", Georgia, "Times New Roman",
-    serif;
 }
 
 :root {
@@ -608,30 +596,6 @@
     );
   color: var(--cw-ink-brown);
 }
-/* Fine parchment grain. */
-.parchment::after {
-  content: "";
-  position: absolute;
-  inset: 0;
-  z-index: -1;
-  pointer-events: none;
-  opacity: 0.5;
-  mix-blend-mode: multiply;
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.4'/%3E%3C/svg%3E");
-}
-
-/* Illuminated initial — gilded oversized first letter of the manuscript body. */
-.dropcap::first-letter {
-  float: left;
-  margin: 0.06em 0.1em 0 0;
-  font-family: var(--font-cinzel-deco), "Cinzel Decorative", serif;
-  font-weight: 900;
-  font-size: 3.4em;
-  line-height: 0.74;
-  color: var(--cw-gilt);
-  text-shadow: 0 1px 0 rgba(255, 255, 255, 0.5);
-}
-
 /* Hand-set gold rule with a centered diamond, for section dividers. */
 .gilt-rule {
   border: 0;
@@ -955,25 +919,6 @@
     transform: translate(-50%, -50%);
   }
 
-  .cw-site-cursor__ring {
-    width: 42px;
-    height: 42px;
-    border: 1.5px solid color-mix(in srgb, var(--cw-orange) 82%, white);
-    border-radius: 999px;
-    transform: translate(-50%, -50%);
-    scale: 1;
-    transition:
-      scale 260ms cubic-bezier(0.16, 1, 0.3, 1),
-      border-color 260ms cubic-bezier(0.16, 1, 0.3, 1),
-      background-color 260ms cubic-bezier(0.16, 1, 0.3, 1);
-  }
-
-  .cw-site-cursor__ring.is-hover {
-    scale: 1.8;
-    border-color: var(--cw-sun);
-    background: rgba(255, 138, 42, 0.08);
-  }
-
   .cw-site-cursor__label {
     opacity: 0;
     border: 1px solid rgba(255, 138, 42, 0.45);
@@ -996,7 +941,6 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .cw-site-cursor__ring,
   .cw-site-cursor__label {
     transition: none;
   }
@@ -1008,7 +952,6 @@
   --font-sans: var(--font-primary);
   --font-display: var(--font-primary);
   --font-mono: var(--font-geist-mono);
-  --font-serif: var(--font-serif);
 
   --color-cw-cream: var(--cw-cream);
   --color-cw-ink: var(--cw-ink);
@@ -1036,7 +979,7 @@
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: var(--font-primary), Georgia, serif;
+  font-family: var(--font-primary), Arial, sans-serif;
 }
 
 /* Focus ring */
@@ -1160,6 +1103,96 @@ dialog::backdrop {
   background: linear-gradient(180deg, transparent 0%, #0d0f12 100%);
 }
 
+/* Conversational landing page */
+.cw-page-ground {
+  background-color: var(--cw-cream);
+}
+
+.cw-hero {
+  background: var(--cw-cream);
+}
+
+.cw-hero-grid {
+  position: absolute;
+  inset: 0;
+  z-index: -2;
+  opacity: 0.38;
+  background-image:
+    linear-gradient(
+      to right,
+      color-mix(in srgb, var(--cw-ink) 7%, transparent) 1px,
+      transparent 1px
+    ),
+    linear-gradient(
+      to bottom,
+      color-mix(in srgb, var(--cw-ink) 7%, transparent) 1px,
+      transparent 1px
+    );
+  background-size: 4rem 4rem;
+  mask-image: linear-gradient(to bottom, transparent, black 22%, black 72%, transparent);
+}
+
+.cw-hero-art {
+  isolation: isolate;
+  filter: drop-shadow(
+    0 2rem 2.5rem color-mix(in srgb, var(--cw-ink) 16%, transparent)
+  );
+}
+
+.cw-hero-art::after {
+  content: "";
+  position: absolute;
+  inset: 1rem -0.75rem -0.75rem 1rem;
+  z-index: -1;
+  border: 1px solid color-mix(in srgb, var(--cw-ink) 12%, transparent);
+  background: color-mix(in srgb, var(--cw-orange) 14%, var(--cw-cream));
+}
+
+.cw-story-atmosphere {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background:
+    radial-gradient(
+      circle at 18% 28%,
+      color-mix(in srgb, var(--cw-purple) 30%, transparent),
+      transparent 30rem
+    ),
+    radial-gradient(
+      circle at 82% 76%,
+      color-mix(in srgb, var(--cw-teal) 20%, transparent),
+      transparent 32rem
+    ),
+    linear-gradient(
+      135deg,
+      color-mix(in srgb, var(--cw-cream) 4%, transparent),
+      transparent 42%
+    );
+}
+
+.cw-story-atmosphere::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  opacity: 0.12;
+  background-image:
+    linear-gradient(
+      to right,
+      color-mix(in srgb, var(--cw-cream) 18%, transparent) 1px,
+      transparent 1px
+    ),
+    linear-gradient(
+      to bottom,
+      color-mix(in srgb, var(--cw-cream) 18%, transparent) 1px,
+      transparent 1px
+    );
+  background-size: 4rem 4rem;
+}
+
+.cw-final-cta {
+  background: var(--cw-cream);
+}
+
 /* Reduced motion */
 @media (prefers-reduced-motion: reduce) {
   *,
@@ -1198,5 +1231,29 @@ dialog::backdrop {
      single static color regardless of scroll position. */
   .scroll-phase-backdrop {
     background: var(--cw-cream) !important;
+  }
+
+  .cw-scroll-story {
+    height: auto !important;
+  }
+
+  .cw-story-sticky {
+    position: relative !important;
+    min-height: auto;
+  }
+
+  .cw-story-stage {
+    display: grid;
+    min-height: auto;
+    gap: 3rem;
+    padding-block: 4rem;
+  }
+
+  .cw-story-beat {
+    position: relative !important;
+    inset: auto !important;
+    opacity: 1 !important;
+    transform: none !important;
+    clip-path: none !important;
   }
 }

@@ -1,161 +1,144 @@
+import { legacyLandingContent } from "./landing-legacy";
+
+const faqItems = [
+  {
+    question: "Is this going to cost me a fortune?",
+    answer:
+      "Nope. Setup starts at a flat $199. After that, it's just $10/month — covers your hosting, domain, security, and updates, plus a free site edit every 6 months. No hidden agency surprises.",
+  },
+  {
+    question: "Do I have to do any technical setup myself?",
+    answer:
+      "Zero. We handle the code, the domain, and the hosting. You tell us about your business, and we do the rest.",
+  },
+  {
+    question: "How fast can we get this live?",
+    answer:
+      "Days, not months. Once we have a 15-minute chat, we'll send a clear plan and start building immediately.",
+  },
+] as const;
+
 export const landingContent = {
   brand: {
     name: "caffienatedweb",
-    tagline: "Websites built or redesigned from $199, plus a low monthly care plan",
+    tagline: "A clear website, built over one honest conversation.",
+    announcement: "Websites for founders, shops, cafés, and local teams.",
   },
   hero: {
-    headline: "AGENCY GRADE WEBSITES, BUILT OR REDESIGNED FROM $199.",
+    badge: "Grab a cup. Let's talk.",
+    headline:
+      "Honestly? If you don't have a website, you're losing customers to someone who does.",
     subheadline:
-      "An affordable website studio for founders, cafes, shops, and local teams. We build from zero or redesign what you already have, then keep it running with hosting, domain, and maintenance for a low monthly fee.",
-    ctaPrimary: "Start your build",
-    ctaSecondary: "See the pricing",
-    assurance: "Free 30 minute call \u00b7 same day plan \u00b7 no obligation",
-    highlights: [
-      "One time setup from $199",
-      "Hosting, domain and maintenance",
-      "Free edit every 6 months",
-    ],
+      "Most customers check Google, ask ChatGPT, and scroll social media before they ever pick up the phone. If you aren't visible, you're invisible. A basic map pin isn't enough to build trust-your website is where that final decision happens. I built Caffeinated Web to make having a professional, high-performing site effortless.",
+    ctaPrimary: "Book a 15-Min Chat",
+    microcopy: "Just a quick coffee chat to see if we're a fit.",
   },
   booking: {
-    title: "Book a Discovery Call",
+    title: "Let’s talk about your website",
     description:
-      "Pick a 30 minute slot. We learn what you need, then send a simple plan and price, usually the same day.",
-    ctaLabel: "Book a call",
+      "Pick a time that works. Tell us what you need, and we'll give you a clear next step.",
+    ctaLabel: "Book a 15-Min Chat",
     defaultSchedulingUrl:
-      "https://calendly.com/zakizakariawwzz/30min?hide_gdpr_banner=1&background_color=f3e7c8&text_color=2c2014&primary_color=a6332a",
-    fallbackEmail: "hello@caffienatedweb.com",
+      "https://calendly.com/zakizakariawwzz/?hide_gdpr_banner=1&background_color=f3e7c8&text_color=2c2014&primary_color=a6332a",
+    fallbackEmail: "contact@caffienatedweb.com",
     placeholderHeadline: "Prefer email?",
     placeholderBody:
-      "Use the live calendar above, or send us a note and we book a time within one business day.",
+      "Send us a short note about the project. We'll reply with a simple next step.",
+    schedulerFallbackTitle: "Calendar not showing?",
+    schedulerFallbackLink: "Open the calendar →",
     closeLabel: "Close",
   },
-  services: [
-    {
-      id: "startup-acceleration",
-      label: "STRATEGY",
-      description: "Your offer, message, structure, and launch path.",
-    },
-    {
-      id: "custom-coding",
-      label: "DESIGN",
-      description: "Warm, premium pages with real agency clarity.",
-    },
-    {
-      id: "scalable-solutions",
-      label: "BUILD",
-      description: "Responsive code, hosting, domain, and handoff.",
-    },
-  ],
-  examples: {
-    eyebrow: "Live work",
-    headline: "Recent sites built in the studio, ready to explore.",
-    body: "Click any preview to open the live example in a new tab. Each one is a fully responsive landing page with its own content, structure, and conversion path.",
-    windows: [
+  story: {
+    lines: [
+      "You've probably got about 3 seconds before a visitor leaves your site.",
+      "If it's slow, confusing, or looks like it was built in 2012...",
+      "They're gone before you even get a chance to sell.",
+      "We fix that. Clear words, sharp design, zero technical stress.",
+    ],
+  },
+  work: {
+    title:
+      "Don't just take my word for it. Here's what we've been brewing recently.",
+    subheading: "(Click any preview to test out the live site)",
+    linkLabel: "Open live site",
+    projects: [
       {
-        id: "gym-landing",
-        label: "Gym landing",
-        urlBar: "gym-landing-example.wasmer.app",
-        brandName: "Ironhaus",
+        id: "ironhaus",
+        name: "Ironhaus Gym",
         href: "https://gym-landing-example.wasmer.app/",
         screenshot: "/example-gym.png",
-        description:
-          "A dark performance-studio landing page with bold typography, program blocks, coaches, pricing tiers, and testimonials.",
+        note: "They had a clunky booking page that was losing them members every week. We built them a dark, high-energy site that makes signing up effortless.",
       },
       {
-        id: "cafe-landing",
-        label: "Cafe landing",
-        urlBar: "cafe-landing-example.wasmer.app",
-        brandName: "Fika No. 9",
+        id: "fika-no-9",
+        name: "Fika No. 9",
         href: "https://cafe-landing-example.wasmer.app/",
         screenshot: "/example-cafe.png",
-        description:
-          "A warm, editorial cafe page with a slower-kind-of-coffee story, menu, reservation form, gallery, and ordering flow.",
+        note: "A cozy, clean site designed to showcase their menu, tell their story, and get people walking through the door.",
       },
     ],
   },
-  valueProps: [
-    {
-      title: "01 / Shape the offer",
-      text: "We turn what you sell into a clear page structure, headline system, and conversion path.",
-    },
-    {
-      title: "02 / Design the proof",
-      text: "We shape your site like a real agency case: strong sections, visual hierarchy, and polished details.",
-    },
-    {
-      title: "03 / Ship the site",
-      text: "We build, connect the domain, host it, and keep edits simple after launch.",
-    },
-  ],
+  faqSection: {
+    title: "I know what you're probably thinking...",
+    items: faqItems,
+  },
+  finalCta: {
+    headline: "All it takes is 15 minutes.",
+    body: "No long presentations or high-pressure tactics. Pick a time on our calendar, tell us what you need, and we'll send a plan and price the same day.",
+    button: "Pick a 15-Min Coffee Slot",
+    email: "contact@caffienatedweb.com",
+    emailLabel: "Or email us at contact@caffienatedweb.com",
+  },
+  process: {
+    label: "How this works",
+    title: "Working together is pretty simple.",
+    steps: [
+      {
+        id: "goals",
+        number: "01",
+        title: "We chat about your goals",
+        body: "Grab 15 minutes on our calendar. You tell us what you do, who you sell to, and what you hate about your current setup. No hard sales push.",
+      },
+      {
+        id: "build",
+        number: "02",
+        title: "We build the whole thing",
+        body: "We write the copy, design the layout, and code the site in days, not months. You get a live preview link to review everything before we launch.",
+      },
+      {
+        id: "care",
+        number: "03",
+        title: "We keep it running behind the scenes",
+        body: "Once live, we handle your hosting, domain renewals, security, and updates. Need a text change in three months? Just shoot us a message.",
+      },
+    ],
+  },
   pricing: {
-    eyebrow: "Affordable websites",
-    headline: "A real website from $199, then a low monthly care plan.",
-    body: "We build or redesign your site for a one time fee starting at $199. Then a low monthly fee covers your domain, hosting, and maintenance, with a free update every 6 months.",
+    label: "FAQ",
+    title: "I know what you're probably thinking...",
+    support: "Clear terms before you commit.",
+    startingPrice: "$199",
+    startingCallout: "$199 setup",
+    cta: "Book a 15-Min Chat",
+    summary:
+      "Setup starts at a flat $199, followed by an exact $10/month care plan.",
+    carePlan:
+      "$10/month covers hosting, domain, security, updates, and a free site edit every 6 months.",
+    faq: faqItems,
+    eyebrow: "Clear pricing",
+    headline: "Setup starts at $199, then it's $10/month.",
+    body: "We confirm the complete scope and price before you commit.",
     price: "$199",
-    priceNote: "one time setup \u00b7 from",
-    includes: [
-      "Build from zero or redesign your current site",
-      "Custom, mobile friendly website",
-      "Live in days, not months",
-      "You own the site and the content",
-    ],
+    priceNote: "one-time setup · from",
+    includes: ["Copy", "Design", "Code", "Launch"],
     monthly: {
-      price: "Low fee",
-      note: "monthly \u00b7 hosting \u00b7 domain \u00b7 maintenance",
-      includes: [
-        "Domain renewal and hosting",
-        "Security and maintenance",
-        "Free edit every 6 months",
-        "Small fee for edits outside the cycle",
-      ],
+      price: "$10",
+      note: "per month",
+      includes: ["Hosting", "Domain", "Security", "Updates"],
     },
-    ctaLabel: "Book a call",
+    ctaLabel: "Book a 15-Min Chat",
   },
-  faq: [
-    {
-      q: "Do you build affordable websites for small businesses?",
-      a: "Yes. We design and build custom websites for small businesses from $199 one time, with hosting, domain, and maintenance on a low monthly fee. No agency sized budget required.",
-    },
-    {
-      q: "How fast can my site go live?",
-      a: "Most builds go live in days, not months. After a 30 minute call we send a simple plan and price, usually the same day.",
-    },
-    {
-      q: "What do I get for $199?",
-      a: "$199 is the starting price for a one time setup. We build from zero or redesign your current site into a custom, mobile friendly website. We scope the real cost on the call so there are no surprises.",
-    },
-    {
-      q: "What does the monthly care plan cover?",
-      a: "Your domain, hosting, security, and ongoing maintenance, plus one free edit every 6 months. It keeps the site fast, safe, and up to date.",
-    },
-    {
-      q: "Can I change things after launch?",
-      a: "Yes. Subscribed members get a free update every 6 months to edit the site at no charge. Want changes outside that window? You pay a small fee.",
-    },
-    {
-      q: "Do I own the site?",
-      a: "Yes. Your domain, your hosting, your content. We build it and hand it over.",
-    },
-    {
-      q: "Who is this for?",
-      a: "Founders, cafes, shops, and local teams that want sharp design and clean code without agency sized timelines or budgets.",
-    },
-    {
-      q: "What if I'm not ready to buy?",
-      a: "The discovery call is free and there is no obligation. We just send a plan and price you can think over.",
-    },
-  ],
-  elite: {
-    closingHeadline: "Bring us the idea. We brew the website.",
-    closingBody:
-      "Tell us what you need and we send a simple plan and price, usually the same day. No jargon, no obligation.",
-    assurance: "From $199 one time, then a low monthly care plan.",
-    ribbon: [
-      { value: "$199", label: "one time setup" },
-      { value: "6 months", label: "free update" },
-      { value: "Low fee", label: "monthly care" },
-    ],
-  },
+  ...legacyLandingContent,
 } as const;
 
 export type LandingContent = typeof landingContent;

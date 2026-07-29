@@ -13,7 +13,7 @@ export function CookieConsent() {
       role="dialog"
       aria-live="polite"
       aria-label="Cookie consent"
-      className="fixed bottom-4 left-4 right-4 z-[100] mx-auto max-w-2xl rounded-2xl border border-cw-ink/10 bg-base-100 p-4 text-base-content shadow-[0_20px_60px_rgba(21,17,43,0.18)] sm:bottom-6 sm:left-6 sm:right-6 sm:p-5"
+      className="fixed bottom-4 left-4 right-4 z-[100] mx-auto max-w-2xl border border-cw-ink/15 bg-base-100/95 p-4 text-base-content shadow-[10px_14px_38px_rgba(21,17,43,0.16)] backdrop-blur-md sm:bottom-6 sm:left-6 sm:right-6 sm:p-5"
     >
       <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
         <div className="text-sm leading-relaxed">
@@ -21,7 +21,7 @@ export function CookieConsent() {
             We use strictly necessary cookies to keep the site working, and
             optional analytics cookies to understand how visitors use the site.
           </p>
-          <p className="mt-1 text-xs text-base-content/60">
+          <p className="mt-1 text-xs text-base-content/65">
             Read more in our{" "}
             <Link
               href="/legal/cookies"

@@ -25,7 +25,7 @@ type Rgb = [number, number, number];
 const CREAM: Rgb = [255, 248, 231];
 const IVORY: Rgb = [247, 244, 238];
 
-const STOPS = [0, 0.2, 0.34, 0.64, 0.8, 1];
+const STOPS = [0, 0.2, 0.42, 0.64, 0.8, 1];
 const STOP_VALUES: Rgb[] = [
   CREAM,
   CREAM,
@@ -44,7 +44,7 @@ function rgbToHex(r: number, g: number, b: number): string {
 }
 
 function phaseForProgress(p: number): ScrollPhase {
-  if (p < 0.34) return "playful";
+  if (p < 0.42) return "playful";
   if (p < 0.8) return "tech";
   return "elite";
 }

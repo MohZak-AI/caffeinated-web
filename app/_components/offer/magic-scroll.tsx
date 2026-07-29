@@ -106,8 +106,8 @@ export function Sparkles() {
       {SPARKLES.map((s, i) => (
         <motion.span
           key={i}
-          className="absolute font-medieval-display text-[#c9a86a]"
-          style={{ left: s.left, top: s.top, fontSize: s.size }}
+          className="absolute block bg-[#c9a86a]"
+          style={{ left: s.left, top: s.top, width: s.size, height: s.size }}
           initial={{ opacity: 0, scale: 0.6 }}
           animate={{ opacity: [0, 1, 0], scale: [0.6, 1.15, 0.6] }}
           transition={{
@@ -117,9 +117,7 @@ export function Sparkles() {
             delay: s.delay,
             repeatDelay: 1.4,
           }}
-        >
-          ✦
-        </motion.span>
+        />
       ))}
     </div>
   );

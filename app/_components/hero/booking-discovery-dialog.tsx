@@ -1,13 +1,43 @@
 "use client";
 
-import { useEffect, useRef } from "react";
-import { motion } from "motion/react";
+import {
+  useCallback,
+  useEffect,
+  useId,
+  useRef,
+} from "react";
 import { capture } from "@/app/_lib/posthog";
 import { landingContent } from "@/app/_content/landing";
 
-interface BookingDiscoveryDialogProps {
-  variant?: "playful" | "nav" | "pricing" | "elite" | "medieval";
-  label?: string;
+type BookingDiscoveryDialogProps = {
+  readonly variant?: "playful" | "nav" | "pricing" | "elite";
+  readonly label?: string;
+};
+
+const TRIGGER_CLASSES = {
+  playful:
+    "inline-flex min-h-12 items-center justify-center bg-[var(--accent)] px-7 text-[15px] font-semibold text-[var(--bg-primary)] shadow-lg transition-transform duration-200 hover:-translate-y-0.5 hover:brightness-110 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[var(--focus)] motion-reduce:transform-none",
+  nav: "inline-flex min-h-11 items-center justify-center bg-[var(--accent)] px-5 text-sm font-semibold text-[var(--bg-primary)] transition-[filter] duration-200 hover:brightness-110 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[var(--focus)]",
+  pricing:
+    "inline-flex min-h-12 items-center justify-center bg-[var(--accent)] px-7 text-[15px] font-semibold text-[var(--bg-primary)] shadow-lg transition-transform duration-200 hover:-translate-y-0.5 hover:brightness-110 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[var(--focus)] motion-reduce:transform-none",
+  elite:
+    "inline-flex min-h-12 items-center justify-center bg-[var(--accent)] px-7 text-[15px] font-semibold text-[var(--bg-primary)] shadow-lg transition-transform duration-200 hover:-translate-y-0.5 hover:brightness-110 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[var(--focus)] motion-reduce:transform-none",
+} as const;
+
+function resolveSchedulingUrl(value: string | undefined) {
+  const fallback = landingContent.booking.defaultSchedulingUrl;
+
+  try {
+    const url = new URL(value ?? fallback);
+    const isCalendlyHost =
+      url.hostname === "calendly.com" || url.hostname.endsWith(".calendly.com");
+
+    return url.protocol === "https:" && isCalendlyHost
+      ? url.toString()
+      : fallback;
+  } catch {
+    return fallback;
+  }
 }
 
 export function BookingDiscoveryDialog({
@@ -16,63 +46,48 @@ export function BookingDiscoveryDialog({
 }: BookingDiscoveryDialogProps) {
   const dialogRef = useRef<HTMLDialogElement>(null);
   const closeButtonRef = useRef<HTMLButtonElement>(null);
-  const previousFocus = useRef<HTMLElement | null>(null);
-  const schedulingUrl =
-    process.env.NEXT_PUBLIC_CALENDLY_URL ??
-    landingContent.booking.defaultSchedulingUrl;
+  const previousFocusRef = useRef<HTMLElement | null>(null);
+  const titleId = useId();
+  const descriptionId = useId();
+  const schedulingUrl = resolveSchedulingUrl(
+    process.env.NEXT_PUBLIC_CALENDLY_URL,
+  );
+
+  const closeDialog = useCallback(() => {
+    const dialog = dialogRef.current;
+    if (dialog?.open) dialog.close();
+    previousFocusRef.current?.focus();
+    capture("booking_dialog_closed", { variant });
+  }, [variant]);
 
   const openDialog = () => {
     const dialog = dialogRef.current;
     if (!dialog) return;
 
-    previousFocus.current = document.activeElement as HTMLElement;
-    if (!dialog.open) {
-      dialog.showModal();
-    }
+    previousFocusRef.current =
+      document.activeElement instanceof HTMLElement
+        ? document.activeElement
+        : null;
+    if (!dialog.open) dialog.showModal();
     closeButtonRef.current?.focus();
-    capture("booking_dialog_opened", { variant, label: label ?? landingContent.hero.ctaPrimary });
-  };
-
-  const closeDialog = () => {
-    const dialog = dialogRef.current;
-    if (dialog?.open) dialog.close();
-    previousFocus.current?.focus();
-    capture("booking_dialog_closed", { variant });
+    capture("booking_dialog_opened", {
+      variant,
+      label: label ?? landingContent.hero.ctaPrimary,
+    });
   };
 
   useEffect(() => {
     const dialog = dialogRef.current;
     if (!dialog) return;
 
-    const handleCancel = (e: Event) => {
-      e.preventDefault();
+    const handleCancel = (event: Event) => {
+      event.preventDefault();
       closeDialog();
     };
 
     dialog.addEventListener("cancel", handleCancel);
     return () => dialog.removeEventListener("cancel", handleCancel);
-  });
-
-  const handleBackdropClick = (e: React.MouseEvent<HTMLDialogElement>) => {
-    const rect = e.currentTarget.getBoundingClientRect();
-    const clickedOutside =
-      e.clientX < rect.left ||
-      e.clientX > rect.right ||
-      e.clientY < rect.top ||
-      e.clientY > rect.bottom;
-    if (clickedOutside) closeDialog();
-  };
-
-  const triggerClassName =
-    variant === "medieval"
-      ? "inline-flex h-12 items-center justify-center rounded-sm border-2 border-[#9a7b34] bg-[#2c2014] px-8 font-medieval text-[13px] font-semibold uppercase tracking-[0.16em] text-[#f0e6cf] shadow-[0_8px_22px_-10px_rgba(44,32,20,0.8)] transition-all duration-200 hover:-translate-y-0.5 hover:bg-[#3a2c1c]"
-      : variant === "elite"
-      ? "inline-flex h-11 items-center justify-center gap-2 rounded-full bg-cw-orange px-5 text-sm font-semibold text-cw-ink shadow-[0_10px_28px_rgba(255,138,42,0.2)] transition-all duration-200 hover:-translate-y-0.5 hover:bg-cw-sun"
-      : variant === "nav"
-        ? "inline-flex h-9 items-center justify-center rounded-full bg-cw-ink px-4 text-sm font-medium text-cw-cream transition-colors duration-200 hover:bg-cw-ink/85"
-        : variant === "pricing"
-          ? "inline-flex h-12 items-center justify-center rounded-full bg-cw-orange px-8 text-[15px] font-semibold text-cw-ink shadow-[0_8px_24px_rgba(255,138,42,0.25)] transition-all duration-200 hover:-translate-y-0.5 hover:bg-cw-sun"
-          : "inline-flex h-12 items-center justify-center rounded-full bg-cw-ink px-7 text-[15px] font-semibold text-cw-cream shadow-[0_1px_2px_rgba(21,17,43,0.18),0_8px_24px_rgba(21,17,43,0.12)] transition-all duration-200 hover:-translate-y-0.5 hover:bg-cw-ink/90";
+  }, [closeDialog]);
 
   return (
     <>
@@ -80,107 +95,92 @@ export function BookingDiscoveryDialog({
         type="button"
         onClick={openDialog}
         data-testid="booking-trigger"
+        data-cta="primary"
         data-variant={variant}
-        className={triggerClassName}
+        data-booking-ready="true"
+        className={TRIGGER_CLASSES[variant]}
       >
         {label ?? landingContent.hero.ctaPrimary}
-        {variant === "elite" ? (
-          <svg
-            viewBox="0 0 24 24"
-            className="size-4"
-            fill="none"
-            stroke="currentColor"
-            strokeWidth="2.5"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            aria-hidden="true"
-          >
-            <path d="M7 11l5-5 5 5M12 6v12" />
-          </svg>
-        ) : null}
       </button>
 
       <dialog
         ref={dialogRef}
-        aria-labelledby="booking-title"
-        aria-describedby="booking-desc"
-        onClick={handleBackdropClick}
-        className="m-auto w-[92vw] max-w-lg overflow-visible border-0 bg-transparent p-0 text-[#2c2014] backdrop:bg-[#0d0f12]/60 backdrop:backdrop-blur-sm open:backdrop:opacity-100"
+        aria-labelledby={titleId}
+        aria-describedby={descriptionId}
+        className="m-auto max-h-[calc(100dvh-2rem)] w-[min(92vw,42rem)] overflow-y-auto border-0 bg-transparent p-0 text-[var(--text-primary)] backdrop:bg-black/70"
       >
-        <motion.div
-          initial={{ opacity: 0, scale: 0.97, y: 12 }}
-          animate={{ opacity: 1, scale: 1, y: 0 }}
-          transition={{
-            type: "spring",
-            stiffness: 300,
-            damping: 25,
-          }}
-          className="relative drop-shadow-[0_40px_80px_rgba(0,0,0,0.6)]"
-        >
-          {/* Top dowel */}
-          <div
-            className="scroll-roller relative z-10 mx-2 mb-[-7px]"
-            aria-hidden="true"
-          />
+        <div className="relative overflow-hidden border border-[color-mix(in_srgb,var(--text-primary)_15%,transparent)] bg-[var(--bg-surface)] p-6 sm:p-8">
+          <button
+            ref={closeButtonRef}
+            type="button"
+            onClick={closeDialog}
+            className="absolute right-3 top-3 z-10 inline-flex size-11 items-center justify-center border border-[color-mix(in_srgb,var(--text-primary)_15%,transparent)] bg-[var(--bg-primary)] text-2xl leading-none text-[var(--text-primary)] transition-colors duration-200 hover:border-[var(--accent)] hover:text-[var(--accent)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--focus)]"
+            aria-label={landingContent.booking.closeLabel}
+          >
+            ×
+          </button>
 
-          {/* Parchment sheet */}
-          <div className="parchment scroll-sheet relative overflow-hidden rounded-[3px] border-2 border-[#a6332a]/55 p-6 sm:p-8">
-            <button
-              ref={closeButtonRef}
-              type="button"
-              onClick={closeDialog}
-              className="absolute right-3 top-3 z-10 inline-flex size-9 items-center justify-center rounded-full border border-[#9a7b34]/60 bg-[rgba(247,240,219,0.7)] font-medieval text-base text-[#6d2020] transition-colors duration-200 hover:bg-[#a6332a] hover:text-[#f3e7c8]"
-              aria-label={landingContent.booking.closeLabel}
-            >
-              ×
-            </button>
+          <p className="text-sm font-semibold text-[var(--accent)]">
+            No hard sales push
+          </p>
+          <h2
+            id={titleId}
+            className="mt-4 max-w-lg pr-12 text-4xl font-semibold leading-[0.96] tracking-[-0.04em] text-[var(--text-primary)]"
+          >
+            {landingContent.booking.title}
+          </h2>
+          <p
+            id={descriptionId}
+            className="mt-4 max-w-xl text-base leading-[1.7] text-[var(--text-secondary)]"
+          >
+            {landingContent.booking.description}
+          </p>
 
-            <p className="font-medieval text-[11px] font-semibold uppercase tracking-[0.3em] text-[#9a7b34]">
-              Discovery
-            </p>
-            <h2
-              id="booking-title"
-              className="mt-2 font-medieval text-3xl font-bold text-[#a6332a]"
-            >
-              {landingContent.booking.title}
-            </h2>
-            <p
-              id="booking-desc"
-              className="mt-3 max-w-md font-manuscript text-lg leading-relaxed text-[#3a2c1c]"
-            >
-              {landingContent.booking.description}
-            </p>
-
+          <div className="mt-6 border border-[color-mix(in_srgb,var(--text-primary)_15%,transparent)] bg-[var(--bg-primary)]">
+            <div className="flex flex-wrap items-center justify-between gap-3 border-b border-[color-mix(in_srgb,var(--text-primary)_12%,transparent)] px-4 py-3">
+              <p className="text-sm font-semibold text-[var(--text-primary)]">
+                {landingContent.booking.schedulerFallbackTitle}
+              </p>
+              <a
+                href={schedulingUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                data-testid="booking-external-link"
+                className="inline-flex min-h-11 items-center justify-center bg-[var(--accent)] px-4 text-sm font-semibold text-[var(--bg-primary)] transition-[filter] duration-200 hover:brightness-110 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--focus)]"
+              >
+                {landingContent.booking.schedulerFallbackLink}
+              </a>
+            </div>
             <iframe
               src={schedulingUrl}
               title={landingContent.booking.title}
               data-testid="booking-scheduler"
-              className="mt-5 h-96 w-full rounded-[3px] border border-[#9a7b34]/60 bg-[#f3e7c8]"
+              className="h-[16rem] w-full bg-[#f3e7c8] sm:h-[25rem]"
               loading="lazy"
+              sandbox="allow-forms allow-popups allow-popups-to-escape-sandbox allow-same-origin allow-scripts allow-top-navigation-by-user-activation"
             />
-            <div className="mt-4 rounded-[3px] border border-[#9a7b34]/50 bg-[rgba(247,240,219,0.6)] p-5">
-              <h3 className="font-medieval text-lg font-bold text-[#2c2014]">
-                {landingContent.booking.placeholderHeadline}
-              </h3>
-              <p className="mt-2 font-manuscript text-base leading-relaxed text-[#3a2c1c]">
-                {landingContent.booking.placeholderBody}
-              </p>
-              <a
-                href={`mailto:${landingContent.booking.fallbackEmail}?subject=Project%20inquiry`}
-                className="mt-4 inline-flex h-11 items-center justify-center rounded-sm border-2 border-[#9a7b34] bg-transparent px-6 font-medieval text-xs font-semibold uppercase tracking-[0.14em] text-[#2c2014] transition-colors duration-200 hover:bg-[#2c2014] hover:text-[#f3e7c8]"
-                onClick={() => capture("booking_email_fallback_clicked", { email: landingContent.booking.fallbackEmail })}
-              >
-                {landingContent.booking.fallbackEmail}
-              </a>
-            </div>
           </div>
 
-          {/* Bottom dowel */}
-          <div
-            className="scroll-roller relative z-10 mx-2 mt-[-7px]"
-            aria-hidden="true"
-          />
-        </motion.div>
+          <div className="mt-5 border-t border-[color-mix(in_srgb,var(--text-primary)_12%,transparent)] pt-5">
+            <h3 className="text-lg font-semibold text-[var(--text-primary)]">
+              {landingContent.booking.placeholderHeadline}
+            </h3>
+            <p className="mt-2 text-sm leading-relaxed text-[var(--text-secondary)]">
+              {landingContent.booking.placeholderBody}
+            </p>
+            <a
+              href={`mailto:${landingContent.booking.fallbackEmail}?subject=Website%20project`}
+              className="mt-4 inline-flex min-h-11 items-center justify-center border border-[color-mix(in_srgb,var(--text-primary)_20%,transparent)] px-5 font-mono text-xs font-semibold uppercase tracking-[0.1em] text-[var(--text-primary)] transition-colors duration-200 hover:border-[var(--accent)] hover:text-[var(--accent)]"
+              onClick={() =>
+                capture("booking_email_fallback_clicked", {
+                  email: landingContent.booking.fallbackEmail,
+                })
+              }
+            >
+              {landingContent.booking.fallbackEmail}
+            </a>
+          </div>
+        </div>
       </dialog>
     </>
   );

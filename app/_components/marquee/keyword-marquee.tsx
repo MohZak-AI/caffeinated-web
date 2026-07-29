@@ -1,7 +1,7 @@
 const ITEMS = [
   "Build from zero",
   "Redesign your site",
-  "From $199 one time",
+  "From $299 one time",
   "Hosting and domain",
   "Monthly maintenance",
   "Free edit every 6 months",

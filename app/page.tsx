@@ -1,26 +1,25 @@
 import { SiteHeader } from "./_components/nav/site-header";
 import { AgencyHero } from "./_components/hero/agency-hero";
-import { KeywordMarquee } from "./_components/marquee/keyword-marquee";
-import { EliteFinale } from "./_components/elite/elite-finale";
+import { LiveWork } from "./_components/offer/live-work";
 import { AgencyFooter } from "./_components/elite/agency-footer";
-import { ScrollPhaseOrchestrator } from "./_components/scroll/scroll-phase-orchestrator";
 import { StructuredData } from "./_components/seo/structured-data";
-import { DidYouKnow } from "./_components/offer/did-you-know";
-import { Faq } from "./_components/faq/faq";
+import { FinalCta } from "./_components/landing/final-cta";
+import { PinnedScrollReveal } from "./_components/landing/pinned-scroll-reveal";
+import { PricingFaq } from "./_components/landing/pricing-faq";
 
 export default function Home() {
   return (
-    <main className="relative flex flex-1 flex-col">
+    <>
       <StructuredData />
-      <ScrollPhaseOrchestrator>
-        <SiteHeader />
+      <SiteHeader />
+      <main className="relative flex w-full max-w-full flex-1 flex-col overflow-x-clip">
         <AgencyHero />
-        <KeywordMarquee />
-        <DidYouKnow />
-        <Faq />
-        <EliteFinale />
-        <AgencyFooter />
-      </ScrollPhaseOrchestrator>
-    </main>
+        <PinnedScrollReveal />
+        <LiveWork />
+        <PricingFaq />
+        <FinalCta />
+      </main>
+      <AgencyFooter />
+    </>
   );
 }

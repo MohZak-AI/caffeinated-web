@@ -1,92 +1,52 @@
-"use client";
-
 import Image from "next/image";
-import { motion } from "motion/react";
-import { capture } from "@/app/_lib/posthog";
 import { landingContent } from "@/app/_content/landing";
-import { useMotionAllowed } from "../motion/use-motion-allowed";
+import { BookingDiscoveryDialog } from "../hero/booking-discovery-dialog";
+
+const navigation = [
+  { label: "Work", href: "#work" },
+  { label: "FAQ", href: "#faq" },
+] as const;
 
 export function SiteHeader() {
-  const motionAllowed = useMotionAllowed();
-
   return (
-    <header className="sticky top-0 z-50 w-full border-b border-base-content/10 bg-base-100/70 text-base-content shadow-sm cw-liquid">
-      <div className="navbar mx-auto min-h-20 max-w-7xl gap-4 px-4 sm:min-h-24 sm:px-6 lg:px-8 xl:px-12">
-        <div className="navbar-start">
-          {motionAllowed ? (
-            <motion.a
-              href="#"
-              className="btn btn-ghost h-auto min-h-0 gap-2.5 rounded-box px-2 py-2 text-base-content normal-case sm:gap-3.5"
-              whileHover={{ scale: 1.02 }}
-              whileTap={{ scale: 0.98 }}
-              transition={{ duration: 0.2 }}
-            >
-              <Image
-                src="/caffeinated-web-logo.webp"
-                alt={`${landingContent.brand.name} logo`}
-                width={48}
-                height={60}
-                unoptimized
-                priority
-                className="-my-1 h-10 w-auto sm:h-12"
-              />
-              <span className="text-xs font-semibold leading-none sm:text-base">
-                {landingContent.brand.name}
-              </span>
-            </motion.a>
-          ) : (
-            <a
-              href="#"
-              className="btn btn-ghost h-auto min-h-0 gap-2.5 rounded-box px-2 py-2 text-base-content normal-case sm:gap-3.5"
-            >
-              <Image
-                src="/caffeinated-web-logo.webp"
-                alt={`${landingContent.brand.name} logo`}
-                width={48}
-                height={60}
-                unoptimized
-                priority
-                className="-my-1 h-10 w-auto sm:h-12"
-              />
-              <span className="text-xs font-semibold leading-none sm:text-base">
-                {landingContent.brand.name}
-              </span>
-            </a>
-          )}
-        </div>
+    <header className="relative z-50 w-full border-b border-[color-mix(in_srgb,var(--text-primary)_10%,transparent)] bg-[var(--bg-primary)]">
+      <div className="mx-auto flex min-h-20 max-w-7xl items-center justify-between gap-4 px-4 sm:px-6 lg:px-8 xl:px-12">
+        <a
+          href="#top"
+          aria-label={`${landingContent.brand.name}, back to top`}
+          className="flex min-h-11 items-center gap-3 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[var(--focus)]"
+        >
+          <Image
+            src="/caffeinated-web-logo.webp"
+            alt=""
+            width={38}
+            height={48}
+            priority
+            className="cw-pixel-logo h-10 w-auto"
+          />
+          <span className="text-sm font-semibold tracking-[-0.02em] text-[var(--text-primary)] sm:text-base">
+            {landingContent.brand.name}
+          </span>
+        </a>
 
         <nav
-          aria-label="Primary"
-          className="navbar-end gap-2 text-sm sm:gap-3 sm:text-base"
+          aria-label="Primary navigation"
+          className="hidden items-center gap-7 md:flex"
         >
-          <a
-            href="#pricing"
-            className="btn btn-ghost rounded-box px-3 font-medium text-base-content/70 hover:text-base-content sm:px-4"
-            onClick={() => capture("nav_pricing_clicked")}
-          >
-            Pricing
-          </a>
-          {motionAllowed ? (
-            <motion.a
-              href="#contact"
-              className="btn btn-primary rounded-box px-4 font-medium shadow sm:px-5"
-              whileHover={{ y: -1.5 }}
-              whileTap={{ scale: 0.97 }}
-              transition={{ duration: 0.2 }}
-              onClick={() => capture("nav_contact_clicked")}
-            >
-              Contact
-            </motion.a>
-          ) : (
+          {navigation.map((item) => (
             <a
-              href="#contact"
-              className="btn btn-primary rounded-box px-4 font-medium shadow sm:px-5"
-              onClick={() => capture("nav_contact_clicked")}
+              key={item.href}
+              href={item.href}
+              className="font-mono text-xs font-semibold uppercase tracking-[0.12em] text-[var(--text-secondary)] transition-colors duration-200 hover:text-[var(--text-primary)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[var(--focus)]"
             >
-              Contact
+              {item.label}
             </a>
-          )}
+          ))}
         </nav>
+
+        <div className="[&>button]:min-h-11 [&>button]:px-4 sm:[&>button]:px-5">
+          <BookingDiscoveryDialog variant="nav" label="Book a chat" />
+        </div>
       </div>
     </header>
   );

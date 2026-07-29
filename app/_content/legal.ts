@@ -54,14 +54,14 @@ export const legalPolicies: LegalPolicy[] = [
       {
         heading: "2. The Services",
         paragraphs: [
-          "We design and build custom, mobile friendly websites from zero, or redesign an existing website you already own. Our setup fee is a one time charge starting at $199, with the final price scoped on a discovery call. After launch, an optional monthly care plan covers your domain, hosting, security, and maintenance, including one free edit every six (6) months.",
+          "We design and build custom, mobile friendly websites from zero, or redesign an existing website you already own. Our setup fee is a one time charge starting at $299, with the final price scoped on a discovery call. After launch, an optional monthly care plan covers your domain, hosting, security, and maintenance, including one free edit every six (6) months.",
           "The scope, timeline, and price of each project are confirmed in writing (usually by email) before work begins. Anything not listed in that written scope may require a separate quote.",
         ],
       },
       {
         heading: "3. Quotes, pricing, and payment",
         paragraphs: [
-          "All prices are quoted in US dollars (USD) unless stated otherwise. Prices shown on the website (\u201cfrom $199\u201d) are starting points and not a fixed quote for every project.",
+          "All prices are quoted in US dollars (USD) unless stated otherwise. Prices shown on the website (\u201cfrom $299\u201d) are starting points and not a fixed quote for every project.",
           "A one time setup fee is due as agreed in your written scope. The monthly care plan is billed in advance on a recurring basis until you cancel in writing.",
           "If a payment is more than seven (7) days overdue, we may pause hosting, maintenance, or edits until the balance is settled, while keeping your content and data safe.",
         ],

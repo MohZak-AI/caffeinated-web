@@ -3,21 +3,15 @@ import { landingContent } from "@/app/_content/landing";
 const siteUrl =
   process.env.NEXT_PUBLIC_SITE_URL ?? "https://caffienatedweb.com";
 
-/**
- * JSON-LD structured data for the homepage: a ProfessionalService with a
- * concrete $199 Offer, plus a FAQPage covering the same Q&A rendered on the
- * page (eligible for FAQ rich results). Kept honest: no fabricated address,
- * phone, reviews, or stats.
- */
 export function StructuredData() {
-  const { brand, faq } = landingContent;
+  const { brand, faqSection } = landingContent;
 
   const service = {
     "@context": "https://schema.org",
     "@type": "ProfessionalService",
     name: brand.name,
     description:
-      "Affordable custom website design and redesign for small businesses, from a one time setup starting at $199, plus low monthly hosting, domain and maintenance.",
+      "Fast, clear website design for small businesses, with copy, design, code, launch, and ongoing care handled.",
     url: siteUrl,
     email: landingContent.booking.fallbackEmail,
     image: `${siteUrl}/caffeinated-web-logo.webp`,
@@ -28,9 +22,9 @@ export function StructuredData() {
     makesOffer: [
       {
         "@type": "Offer",
-        name: "Website one time setup from $199",
+        name: "Website setup from $199",
         description:
-          "Build from zero or redesign your current site into a custom, mobile friendly website. One time fee starting at $199.",
+          "Copy, design, and development for a custom, mobile-friendly website. Setup starts at $199, followed by an exact $10 monthly care plan.",
         price: "199",
         priceCurrency: "USD",
         priceSpecification: {
@@ -48,12 +42,12 @@ export function StructuredData() {
   const faqSchema = {
     "@context": "https://schema.org",
     "@type": "FAQPage",
-    mainEntity: faq.map((item) => ({
+    mainEntity: faqSection.items.map((item) => ({
       "@type": "Question",
-      name: item.q,
+      name: item.question,
       acceptedAnswer: {
         "@type": "Answer",
-        text: item.a,
+        text: item.answer,
       },
     })),
   };

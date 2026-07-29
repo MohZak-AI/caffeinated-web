@@ -1,5 +1,8 @@
 import { defineConfig, devices } from "@playwright/test";
 
+const externalBaseUrl = process.env.PLAYWRIGHT_BASE_URL;
+const baseUrl = externalBaseUrl ?? "http://localhost:3001";
+
 export default defineConfig({
   testDir: "./tests/e2e",
   fullyParallel: true,
@@ -8,7 +11,7 @@ export default defineConfig({
   workers: process.env.CI ? 1 : undefined,
   reporter: "list",
   use: {
-    baseURL: "http://localhost:3001",
+    baseURL: baseUrl,
     trace: "on-first-retry",
     screenshot: "only-on-failure",
   },
@@ -22,10 +25,12 @@ export default defineConfig({
       use: { ...devices["iPhone 13"] },
     },
   ],
-  webServer: {
-    command: "PORT=3001 npm run dev",
-    url: "http://localhost:3001",
-    reuseExistingServer: !process.env.CI,
-    timeout: 120000,
-  },
+  webServer: externalBaseUrl
+    ? undefined
+    : {
+        command: "PORT=3001 npm run dev",
+        url: baseUrl,
+        reuseExistingServer: !process.env.CI,
+        timeout: 120000,
+      },
 });
