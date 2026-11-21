@@ -21,20 +21,20 @@ export const landingContract = {
   ],
   work: {
     title:
-      "Don't just take my word for it. Here's what we've been brewing recently.",
+      "A few website concepts we've been brewing.",
     subheading: "(Click any preview to test out the live site)",
     projects: [
       {
         id: "ironhaus",
         name: "Ironhaus Gym",
         href: "https://gym-landing-example.wasmer.app/",
-        note: "They had a clunky booking page that was losing them members every week. We built them a dark, high-energy site that makes signing up effortless.",
+        note: "A gym website concept with a bold visual identity, clear training programs, and a direct path to membership enquiries.",
       },
       {
         id: "fika-no-9",
         name: "Fika No. 9",
         href: "https://cafe-landing-example.wasmer.app/",
-        note: "A cozy, clean site designed to showcase their menu, tell their story, and get people walking through the door.",
+        note: "A café website concept designed around menu discovery, warm storytelling, and an inviting place to plan a visit.",
       },
     ],
   },

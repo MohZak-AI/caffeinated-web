@@ -1,11 +1,11 @@
 {
-  "name": "agency-landing-v1",
+  "name": "caffeinated-web",
   "version": "0.1.0",
   "private": true,
   "scripts": {
     "dev": "next dev",
     "build": "next build",
-    "start": "next start",
+    "start": "serve out --listen 3000",
     "lint": "eslint",
     "test:e2e": "playwright test",
     "test:e2e:headed": "playwright test --headed",
@@ -32,6 +32,7 @@
     "react-doctor": "^0.9.2",
     "react-grab": "^0.1.50",
     "react-scan": "^0.5.7",
+    "serve": "^14.2.8",
     "tailwindcss": "^4",
     "typescript": "^5"
   }

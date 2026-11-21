@@ -31,7 +31,7 @@ fixed quote rather than selling a one-size-fits-all package.
 ## Operating Context
 
 Prospects browse the marketing site, review the pricing and included services,
-then book a 30-minute discovery call through Calendly or contact the studio by
+then book a discovery call through Calendly or contact the studio by
 email. Before work begins, the client and studio confirm the scope, timeline,
 and price in writing. Clients provide the content, assets, and access needed
 to build or redesign their site.
@@ -48,8 +48,8 @@ to build or redesign their site.
   customer testimonials, performance statistics, or guarantees.
 - Public marketing contact email is `contact@caffienatedweb.com`; legal policy
   contact details should match before launch.
-- Marketing copy promises a 15-minute chat, while the current fallback
-  Calendly URL points to a 30-minute event and must be replaced before launch.
+- Confirm that the configured Calendly event duration matches the public
+  15-minute discovery-call offer before launch.
 
 ## Brand Commitments
 
